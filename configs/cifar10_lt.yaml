@@ -1,0 +1,33 @@
+# CIFAR-10-LT Default Configuration
+# Imbalance Factor = 100 (0.01)
+# =========================================
+
+# Dataset
+dataset: cifar10_lt
+data_root: ./data
+imb_factor: 0.01
+
+# Model
+arch: resnet32
+use_norm: false
+
+# Training
+epochs: 200
+batch_size: 128
+lr: 0.1
+momentum: 0.9
+weight_decay: 2.0e-4
+lr_schedule: cosine
+optimizer: sgd
+warmup_epochs: 5
+
+# Loss (change this to try different methods)
+loss: ce
+
+# Augmentation
+augment: standard
+
+# System
+workers: 4
+seed: 42
+print_freq: 50

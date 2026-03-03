@@ -1,0 +1,33 @@
+# Places-LT Default Configuration
+# 365 classes, long-tailed training split
+# =========================================
+
+# Dataset
+dataset: places_lt
+data_root: /path/to/places_lt
+
+# Model
+arch: resnet152
+use_norm: false
+pretrained: true
+
+# Training
+epochs: 30
+batch_size: 256
+lr: 0.01
+momentum: 0.9
+weight_decay: 5.0e-4
+lr_schedule: cosine
+optimizer: sgd
+warmup_epochs: 2
+
+# Loss
+loss: ce
+
+# Augmentation
+augment: standard
+
+# System
+workers: 8
+seed: 42
+print_freq: 100

@@ -1,0 +1,34 @@
+# ImageNet-LT Default Configuration
+# 1000 classes, long-tailed training split
+# Class counts: 1280 (max) to 5 (min)
+# =========================================
+
+# Dataset
+dataset: imagenet_lt
+data_root: /path/to/imagenet_lt
+
+# Model
+arch: resnet50
+use_norm: false
+pretrained: false
+
+# Training
+epochs: 100
+batch_size: 256
+lr: 0.1
+momentum: 0.9
+weight_decay: 5.0e-4
+lr_schedule: cosine
+optimizer: sgd
+warmup_epochs: 5
+
+# Loss
+loss: ce
+
+# Augmentation
+augment: randaug
+
+# System
+workers: 8
+seed: 42
+print_freq: 100
