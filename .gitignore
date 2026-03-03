@@ -11,6 +11,10 @@
 *.t7
 /models/
 /checkpoints/
+*.safetensors
+*.tfevents.*
+scripts/*.sh.o*
+output/
 
 
 __pycache__/
