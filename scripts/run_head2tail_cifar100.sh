@@ -54,6 +54,8 @@ else
     echo "LoRA weights already exist for ${DATASET}, skipping fine-tuning."
 fi
 
+
+
 LORA_WEIGHTS="./lora_weights/${DATASET}_IF100/final"
 
 # ---------------------------------------------------------------
@@ -62,11 +64,11 @@ LORA_WEIGHTS="./lora_weights/${DATASET}_IF100/final"
 
 # Generation parameters
 TOP_K=3
-HEAD_THRESH=100
+HEAD_THRESH=100 
 TAIL_THRESH=20
-FEAT_SRC="clip_image"
-HEAD_SEL="nearest"
-SAMPLE_SEL="random"
+FEAT_SRC="clip_image" # important
+HEAD_SEL="nearest" # important
+SAMPLE_SEL="random" # important
 MODEL_ID="runwayml/stable-diffusion-v1-5"
 PIPE_TYPE="img2img"
 STRENGTH=0.6
@@ -74,9 +76,9 @@ GUIDANCE=7.5
 STEPS=50
 GEN_SIZE=512
 SAVE_SIZE=32
-N_PROMPTS=5
+N_PROMPTS=5 # important
 PLAN_MODE="per_image"
-AUG_PER_IMG=1
+AUG_PER_IMG=1 # important
 
 # Training parameters
 ARCH="resnet32"

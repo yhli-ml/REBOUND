@@ -6,15 +6,15 @@ A unified framework for long-tailed visual recognition benchmarking.
 
 Supported Methods:
   - ERM (vanilla cross-entropy)
-  - Class-Balanced CE (Cui et al., CVPR 2019)
-  - Focal Loss (Lin et al., ICCV 2017)
-  - LDAM-DRW (Cao et al., NeurIPS 2019)
-  - Logit Adjustment (Menon et al., ICLR 2021)
-  - Balanced Softmax (Ren et al., NeurIPS 2020)
-  - Seesaw Loss (Wang et al., CVPR 2021)
-  - Mixup / CutMix / Remix
-  - cRT (Kang et al., ICLR 2020) - two-stage
-  - tau-Normalization (Kang et al., ICLR 2020) - post-hoc
+#   - Class-Balanced CE (Cui et al., CVPR 2019)
+#   - Focal Loss (Lin et al., ICCV 2017)
+#   - LDAM-DRW (Cao et al., NeurIPS 2019)
+#   - Logit Adjustment (Menon et al., ICLR 2021)
+#   - Balanced Softmax (Ren et al., NeurIPS 2020)
+#   - Seesaw Loss (Wang et al., CVPR 2021)
+#   - Mixup / CutMix / Remix
+#   - cRT (Kang et al., ICLR 2020) - two-stage
+#   - tau-Normalization (Kang et al., ICLR 2020) - post-hoc
 
 Supported Backbones:
   - ResNet-32 (CIFAR)

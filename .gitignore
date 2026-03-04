@@ -14,7 +14,7 @@
 *.safetensors
 *.tfevents.*
 scripts/*.sh.o*
-output/
+output/h
 
 
 __pycache__/
