@@ -9,7 +9,6 @@
 *.weights
 *.model
 *.t7
-/models/
 /checkpoints/
 *.safetensors
 *.tfevents.*
@@ -43,7 +42,6 @@ Thumbs.db
 *.webp
 *.svg
 /data/
-/datasets/
 /figures/
 
 
