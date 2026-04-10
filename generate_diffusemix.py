@@ -1,36 +1,35 @@
 #!/usr/bin/env python3
-"""Offline DiffuseMix augmentation for long-tail datasets.
+"""Offline DiffuseMix reference baseline for long-tail datasets.
 
-Generates augmented images for minority (tail) classes using the DiffuseMix
-pipeline (InstructPix2Pix style transfer + concatenation + fractal blending).
+Generates augmented images using the DiffuseMix pipeline
+(InstructPix2Pix style transfer + concatenation + fractal blending).
 
-Key features for long-tail learning:
-  - Automatically detects the per-class distribution.
-  - Generates MORE augmented samples for classes with FEWER training examples.
-  - Supports CIFAR-10/100-LT (extracts images from numpy arrays) and
-    ImageNet-LT (reads from disk).
+This implementation follows the original DiffuseMix generation plan:
+each original training image produces `m` augmented images, with one prompt
+sampled from the prompt pool for each generated image.
 
 Usage examples:
-  # CIFAR-100-LT: augment tail classes to have at least 200 images each
+  # CIFAR-100-LT: generate one DiffuseMix sample per original image
   python generate_diffusemix.py \\
       --dataset cifar100_lt --data_root ./data --imb_factor 0.01 \\
       --fractal_dir /path/to/deviantart \\
       --prompts "sunset,Autumn,watercolor art" \\
-      --target_num 200 --output_dir ./data/diffusemix_cifar100_lt \\
+      --aug_per_image 1 --output_dir ./data/diffusemix_cifar100_lt \\
       --gen_size 256
 
-  # ImageNet-LT: augment classes with fewer than 100 images
+  # ImageNet-LT: generate two DiffuseMix samples per original image
   python generate_diffusemix.py \\
       --dataset imagenet_lt \\
       --data_root ./data/ImageNet_LT \\
       --img_root /path/to/imagenet \\
       --fractal_dir /path/to/deviantart \\
       --prompts "sunset,Autumn" \\
-      --target_num 100 --output_dir ./data/diffusemix_imagenet_lt
+      --aug_per_image 2 --output_dir ./data/diffusemix_imagenet_lt
 
 Output structure:
   output_dir/
     metadata.json          # {class_label: [{"path": "...", "label": int}, ...]}
+    generation_config.json
     class_000/
       aug_00000_sunset.jpg
       aug_00001_Autumn.jpg
@@ -40,6 +39,7 @@ Output structure:
 """
 
 import argparse
+import hashlib
 import json
 import os
 import sys
@@ -53,7 +53,7 @@ import torch
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description='Offline DiffuseMix augmentation for long-tail datasets')
+        description='DiffuseMix reference baseline for long-tail datasets')
 
     # Dataset
     parser.add_argument('--dataset', type=str, required=True,
@@ -82,15 +82,21 @@ def parse_args():
                         default='timbrooks/instruct-pix2pix',
                         help='HuggingFace model ID for InstructPix2Pix')
 
-    # Long-tail strategy
+    # Generation plan
+    parser.add_argument('--plan_mode', type=str, default='per_image',
+                        choices=['per_image'],
+                        help='Generation plan. DiffuseMix uses per-image augmentation.')
+    parser.add_argument('--aug_per_image', type=int, default=1,
+                        help='Number of DiffuseMix samples generated per original image')
+
+    # Deprecated legacy planning arguments. Kept for CLI compatibility only.
     parser.add_argument('--target_num', type=int, default=-1,
-                        help='Target number of samples per class after augmentation. '
-                             '-1 = augment all classes equally')
+                        help='Deprecated legacy argument. Ignored because '
+                             'DiffuseMix now uses per-image generation.')
     parser.add_argument('--max_aug_per_class', type=int, default=500,
-                        help='Maximum augmented images to generate per class')
+                        help='Deprecated legacy argument. Ignored.')
     parser.add_argument('--min_class_count', type=int, default=0,
-                        help='Only augment classes with fewer than this many samples. '
-                             '0 = auto (use target_num)')
+                        help='Deprecated legacy argument. Ignored.')
 
     # Output
     parser.add_argument('--output_dir', type=str, required=True,
@@ -165,40 +171,26 @@ def get_dataset_samples(args):
         return samples, cls_num_list, num_classes, False
 
 
-def compute_augmentation_plan(cls_num_list, target_num, max_aug_per_class,
-                               min_class_count, prompts):
-    """Compute how many augmented images to generate per class.
+def compute_per_image_plan(cls_num_list, aug_per_image):
+    """Compute per-image DiffuseMix generation counts for every class."""
+    return {
+        class_idx: count * aug_per_image
+        for class_idx, count in enumerate(cls_num_list)
+        if count > 0 and aug_per_image > 0
+    }
 
-    Args:
-        cls_num_list: List of per-class sample counts.
-        target_num: Target total per class. -1 = augment all equally.
-        max_aug_per_class: Max augmented images per class.
-        min_class_count: Only augment classes with count < this.
-        prompts: List of prompts (affects multiplier).
 
-    Returns:
-        aug_plan: dict {class_idx: num_images_to_generate}
-    """
-    num_classes = len(cls_num_list)
-    num_prompts = len(prompts)
-    aug_plan = {}
-
-    if target_num <= 0:
-        # Augment all classes: generate `num_prompts` images per original
-        for c in range(num_classes):
-            aug_plan[c] = min(cls_num_list[c] * num_prompts, max_aug_per_class)
-    else:
-        # Only augment classes below target
-        for c in range(num_classes):
-            current = cls_num_list[c]
-            if min_class_count > 0 and current >= min_class_count:
-                continue
-            if current >= target_num:
-                continue
-            needed = target_num - current
-            aug_plan[c] = min(needed, max_aug_per_class)
-
-    return aug_plan
+def warn_if_legacy_plan_args_used(args):
+    legacy_args = []
+    if args.target_num != -1:
+        legacy_args.append('--target_num')
+    if args.max_aug_per_class != 500:
+        legacy_args.append('--max_aug_per_class')
+    if args.min_class_count != 0:
+        legacy_args.append('--min_class_count')
+    if legacy_args:
+        print("[WARN] Ignoring deprecated legacy planning arguments: "
+              + ", ".join(legacy_args))
 
 
 def main():
@@ -206,22 +198,26 @@ def main():
     random.seed(args.seed)
     np.random.seed(args.seed)
     torch.manual_seed(args.seed)
+    rng = random.Random(args.seed)
 
-    prompts = [p.strip() for p in args.prompts.split(',')]
+    prompts = [p.strip() for p in args.prompts.split(',') if p.strip()]
+    if not prompts:
+        raise ValueError("At least one non-empty prompt is required.")
     gen_size = (args.gen_size, args.gen_size)
     save_size = (args.save_size, args.save_size) if args.save_size > 0 else gen_size
 
     print("=" * 60)
-    print("DiffuseMix Offline Augmentation for Long-Tail Learning")
+    print("DiffuseMix Reference Baseline")
     print("=" * 60)
     print(f"Dataset: {args.dataset}")
     print(f"Prompts: {prompts}")
-    print(f"Target num per class: {args.target_num}")
+    print(f"Plan mode: {args.plan_mode} (m={args.aug_per_image} per image)")
     print(f"Output: {args.output_dir}")
     print()
+    warn_if_legacy_plan_args_used(args)
 
     # Load dataset
-    print("[1/4] Loading dataset...")
+    print("[1/5] Loading dataset...")
     samples, cls_num_list, num_classes, is_cifar = get_dataset_samples(args)
     print(f"  Classes: {num_classes}, Total samples: {len(samples)}")
     print(f"  Max class count: {max(cls_num_list)}, Min: {min(cls_num_list)}")
@@ -232,13 +228,11 @@ def main():
         class_samples[label].append(item)
 
     # Compute augmentation plan
-    aug_plan = compute_augmentation_plan(
-        cls_num_list, args.target_num, args.max_aug_per_class,
-        args.min_class_count, prompts)
+    aug_plan = compute_per_image_plan(cls_num_list, args.aug_per_image)
 
     total_to_generate = sum(aug_plan.values())
     classes_to_augment = len(aug_plan)
-    print(f"\n[2/4] Augmentation plan:")
+    print(f"\n[2/5] Augmentation plan:")
     print(f"  Classes to augment: {classes_to_augment}/{num_classes}")
     print(f"  Total images to generate: {total_to_generate}")
     if aug_plan:
@@ -251,12 +245,12 @@ def main():
         return
 
     # Load fractal images
-    print("[3/4] Loading fractal images...")
+    print("[3/5] Loading fractal images...")
     from augment.diffusemix_utils import load_fractal_images
     fractal_imgs = load_fractal_images(args.fractal_dir, size=gen_size)
 
     # Load diffusion model
-    print("[3/4] Loading InstructPix2Pix model...")
+    print("[4/5] Loading InstructPix2Pix model...")
     from augment.diffusemix_handler import ModelHandler
     model = ModelHandler(model_id=args.model_id, device=args.device)
 
@@ -265,7 +259,7 @@ def main():
     )
 
     # Generate augmented images
-    print(f"\n[4/4] Generating augmented images...")
+    print(f"\n[5/5] Generating augmented images...")
     os.makedirs(args.output_dir, exist_ok=True)
 
     metadata = {}  # {class_str: [{"path": ..., "label": int}, ...]}
@@ -282,76 +276,78 @@ def main():
 
         class_original = class_samples[class_idx]
         n_original = len(class_original)
-        n_generated = 0
 
         print(f"  Class {class_idx:4d}: {n_original} original, "
               f"generating {n_to_gen} augmented...")
 
-        # Cycle through originals, varying prompts
-        sample_idx = 0
-        while n_generated < n_to_gen:
-            # Pick an original image (cycle)
-            item = class_original[sample_idx % n_original]
-            sample_idx += 1
-
-            # Pick a prompt (random)
-            prompt = random.choice(prompts)
-
-            # Prepare original as PIL
+        for original_idx, item in enumerate(class_original):
+            # Prepare original as PIL once, then reuse it for all augmentations.
             if is_cifar:
-                # item is numpy array (H, W, C) - uint8
                 original_pil = Image.fromarray(item).convert('RGB')
-                original_resized = original_pil.resize(gen_size)
             else:
-                # item is file path
                 original_pil = Image.open(item).convert('RGB')
-                original_resized = original_pil.resize(gen_size)
+            original_resized = original_pil.resize(gen_size)
 
-            # Step 1: Style transfer
-            try:
-                gen_imgs = model.generate_images_from_pil(
-                    prompt, original_resized, num_images=1,
-                    guidance_scale=args.guidance_scale, size=gen_size)
-            except Exception as e:
-                print(f"    [WARN] Generation failed for class {class_idx}: {e}")
-                continue
+            for aug_idx in range(args.aug_per_image):
+                generated = False
 
-            for gen_img in gen_imgs:
-                if n_generated >= n_to_gen:
+                for attempt_idx in range(3):
+                    prompt = rng.choice(prompts)
+
+                    try:
+                        gen_imgs = model.generate_images_from_pil(
+                            prompt, original_resized, num_images=1,
+                            guidance_scale=args.guidance_scale, size=gen_size)
+                    except Exception as e:
+                        print(f"    [WARN] Generation failed for class {class_idx} "
+                              f"sample {original_idx} aug {aug_idx}: {e}")
+                        continue
+
+                    gen_img = gen_imgs[0].resize(gen_size)
+                    if is_black_image(gen_img):
+                        continue
+
+                    # Step 2: Concatenate
+                    combined = combine_images(original_resized, gen_img)
+
+                    # Step 3: Fractal blend
+                    fractal = rng.choice(fractal_imgs)
+                    blended = blend_with_fractal(combined, fractal, args.fractal_alpha)
+
+                    # Save
+                    if save_size != gen_size:
+                        blended = blended.resize(save_size)
+
+                    prompt_hash = hashlib.md5(prompt.encode('utf-8')).hexdigest()[:8]
+                    fname = (
+                        f'aug_{original_idx:05d}_aug{aug_idx}_{prompt_hash}.jpg'
+                    )
+                    fpath = os.path.join(class_dir, fname)
+                    blended.save(fpath, quality=95)
+
+                    metadata[class_key].append({
+                        'path': os.path.join(class_key, fname),
+                        'label': class_idx,
+                        'aug_type': 'diffusemix',
+                        'plan_mode': args.plan_mode,
+                        'prompt': prompt,
+                        'source_sample_index': original_idx,
+                        'attempt_index': attempt_idx,
+                    })
+                    global_count += 1
+                    generated = True
+
+                    if global_count % 100 == 0:
+                        elapsed = time.time() - start_time
+                        speed = global_count / elapsed
+                        remaining = (total_to_generate - global_count) / max(speed, 1e-6)
+                        print(f"    Progress: {global_count}/{total_to_generate} "
+                              f"({speed:.1f} img/s, ETA: {remaining/60:.1f} min)")
                     break
 
-                gen_img = gen_img.resize(gen_size)
-                if is_black_image(gen_img):
-                    continue
-
-                # Step 2: Concatenate
-                combined = combine_images(original_resized, gen_img)
-
-                # Step 3: Fractal blend
-                fractal = random.choice(fractal_imgs)
-                blended = blend_with_fractal(combined, fractal, args.fractal_alpha)
-
-                # Save
-                if save_size != gen_size:
-                    blended = blended.resize(save_size)
-
-                fname = f'aug_{n_generated:05d}_{prompt.replace(" ", "_")}.jpg'
-                fpath = os.path.join(class_dir, fname)
-                blended.save(fpath, quality=95)
-
-                metadata[class_key].append({
-                    'path': os.path.join(class_key, fname),
-                    'label': class_idx,
-                })
-                n_generated += 1
-                global_count += 1
-
-                if global_count % 100 == 0:
-                    elapsed = time.time() - start_time
-                    speed = global_count / elapsed
-                    remaining = (total_to_generate - global_count) / max(speed, 1e-6)
-                    print(f"    Progress: {global_count}/{total_to_generate} "
-                          f"({speed:.1f} img/s, ETA: {remaining/60:.1f} min)")
+                if not generated:
+                    print(f"    [WARN] Skipped sample {original_idx} aug {aug_idx} "
+                          f"for class {class_idx} after repeated failures.")
 
     # Save metadata
     meta_path = os.path.join(args.output_dir, 'metadata.json')
@@ -365,11 +361,31 @@ def main():
             for entry in metadata[class_key]:
                 f.write(f"{entry['path']} {entry['label']}\n")
 
+    config = {
+        'method': 'diffusemix',
+        'dataset': args.dataset,
+        'imb_factor': args.imb_factor,
+        'plan_mode': args.plan_mode,
+        'aug_per_image': args.aug_per_image,
+        'prompts': prompts,
+        'guidance_scale': args.guidance_scale,
+        'fractal_alpha': args.fractal_alpha,
+        'model_id': args.model_id,
+        'gen_size': args.gen_size,
+        'save_size': args.save_size,
+        'total_generated': global_count,
+        'seed': args.seed,
+    }
+    config_path = os.path.join(args.output_dir, 'generation_config.json')
+    with open(config_path, 'w') as f:
+        json.dump(config, f, indent=2)
+
     elapsed = time.time() - start_time
     print(f"\n{'=' * 60}")
     print(f"Done! Generated {global_count} augmented images in {elapsed/60:.1f} min")
     print(f"Metadata: {meta_path}")
     print(f"Image list: {txt_path}")
+    print(f"Config: {config_path}")
     print(f"{'=' * 60}")
 
 

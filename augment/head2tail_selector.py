@@ -24,6 +24,7 @@ import numpy as np
 import torch
 import torch.nn.functional as F
 from collections import defaultdict
+from utils import get_class_split_lists
 
 
 class HeadClassSelector:
@@ -272,14 +273,17 @@ class HeadClassSelector:
     # Head-to-Tail Mapping
     # ------------------------------------------------------------------
     def get_head2tail_mapping(self, cls_num_list, top_k=3,
-                               head_threshold=100, tail_threshold=20):
+                               head_threshold=100, tail_threshold=20,
+                               include_medium_targets=False):
         """For each tail class, find the K nearest head classes.
 
         Args:
             cls_num_list: List of per-class sample counts.
             top_k: Number of nearest head classes to select.
-            head_threshold: Classes with > this many samples are "head".
-            tail_threshold: Classes with <= this many samples are "tail".
+            head_threshold: Threshold for head classes on non-CIFAR datasets.
+            tail_threshold: Threshold for tail classes on non-CIFAR datasets.
+            include_medium_targets: Whether target classes should include the
+                medium split in addition to tail classes.
 
         Returns:
             mapping: Dict[int, List[Tuple[int, float]]]
@@ -293,29 +297,28 @@ class HeadClassSelector:
         num_classes = len(cls_num_list)
         prototypes = self._prototype_tensor.float()  # (C, D)
 
-        # Identify head and tail classes
-        head_classes = [c for c in range(num_classes)
-                        if cls_num_list[c] > head_threshold]
-        tail_classes = [c for c in range(num_classes)
-                        if cls_num_list[c] <= tail_threshold]
-        medium_classes = [c for c in range(num_classes)
-                          if tail_threshold < cls_num_list[c] <= head_threshold]
+        head_classes, medium_classes, tail_classes = get_class_split_lists(
+            cls_num_list,
+            dataset_name=self.dataset_name,
+            many_thr=head_threshold,
+            few_thr=tail_threshold,
+        )
+        target_classes = medium_classes + tail_classes if include_medium_targets else tail_classes
 
         print(f"[HeadClassSelector] Head: {len(head_classes)}, "
               f"Medium: {len(medium_classes)}, Tail: {len(tail_classes)}")
 
         if not head_classes:
             print("[WARN] No head classes found! Using all non-tail classes as source.")
-            head_classes = [c for c in range(num_classes)
-                           if cls_num_list[c] > tail_threshold]
+            head_classes = head_classes + medium_classes
 
-        if not tail_classes:
-            print("[WARN] No tail classes found! Using medium classes as targets.")
-            tail_classes = medium_classes
+        if not target_classes:
+            print("[WARN] No target classes found! Using medium classes as targets.")
+            target_classes = medium_classes
 
         # Compute pairwise similarities
         head_protos = prototypes[head_classes]  # (H, D)
-        tail_protos = prototypes[tail_classes]  # (T, D)
+        tail_protos = prototypes[target_classes]  # (T, D)
 
         # Cosine similarity: (T, H)
         sim_matrix = torch.mm(
@@ -324,7 +327,7 @@ class HeadClassSelector:
         )
 
         mapping = {}
-        for t_idx, tail_c in enumerate(tail_classes):
+        for t_idx, tail_c in enumerate(target_classes):
             sims = sim_matrix[t_idx]  # (H,)
             top_vals, top_idxs = torch.topk(sims, min(top_k, len(head_classes)))
             mapping[tail_c] = [
@@ -332,7 +335,7 @@ class HeadClassSelector:
                 for hi, sv in zip(top_idxs, top_vals)
             ]
 
-        return mapping, head_classes, tail_classes
+        return mapping, head_classes, target_classes
 
     def get_nearest_head_samples(self, tail_class, head_class, n_samples=10):
         """Get specific head class samples nearest to the tail class prototype.

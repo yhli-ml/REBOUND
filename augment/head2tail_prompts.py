@@ -120,15 +120,38 @@ def get_class_names(dataset_name):
     elif dataset_name == 'cifar100_lt':
         return list(CIFAR100_CLASSES)
     elif dataset_name == 'imagenet_lt':
-        # Try loading from a JSON file; fall back to generic names
-        imagenet_names_path = os.path.join(
-            os.path.dirname(__file__), '..', 'configs', 'imagenet_class_names.json'
-        )
+        repo_root = os.path.normpath(os.path.join(os.path.dirname(__file__), '..'))
+        imagenet_names_path = os.path.join(repo_root, 'configs', 'imagenet_class_names.json')
+        imagenet_txt_path = os.path.join(repo_root, 'data', 'ImageNet_LT', 'classnames.txt')
+
         if os.path.exists(imagenet_names_path):
             with open(imagenet_names_path) as f:
-                return json.load(f)
-        else:
-            return [f'class_{i}' for i in range(1000)]
+                names = json.load(f)
+            if len(names) != 1000:
+                raise ValueError(
+                    f"Expected 1000 ImageNet class names in {imagenet_names_path}, got {len(names)}"
+                )
+            return names
+
+        if os.path.exists(imagenet_txt_path):
+            names = []
+            with open(imagenet_txt_path, 'r') as f:
+                for line in f:
+                    line = line.strip()
+                    if not line:
+                        continue
+                    parts = line.split(maxsplit=1)
+                    if len(parts) == 1:
+                        names.append(parts[0])
+                    else:
+                        names.append(parts[1])
+            if len(names) != 1000:
+                raise ValueError(
+                    f"Expected 1000 ImageNet class names in {imagenet_txt_path}, got {len(names)}"
+                )
+            return names
+
+        return [f'class_{i}' for i in range(1000)]
     else:
         raise ValueError(f"Unsupported dataset: {dataset_name}")
 

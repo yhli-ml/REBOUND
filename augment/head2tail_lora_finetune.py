@@ -9,8 +9,9 @@ This step is OPTIONAL but recommended for better domain consistency.
 
 Key design choices:
   - Only trains LoRA layers (rank=4) → ~2MB of parameters
-  - Uses all classes (head + tail) for training
-  - Simple captions: "a photo of a {class_name}"
+  - Uses uniform sampling by default to preserve the dataset domain distribution
+  - Keeps class-balanced / tail-aware sampling available for ablations
+  - Supports class-aware templated captions for richer conditioning
   - Trains for a few epochs only to avoid overfitting
 
 Usage:
@@ -31,7 +32,7 @@ import random
 import numpy as np
 import torch
 import torch.nn.functional as F
-from torch.utils.data import Dataset, DataLoader
+from torch.utils.data import Dataset, DataLoader, WeightedRandomSampler
 from PIL import Image
 from torchvision import transforms
 
@@ -73,20 +74,35 @@ def parse_args():
                         help='Save checkpoint every N steps')
     parser.add_argument('--seed', type=int, default=42)
     parser.add_argument('--device', type=str, default='cuda')
+    parser.add_argument('--sampling_strategy', type=str, default='uniform',
+                        choices=['uniform', 'class_balanced', 'tail_aware'],
+                        help='Sampling strategy for LoRA fine-tuning batches')
+    parser.add_argument('--medium_weight', type=float, default=2.0,
+                        help='Relative multiplier for medium classes in tail-aware sampling')
+    parser.add_argument('--tail_weight', type=float, default=4.0,
+                        help='Relative multiplier for tail classes in tail-aware sampling')
+    parser.add_argument('--caption_mode', type=str, default='templated',
+                        choices=['simple', 'templated'],
+                        help='Caption style used for LoRA conditioning')
+    parser.add_argument('--caption_templates_per_class', type=int, default=8,
+                        help='Number of prompt templates to cache per class when using templated captions')
 
     return parser.parse_args()
 
 
 class TextImageDataset(Dataset):
-    """Simple dataset that pairs images with "a photo of a {class}" captions.
+    """Dataset pairing images with class-aware captions for LoRA fine-tuning.
 
     Handles both CIFAR (numpy arrays) and ImageNet (file paths).
     """
 
-    def __init__(self, data, targets, class_names, resolution=512):
+    def __init__(self, data, targets, class_names, resolution=512,
+                 caption_mode='templated', caption_pools=None):
         self.data = data
         self.targets = targets
         self.class_names = class_names
+        self.caption_mode = caption_mode
+        self.caption_pools = caption_pools or {}
         self.transform = transforms.Compose([
             transforms.Resize(resolution, interpolation=transforms.InterpolationMode.BILINEAR),
             transforms.CenterCrop(resolution),
@@ -111,9 +127,78 @@ class TextImageDataset(Dataset):
 
         image = self.transform(image)
         class_name = self.class_names[label].replace('_', ' ')
-        caption = f"a photo of a {class_name}"
+        if self.caption_mode == 'templated':
+            caption_pool = self.caption_pools.get(label)
+            if caption_pool:
+                caption_idx = torch.randint(len(caption_pool), (1,)).item()
+                caption = caption_pool[caption_idx]
+            else:
+                caption = f"a photo of a {class_name}"
+        else:
+            caption = f"a photo of a {class_name}"
 
         return {"image": image, "caption": caption}
+
+
+def build_caption_pools(class_names, n_prompts_per_class, seed):
+    """Precompute prompt pools so LoRA captions stay class-aware."""
+    from augment.head2tail_prompts import get_prompts_for_class
+
+    caption_pools = {}
+    for label, class_name in enumerate(class_names):
+        caption_pools[label] = get_prompts_for_class(
+            class_name,
+            n_prompts=n_prompts_per_class,
+            seed=seed + label,
+        )
+    return caption_pools
+
+
+def build_lora_sample_weights(targets, cls_num_list, dataset_name,
+                              strategy='uniform',
+                              medium_weight=2.0,
+                              tail_weight=4.0):
+    """Build per-sample weights for LoRA fine-tuning."""
+    if strategy == 'uniform':
+        return None, None
+
+    from utils import get_class_split_lists
+
+    head_classes, medium_classes, tail_classes = get_class_split_lists(
+        cls_num_list, dataset_name=dataset_name
+    )
+    head_set = set(head_classes)
+    medium_set = set(medium_classes)
+    tail_set = set(tail_classes)
+
+    class_weights = {}
+    for class_idx, class_count in enumerate(cls_num_list):
+        if class_count <= 0:
+            continue
+        base_weight = 1.0 / float(class_count)
+        if strategy == 'class_balanced':
+            split_multiplier = 1.0
+        elif strategy == 'tail_aware':
+            if class_idx in tail_set:
+                split_multiplier = tail_weight
+            elif class_idx in medium_set:
+                split_multiplier = medium_weight
+            else:
+                split_multiplier = 1.0
+        else:
+            raise ValueError(f"Unsupported sampling strategy: {strategy}")
+        class_weights[class_idx] = base_weight * split_multiplier
+
+    sample_weights = [class_weights[int(label)] for label in targets]
+    split_info = {
+        'head': len(head_classes),
+        'medium': len(medium_classes),
+        'tail': len(tail_classes),
+        'head_samples': sum(cls_num_list[c] for c in head_classes),
+        'medium_samples': sum(cls_num_list[c] for c in medium_classes),
+        'tail_samples': sum(cls_num_list[c] for c in tail_classes),
+    }
+    return sample_weights, split_info
 
 
 def main():
@@ -158,12 +243,72 @@ def main():
         targets = list(ds.targets)
 
     print(f"Loaded {len(data)} training samples")
+    cls_num_list = getattr(ds, 'cls_num_list', None)
+    if cls_num_list is None:
+        num_classes = len(class_names)
+        cls_num_list = [0] * num_classes
+        for label in targets:
+            cls_num_list[int(label)] += 1
 
-    train_ds = TextImageDataset(data, targets, class_names,
-                                resolution=args.resolution)
-    train_loader = DataLoader(train_ds, batch_size=args.batch_size,
-                              shuffle=True, num_workers=4,
-                              pin_memory=True, drop_last=True)
+    caption_pools = None
+    if args.caption_mode == 'templated':
+        caption_pools = build_caption_pools(
+            class_names,
+            n_prompts_per_class=args.caption_templates_per_class,
+            seed=args.seed,
+        )
+        print(f"Caption mode: templated ({args.caption_templates_per_class} prompts/class)")
+    else:
+        print("Caption mode: simple")
+
+    sample_weights, split_info = build_lora_sample_weights(
+        targets,
+        cls_num_list,
+        dataset_name=args.dataset,
+        strategy=args.sampling_strategy,
+        medium_weight=args.medium_weight,
+        tail_weight=args.tail_weight,
+    )
+
+    if split_info is not None:
+        print(
+            "Class split sizes: "
+            f"head={split_info['head']} ({split_info['head_samples']} samples), "
+            f"medium={split_info['medium']} ({split_info['medium_samples']} samples), "
+            f"tail={split_info['tail']} ({split_info['tail_samples']} samples)"
+        )
+    print(f"Sampling strategy: {args.sampling_strategy}")
+    if args.sampling_strategy == 'tail_aware':
+        print(f"Tail-aware weights: medium={args.medium_weight}, tail={args.tail_weight}")
+
+    train_ds = TextImageDataset(
+        data,
+        targets,
+        class_names,
+        resolution=args.resolution,
+        caption_mode=args.caption_mode,
+        caption_pools=caption_pools,
+    )
+
+    sampler = None
+    shuffle = True
+    if sample_weights is not None:
+        sampler = WeightedRandomSampler(
+            weights=torch.as_tensor(sample_weights, dtype=torch.double),
+            num_samples=len(sample_weights),
+            replacement=True,
+        )
+        shuffle = False
+
+    train_loader = DataLoader(
+        train_ds,
+        batch_size=args.batch_size,
+        shuffle=shuffle,
+        sampler=sampler,
+        num_workers=4,
+        pin_memory=True,
+        drop_last=True,
+    )
 
     # Load models
     print("\nLoading Stable Diffusion components...")

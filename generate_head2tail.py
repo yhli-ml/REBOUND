@@ -13,18 +13,25 @@ The generated images can be loaded by the existing DiffuseMixDataset
 wrapper for downstream classifier training.
 
 Usage:
-  # Basic usage with CIFAR-100-LT
+  # Basic usage with CIFAR-100-LT (one augmentation per image)
   python generate_head2tail.py \\
       --dataset cifar100_lt --data_root ./data --imb_factor 0.01 \\
       --output_dir ./data/head2tail_cifar100_lt \\
-      --target_num 500 --top_k 3 --strength 0.6
+      --top_k 3 --strength 0.6 --plan_mode per_image \\
+      --per_image_scope medium_tail --aug_per_image 1
 
   # With LoRA fine-tuned model
   python generate_head2tail.py \\
       --dataset cifar100_lt --data_root ./data --imb_factor 0.01 \\
       --output_dir ./data/head2tail_cifar100_lt \\
       --lora_weights ./lora_weights/cifar100_lt/final \\
-      --target_num 500
+      --plan_mode per_image --per_image_scope medium_tail --aug_per_image 1
+
+  # Legacy target-mode ablation
+  python generate_head2tail.py \\
+      --dataset cifar100_lt --data_root ./data --imb_factor 0.01 \\
+      --output_dir ./data/head2tail_target_ablation \\
+      --plan_mode target --target_num 500
 
   # With custom prompts
   python generate_head2tail.py \\
@@ -43,20 +50,23 @@ Output structure (compatible with DiffuseMixDataset):
 """
 
 import argparse
+import hashlib
 import json
 import os
 import sys
 import time
 import random
+from collections import defaultdict
 
 import numpy as np
 import torch
 from PIL import Image
+from utils import get_class_split_lists
 
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description='Head-to-Tail augmentation for long-tail datasets')
+        description='Head2Tail augmentation for long-tail datasets')
 
     # ===== Dataset =====
     parser.add_argument('--dataset', type=str, required=True,
@@ -108,24 +118,33 @@ def parse_args():
                         help='Path to custom prompts JSON file')
 
     # ===== Augmentation Plan =====
-    parser.add_argument('--plan_mode', type=str, default='target',
+    parser.add_argument('--plan_mode', type=str, default='per_image',
                         choices=['target', 'per_image'],
                         help='Augmentation plan mode. '
-                             'target = fill tail classes up to target_num. '
-                             'per_image = augment every image m times '
+                             'per_image = canonical Head2Tail plan where every '
+                             'image gets m augmentations. '
+                             'target = legacy ablation mode that fills classes '
+                             'up to target_num. '
                              '(head=self-aug, medium/tail=head2tail)')
     parser.add_argument('--aug_per_image', type=int, default=1,
                         help='Number of augmented images per original image '
                              '(only used in per_image plan mode)')
+    parser.add_argument('--per_image_scope', type=str, default='medium_tail',
+                        choices=['all', 'medium_tail', 'tail_only'],
+                        help='Which classes receive per-image augmentation. '
+                             'all = keep head self-augmentation plus medium/tail '
+                             'Head2Tail transfer. '
+                             'medium_tail = augment only medium/tail classes. '
+                             'tail_only = augment only tail classes.')
     parser.add_argument('--head_strength', type=float, default=-1,
                         help='SDEdit strength for head class self-augmentation '
                              'in per_image mode. -1 = use same as --strength. '
                              'Typically smaller (e.g. 0.3-0.5) to preserve '
                              'head class features.')
     parser.add_argument('--target_num', type=int, default=-1,
-                        help='Target samples per tail class after augmentation. '
-                             '-1 = match head class median count '
-                             '(only used in target plan mode)')
+                        help='Target samples per tail class after augmentation '
+                             'in legacy target mode. '
+                             '-1 = match head class median count')
     parser.add_argument('--max_aug_per_class', type=int, default=500,
                         help='Max augmented images per class '
                              '(only used in target plan mode)')
@@ -206,7 +225,8 @@ def load_dataset_samples(args):
 
 def compute_augmentation_plan(cls_num_list, mapping, target_num,
                                 max_aug_per_class, augment_medium,
-                                head_threshold, tail_threshold):
+                                head_threshold, tail_threshold,
+                                dataset_name=None):
     """Compute how many images to generate for each tail class.
 
     Args:
@@ -215,30 +235,39 @@ def compute_augmentation_plan(cls_num_list, mapping, target_num,
         target_num: Target count per class (-1 = median of head classes).
         max_aug_per_class: Maximum augmented images per class.
         augment_medium: Whether to include medium-shot classes.
-        head_threshold: Head class threshold.
-        tail_threshold: Tail class threshold.
+        head_threshold: Head class threshold on non-CIFAR datasets.
+        tail_threshold: Tail class threshold on non-CIFAR datasets.
+        dataset_name: Dataset identifier for split policy.
 
     Returns:
         aug_plan: Dict[int, int] {class_idx: num_to_generate}
     """
     num_classes = len(cls_num_list)
+    head_classes, medium_classes, tail_classes = get_class_split_lists(
+        cls_num_list,
+        dataset_name=dataset_name,
+        many_thr=head_threshold,
+        few_thr=tail_threshold,
+    )
 
     # Auto-determine target
     if target_num <= 0:
-        head_counts = [cls_num_list[c] for c in range(num_classes)
-                       if cls_num_list[c] > head_threshold]
+        head_counts = [cls_num_list[c] for c in head_classes]
         if head_counts:
             target_num = int(np.median(head_counts))
         else:
             target_num = max(cls_num_list) // 2
         print(f"[Plan] Auto target_num = {target_num} (median of head classes)")
 
+    eligible_targets = set(tail_classes)
+    if augment_medium:
+        eligible_targets.update(medium_classes)
+
     aug_plan = {}
     for tail_c in mapping.keys():
-        current = cls_num_list[tail_c]
-        # Include medium classes if requested
-        if not augment_medium and current > tail_threshold:
+        if tail_c not in eligible_targets:
             continue
+        current = cls_num_list[tail_c]
         needed = max(0, target_num - current)
         if needed > 0:
             aug_plan[tail_c] = min(needed, max_aug_per_class)
@@ -247,19 +276,22 @@ def compute_augmentation_plan(cls_num_list, mapping, target_num,
 
 
 def compute_per_image_plan(cls_num_list, num_classes, aug_per_image,
-                          head_threshold, tail_threshold):
+                          head_threshold, tail_threshold, per_image_scope,
+                          dataset_name=None):
     """Compute per-image augmentation plan for ALL classes.
 
-    Every class is augmented: each original image produces m new images.
-    - Head classes: self-augmentation (same class image + same class prompt)
-    - Medium/tail classes: head-to-tail transfer (unchanged approach)
+    Scope depends on `per_image_scope`.
+    - all: every class gets m augmentations per image
+    - medium_tail: only medium/tail classes are augmented
+    - tail_only: only tail classes are augmented
 
     Args:
         cls_num_list: Per-class training sample counts.
         num_classes: Total number of classes.
         aug_per_image: Number of augmented images per original image (m).
-        head_threshold: Head class threshold.
-        tail_threshold: Tail class threshold.
+        head_threshold: Head class threshold on non-CIFAR datasets.
+        tail_threshold: Tail class threshold on non-CIFAR datasets.
+        dataset_name: Dataset identifier for split policy.
 
     Returns:
         aug_plan: Dict[int, int] {class_idx: num_to_generate}
@@ -271,6 +303,15 @@ def compute_per_image_plan(cls_num_list, num_classes, aug_per_image,
     aug_plan = {}      # combined plan for all classes
     head_plan = {}     # head class self-augmentation
     tail_plan = {}     # medium/tail head-to-tail transfer
+    head_classes, medium_classes, tail_classes = get_class_split_lists(
+        cls_num_list,
+        dataset_name=dataset_name,
+        many_thr=head_threshold,
+        few_thr=tail_threshold,
+    )
+    head_set = set(head_classes)
+    medium_set = set(medium_classes)
+    tail_set = set(tail_classes)
 
     for c in range(num_classes):
         n_current = cls_num_list[c]
@@ -278,9 +319,16 @@ def compute_per_image_plan(cls_num_list, num_classes, aug_per_image,
         if n_to_gen <= 0:
             continue
 
+        if per_image_scope == 'tail_only':
+            if c not in tail_set:
+                continue
+        elif per_image_scope == 'medium_tail':
+            if c in head_set:
+                continue
+
         aug_plan[c] = n_to_gen
 
-        if n_current > head_threshold:
+        if per_image_scope == 'all' and c in head_set:
             head_plan[c] = n_to_gen
         else:
             tail_plan[c] = n_to_gen
@@ -289,35 +337,42 @@ def compute_per_image_plan(cls_num_list, num_classes, aug_per_image,
 
 
 def get_random_mapping(num_classes, cls_num_list, head_threshold,
-                        tail_threshold, top_k):
+                        tail_threshold, top_k, dataset_name=None,
+                        include_medium_targets=False):
     """Random head selection baseline (for ablation)."""
-    head_classes = [c for c in range(num_classes)
-                    if cls_num_list[c] > head_threshold]
-    tail_classes = [c for c in range(num_classes)
-                    if cls_num_list[c] <= tail_threshold]
+    head_classes, medium_classes, tail_classes = get_class_split_lists(
+        cls_num_list,
+        dataset_name=dataset_name,
+        many_thr=head_threshold,
+        few_thr=tail_threshold,
+    )
+    target_classes = medium_classes + tail_classes if include_medium_targets else tail_classes
 
     mapping = {}
-    for tc in tail_classes:
+    for tc in target_classes:
         selected = random.sample(head_classes, min(top_k, len(head_classes)))
         mapping[tc] = [(hc, 0.0) for hc in selected]
 
-    return mapping, head_classes, tail_classes
+    return mapping, head_classes, target_classes
 
 
 def get_farthest_mapping(prototype_tensor, cls_num_list, head_threshold,
-                          tail_threshold, top_k):
+                          tail_threshold, top_k, dataset_name=None,
+                          include_medium_targets=False):
     """Farthest head selection (for ablation)."""
     import torch.nn.functional as F
 
-    num_classes = len(cls_num_list)
-    head_classes = [c for c in range(num_classes)
-                    if cls_num_list[c] > head_threshold]
-    tail_classes = [c for c in range(num_classes)
-                    if cls_num_list[c] <= tail_threshold]
+    head_classes, medium_classes, tail_classes = get_class_split_lists(
+        cls_num_list,
+        dataset_name=dataset_name,
+        many_thr=head_threshold,
+        few_thr=tail_threshold,
+    )
+    target_classes = medium_classes + tail_classes if include_medium_targets else tail_classes
 
     prototypes = prototype_tensor.float()
     head_protos = prototypes[head_classes]
-    tail_protos = prototypes[tail_classes]
+    tail_protos = prototypes[target_classes]
 
     sim_matrix = torch.mm(
         F.normalize(tail_protos, dim=1),
@@ -325,7 +380,7 @@ def get_farthest_mapping(prototype_tensor, cls_num_list, head_threshold,
     )
 
     mapping = {}
-    for t_idx, tc in enumerate(tail_classes):
+    for t_idx, tc in enumerate(target_classes):
         sims = sim_matrix[t_idx]
         # Get BOTTOM k (farthest)
         _, bottom_idxs = torch.topk(sims, min(top_k, len(head_classes)),
@@ -333,7 +388,64 @@ def get_farthest_mapping(prototype_tensor, cls_num_list, head_threshold,
         mapping[tc] = [(head_classes[hi.item()], sims[hi].item())
                        for hi in bottom_idxs]
 
-    return mapping, head_classes, tail_classes
+    return mapping, head_classes, target_classes
+
+
+def compute_feature_prototypes(selector, feature_source, train_dataset):
+    """Compute the prototype bank required by the current feature setting."""
+    if feature_source == 'clip':
+        return selector.compute_clip_prototypes()
+    if feature_source == 'clip_image':
+        return selector.compute_clip_image_prototypes(train_dataset)
+    raise ValueError(f"Unsupported feature source: {feature_source}")
+
+
+def build_nearest_source_cache(selector, class_samples, mapping):
+    """Cache ranked source-sample lists for each target/source class pair."""
+    cache = {}
+    if selector.sample_features is None:
+        return cache
+
+    for tail_class, head_sources in mapping.items():
+        for head_class, _ in head_sources:
+            key = (tail_class, head_class)
+            if key in cache:
+                continue
+            n_samples = len(class_samples.get(head_class, []))
+            if n_samples <= 0:
+                cache[key] = []
+                continue
+            cache[key] = selector.get_nearest_head_samples(
+                tail_class, head_class, n_samples=n_samples
+            )
+
+    return cache
+
+
+def select_head_source_sample(head_samples, tail_class, head_class, n_generated,
+                              sample_selection, nearest_sample_cache,
+                              nearest_sample_cursors):
+    """Select a concrete source sample and expose its provenance metadata."""
+    if sample_selection == 'random':
+        sample_index = random.randrange(len(head_samples))
+        return head_samples[sample_index], sample_index, None, 'random'
+
+    if sample_selection == 'nearest':
+        ranked_samples = nearest_sample_cache.get((tail_class, head_class), [])
+        if ranked_samples:
+            cursor = nearest_sample_cursors[(tail_class, head_class)]
+            sample_rank = cursor % len(ranked_samples)
+            sample_index = ranked_samples[sample_rank][0]
+            nearest_sample_cursors[(tail_class, head_class)] += 1
+            return (
+                head_samples[sample_index],
+                sample_index,
+                sample_rank,
+                'nearest',
+            )
+
+    sample_index = n_generated % len(head_samples)
+    return head_samples[sample_index], sample_index, None, 'cycle'
 
 
 def main():
@@ -346,13 +458,15 @@ def main():
     save_size = (args.save_size, args.save_size)
 
     print("=" * 60)
-    print("Head-to-Tail Transfer Augmentation")
+    print("Head2Tail Augmentation (proposed method)")
     print("=" * 60)
     print(f"Dataset: {args.dataset} (imb_factor={args.imb_factor})")
     print(f"Strategy: {args.head_selection} head selection, "
           f"top_k={args.top_k}")
     print(f"Plan mode: {args.plan_mode}"
           + (f" (m={args.aug_per_image} per image)" if args.plan_mode == 'per_image' else ''))
+    if args.plan_mode == 'per_image':
+        print(f"Per-image scope: {args.per_image_scope}")
     print(f"SDEdit: strength={args.strength}, "
           f"guidance_scale={args.guidance_scale}")
     if args.plan_mode == 'per_image' and args.head_strength >= 0:
@@ -383,47 +497,55 @@ def main():
         feature_source=args.feature_source
     )
 
-    # In per_image mode, medium classes also need head-to-tail mapping,
-    # so use head_threshold as the effective tail_threshold for mapping.
-    effective_tail_threshold = (
-        args.head_threshold if args.plan_mode == 'per_image'
-        else args.tail_threshold
-    )
+    # In per_image mode and in target mode with --augment_medium, medium-shot
+    # classes also need head-to-tail mappings, so we widen the target set.
+    include_medium_targets = (args.plan_mode == 'per_image' or args.augment_medium)
 
     if args.head_selection == 'nearest':
-        if args.feature_source == 'clip':
-            selector.compute_clip_prototypes()
-        elif args.feature_source == 'clip_image':
-            selector.compute_clip_image_prototypes(raw_ds)
+        compute_feature_prototypes(selector, args.feature_source, raw_ds)
 
         mapping, head_classes, tail_classes = selector.get_head2tail_mapping(
             cls_num_list, top_k=args.top_k,
             head_threshold=args.head_threshold,
-            tail_threshold=effective_tail_threshold
+            tail_threshold=args.tail_threshold,
+            include_medium_targets=include_medium_targets,
         )
 
     elif args.head_selection == 'random':
         mapping, head_classes, tail_classes = get_random_mapping(
             num_classes, cls_num_list, args.head_threshold,
-            effective_tail_threshold, args.top_k
+            args.tail_threshold, args.top_k,
+            dataset_name=args.dataset,
+            include_medium_targets=include_medium_targets,
         )
-        # Still compute prototypes for logging
-        selector.compute_clip_prototypes()
+        if args.sample_selection == 'nearest' and args.feature_source == 'clip_image':
+            compute_feature_prototypes(selector, args.feature_source, raw_ds)
+        else:
+            selector.compute_clip_prototypes()
 
     elif args.head_selection == 'farthest':
-        protos = selector.compute_clip_prototypes()
+        protos = compute_feature_prototypes(selector, args.feature_source, raw_ds)
         mapping, head_classes, tail_classes = get_farthest_mapping(
             protos, cls_num_list, args.head_threshold,
-            effective_tail_threshold, args.top_k
+            args.tail_threshold, args.top_k,
+            dataset_name=args.dataset,
+            include_medium_targets=include_medium_targets,
         )
 
     elif args.head_selection == 'all':
-        selector.compute_clip_prototypes()
+        if args.sample_selection == 'nearest' and args.feature_source == 'clip_image':
+            compute_feature_prototypes(selector, args.feature_source, raw_ds)
+        else:
+            selector.compute_clip_prototypes()
         # Use all head classes for each tail class
-        head_classes = [c for c in range(num_classes)
-                        if cls_num_list[c] > args.head_threshold]
-        tail_classes = [c for c in range(num_classes)
-                        if cls_num_list[c] <= effective_tail_threshold]
+        head_classes, medium_classes, tail_classes = get_class_split_lists(
+            cls_num_list,
+            dataset_name=args.dataset,
+            many_thr=args.head_threshold,
+            few_thr=args.tail_threshold,
+        )
+        if include_medium_targets:
+            tail_classes = medium_classes + tail_classes
         mapping = {tc: [(hc, 0.0) for hc in head_classes] for tc in tail_classes}
 
     # Save mapping for analysis
@@ -453,12 +575,14 @@ def main():
         # Per-image mode: every class gets m augmentations per image
         aug_plan, head_aug_plan, tail_aug_plan = compute_per_image_plan(
             cls_num_list, num_classes, args.aug_per_image,
-            args.head_threshold, args.tail_threshold
+            args.head_threshold, args.tail_threshold, args.per_image_scope,
+            dataset_name=args.dataset,
         )
         target_num = -1  # not applicable
 
         total_to_generate = sum(aug_plan.values())
-        print(f"  Plan mode: per_image (m={args.aug_per_image})")
+        print(f"  Plan mode: per_image (m={args.aug_per_image}, "
+              f"scope={args.per_image_scope})")
         print(f"  Head classes to self-augment: {len(head_aug_plan)} "
               f"({sum(head_aug_plan.values())} images)")
         print(f"  Medium/tail classes (head2tail): {len(tail_aug_plan)} "
@@ -468,7 +592,8 @@ def main():
         # Target mode: fill tail classes up to target_num
         aug_plan, target_num = compute_augmentation_plan(
             cls_num_list, mapping, args.target_num, args.max_aug_per_class,
-            args.augment_medium, args.head_threshold, args.tail_threshold
+            args.augment_medium, args.head_threshold, args.tail_threshold,
+            dataset_name=args.dataset,
         )
         head_aug_plan = {}  # no head self-augmentation in target mode
         tail_aug_plan = aug_plan
@@ -495,6 +620,19 @@ def main():
             seed=args.seed
         )
         print(f"  Generated {args.n_prompts_per_class} prompts per class")
+
+    nearest_sample_cache = {}
+    nearest_sample_cursors = defaultdict(int)
+    if args.sample_selection == 'nearest':
+        if selector.sample_features is not None:
+            nearest_sample_cache = build_nearest_source_cache(
+                selector, class_samples, mapping
+            )
+            print(f"  Cached nearest source samples for "
+                  f"{len(nearest_sample_cache)} target/source pairs")
+        else:
+            print("  [WARN] sample_selection=nearest requires image features; "
+                  "falling back to deterministic source cycling.")
 
     # Show sample prompts
     sample_tail = list(aug_plan.keys())[0]
@@ -574,7 +712,7 @@ def main():
                     if save_size != gen_size:
                         gen_img = gen_img.resize(save_size, Image.LANCZOS)
 
-                    prompt_hash = abs(hash(prompt)) % 10000
+                    prompt_hash = hashlib.md5(prompt.encode('utf-8')).hexdigest()[:8]
                     fname = (f'self_{img_idx:05d}_aug{aug_idx}'
                              f'_{prompt_hash}.jpg')
                     fpath = os.path.join(class_dir, fname)
@@ -589,6 +727,9 @@ def main():
                         'prompt': prompt,
                         'strength': head_strength,
                         'aug_type': 'self',
+                        'source_sample_index': img_idx,
+                        'source_sample_rank': 0,
+                        'source_sample_strategy': 'self',
                     })
 
                     n_generated += 1
@@ -644,11 +785,16 @@ def main():
                 if not head_samples:
                     continue
 
-                if args.sample_selection == 'random':
-                    sample = random.choice(head_samples)
-                else:
-                    # Cycle through samples
-                    sample = head_samples[n_generated % len(head_samples)]
+                sample, source_sample_index, source_sample_rank, source_sample_strategy = \
+                    select_head_source_sample(
+                        head_samples=head_samples,
+                        tail_class=tail_c,
+                        head_class=head_c,
+                        n_generated=n_generated,
+                        sample_selection=args.sample_selection,
+                        nearest_sample_cache=nearest_sample_cache,
+                        nearest_sample_cursors=nearest_sample_cursors,
+                    )
 
                 # Convert to PIL
                 if isinstance(sample, np.ndarray):
@@ -683,7 +829,7 @@ def main():
                     gen_img = gen_img.resize(save_size, Image.LANCZOS)
 
                 head_name = class_names[head_c] if head_c < len(class_names) else f"cls{head_c}"
-                prompt_hash = abs(hash(prompt)) % 10000
+                prompt_hash = hashlib.md5(prompt.encode('utf-8')).hexdigest()[:8]
                 fname = f'h2t_{n_generated:05d}_from{head_c}_{head_name}_{prompt_hash}.jpg'
                 fpath = os.path.join(class_dir, fname)
                 gen_img.save(fpath, quality=95)
@@ -697,6 +843,9 @@ def main():
                     'prompt': prompt,
                     'strength': args.strength,
                     'aug_type': 'head2tail',
+                    'source_sample_index': source_sample_index,
+                    'source_sample_rank': source_sample_rank,
+                    'source_sample_strategy': source_sample_strategy,
                 })
 
                 n_generated += 1
@@ -726,10 +875,13 @@ def main():
 
     # Save generation config
     config = {
+        'method': 'head2tail',
         'dataset': args.dataset,
         'imb_factor': args.imb_factor,
         'plan_mode': args.plan_mode,
+        'per_image_scope': args.per_image_scope if args.plan_mode == 'per_image' else None,
         'head_selection': args.head_selection,
+        'sample_selection': args.sample_selection,
         'top_k': args.top_k,
         'strength': args.strength,
         'head_strength': head_strength,

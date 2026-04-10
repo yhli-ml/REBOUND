@@ -3,9 +3,10 @@
 Contains two augmentation pipelines:
 
 1. DiffuseMix (Islam et al., CVPR 2024):
-   Style transfer via InstructPix2Pix + concatenation + fractal blending.
+   Reference baseline using style transfer via InstructPix2Pix
+   + concatenation + fractal blending.
 
-2. Head-to-Tail Transfer (ours):
+2. Head-to-Tail Transfer (ours, proposed method):
    Feature-guided cross-class image transfer via SDEdit.
    Uses head-class images as domain-consistent seeds for tail-class generation.
 

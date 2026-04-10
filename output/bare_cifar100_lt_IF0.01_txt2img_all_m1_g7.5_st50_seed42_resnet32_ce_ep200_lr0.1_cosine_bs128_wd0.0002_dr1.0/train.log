@@ -1,0 +1,1215 @@
+2026-04-07 03:42:30 - LT_baseline - INFO - Arguments: Namespace(dataset='cifar100_lt', data_root='./data', img_root='', imb_factor=0.01, augment='standard', arch='resnet32', use_norm=False, pretrained=False, loss='ce', focal_gamma=2.0, cb_beta=0.9999, ldam_max_m=0.5, ldam_s=30.0, la_tau=1.0, seesaw_p=0.8, seesaw_q=2.0, drw=-1, mixup=False, cutmix=False, remix=False, mix_alpha=1.0, diffusemix_dir='./data/bare_cifar100_lt_IF0.01_txt2img_all_m1_g7.5_st50_seed42', diffusemix_ratio=1.0, diffusemix_weight=1.0, use_orig_cls_num=True, stage2='none', stage2_epochs=10, tau=1.0, stage1_ckpt='', sampler='none', epochs=200, batch_size=128, lr=0.1, momentum=0.9, weight_decay=0.0002, lr_schedule='cosine', lr_milestones=[160, 180], lr_gamma=0.1, warmup_epochs=5, optimizer='sgd', workers=4, seed=42, gpu=0, output_dir='./output', exp_name='bare_cifar100_lt_IF0.01_txt2img_all_m1_g7.5_st50_seed42_resnet32_ce_ep200_lr0.1_cosine_bs128_wd0.0002_dr1.0', resume='', evaluate=False, print_freq=50, save_dir='./output/bare_cifar100_lt_IF0.01_txt2img_all_m1_g7.5_st50_seed42_resnet32_ce_ep200_lr0.1_cosine_bs128_wd0.0002_dr1.0')
+2026-04-07 03:42:36 - LT_baseline - INFO - BarePrompt diffusion baseline: loaded augmented data from ./data/bare_cifar100_lt_IF0.01_txt2img_all_m1_g7.5_st50_seed42
+2026-04-07 03:42:36 - LT_baseline - INFO - BarePrompt diffusion baseline: ratio=1.0, weight=1.0
+2026-04-07 03:42:36 - LT_baseline - INFO - Using ORIGINAL cls_num_list for loss/eval (min=5, max=500)
+2026-04-07 03:42:36 - LT_baseline - INFO - Dataset: cifar100_lt
+2026-04-07 03:42:36 - LT_baseline - INFO -   Classes: 100 (Many: 30, Medium: 40, Few: 30)
+2026-04-07 03:42:36 - LT_baseline - INFO -   Max count: 500, Min count: 5, Imbalance ratio: 100.0
+2026-04-07 03:42:36 - LT_baseline - INFO -   Train samples: 21694, Val samples: 10000
+2026-04-07 03:42:36 - LT_baseline - INFO - Model: resnet32 (feat_dim=64, use_norm=False, pretrained=False)
+2026-04-07 03:42:36 - LT_baseline - INFO - Loss: ce
+2026-04-07 03:42:36 - LT_baseline - INFO - 
+Starting training for 200 epochs...
+
+2026-04-07 03:42:39 - LT_baseline - INFO - Epoch [0][50/169] Loss 3.7320 (4.0173) Acc@1 17.19 (8.75) Acc@5 33.59 (25.92)
+2026-04-07 03:42:40 - LT_baseline - INFO - Epoch [0][100/169] Loss 3.5239 (3.7770) Acc@1 21.09 (12.03) Acc@5 39.06 (32.95)
+2026-04-07 03:42:41 - LT_baseline - INFO - Epoch [0][150/169] Loss 3.3873 (3.6591) Acc@1 23.44 (13.99) Acc@5 46.09 (36.54)
+2026-04-07 03:42:42 - LT_baseline - INFO - [Val] Loss: 5.1412 | Overall: 5.29% | Many: 15.27% | Medium: 1.77% | Few: 0.00%
+2026-04-07 03:42:42 - LT_baseline - INFO - Epoch 0: Best Acc = 5.29%
+
+2026-04-07 03:42:43 - LT_baseline - INFO - Epoch [1][50/169] Loss 3.1435 (3.1590) Acc@1 21.88 (23.33) Acc@5 46.88 (50.56)
+2026-04-07 03:42:44 - LT_baseline - INFO - Epoch [1][100/169] Loss 2.8078 (3.0994) Acc@1 33.59 (24.95) Acc@5 62.50 (52.53)
+2026-04-07 03:42:45 - LT_baseline - INFO - Epoch [1][150/169] Loss 2.9506 (3.0297) Acc@1 32.81 (26.29) Acc@5 60.16 (54.36)
+2026-04-07 03:42:46 - LT_baseline - INFO - [Val] Loss: 4.9204 | Overall: 7.33% | Many: 21.00% | Medium: 2.58% | Few: 0.00%
+2026-04-07 03:42:46 - LT_baseline - INFO - Epoch 1: Best Acc = 7.33%
+
+2026-04-07 03:42:47 - LT_baseline - INFO - Epoch [2][50/169] Loss 2.4663 (2.6749) Acc@1 39.06 (33.81) Acc@5 67.97 (63.64)
+2026-04-07 03:42:48 - LT_baseline - INFO - Epoch [2][100/169] Loss 2.6139 (2.6336) Acc@1 36.72 (34.30) Acc@5 65.62 (64.30)
+2026-04-07 03:42:49 - LT_baseline - INFO - Epoch [2][150/169] Loss 2.3362 (2.5949) Acc@1 47.66 (34.88) Acc@5 75.78 (65.66)
+2026-04-07 03:42:50 - LT_baseline - INFO - [Val] Loss: 5.1867 | Overall: 10.09% | Many: 25.27% | Medium: 6.28% | Few: 0.00%
+2026-04-07 03:42:50 - LT_baseline - INFO - Epoch 2: Best Acc = 10.09%
+
+2026-04-07 03:42:51 - LT_baseline - INFO - Epoch [3][50/169] Loss 2.4515 (2.3142) Acc@1 42.97 (40.78) Acc@5 65.62 (71.42)
+2026-04-07 03:42:52 - LT_baseline - INFO - Epoch [3][100/169] Loss 2.0983 (2.2967) Acc@1 37.50 (41.50) Acc@5 75.78 (71.80)
+2026-04-07 03:42:53 - LT_baseline - INFO - Epoch [3][150/169] Loss 2.2748 (2.2771) Acc@1 40.62 (42.02) Acc@5 75.78 (72.31)
+2026-04-07 03:42:54 - LT_baseline - INFO - [Val] Loss: 4.6288 | Overall: 12.33% | Many: 31.27% | Medium: 7.38% | Few: 0.00%
+2026-04-07 03:42:54 - LT_baseline - INFO - Epoch 3: Best Acc = 12.33%
+
+2026-04-07 03:42:56 - LT_baseline - INFO - Epoch [4][50/169] Loss 2.2414 (2.1062) Acc@1 39.84 (45.09) Acc@5 75.78 (75.42)
+2026-04-07 03:42:57 - LT_baseline - INFO - Epoch [4][100/169] Loss 1.8874 (2.0677) Acc@1 52.34 (46.11) Acc@5 78.91 (76.05)
+2026-04-07 03:42:57 - LT_baseline - INFO - Epoch [4][150/169] Loss 1.7304 (2.0298) Acc@1 53.12 (47.21) Acc@5 77.34 (76.61)
+2026-04-07 03:42:59 - LT_baseline - INFO - [Val] Loss: 4.0841 | Overall: 15.46% | Many: 38.77% | Medium: 9.30% | Few: 0.37%
+2026-04-07 03:42:59 - LT_baseline - INFO - Epoch 4: Best Acc = 15.46%
+
+2026-04-07 03:43:00 - LT_baseline - INFO - Epoch [5][50/169] Loss 1.7663 (1.8432) Acc@1 53.12 (51.78) Acc@5 82.03 (79.62)
+2026-04-07 03:43:01 - LT_baseline - INFO - Epoch [5][100/169] Loss 1.6621 (1.8333) Acc@1 57.03 (52.02) Acc@5 84.38 (79.88)
+2026-04-07 03:43:02 - LT_baseline - INFO - Epoch [5][150/169] Loss 2.2411 (1.8313) Acc@1 40.62 (52.23) Acc@5 70.31 (79.91)
+2026-04-07 03:43:03 - LT_baseline - INFO - [Val] Loss: 4.0418 | Overall: 16.26% | Many: 38.70% | Medium: 11.50% | Few: 0.17%
+2026-04-07 03:43:03 - LT_baseline - INFO - Epoch 5: Best Acc = 16.26%
+
+2026-04-07 03:43:04 - LT_baseline - INFO - Epoch [6][50/169] Loss 1.6423 (1.6414) Acc@1 54.69 (57.12) Acc@5 83.59 (83.48)
+2026-04-07 03:43:05 - LT_baseline - INFO - Epoch [6][100/169] Loss 1.7440 (1.6773) Acc@1 50.00 (56.10) Acc@5 81.25 (82.59)
+2026-04-07 03:43:06 - LT_baseline - INFO - Epoch [6][150/169] Loss 1.4183 (1.6833) Acc@1 64.84 (56.08) Acc@5 85.94 (82.36)
+2026-04-07 03:43:07 - LT_baseline - INFO - [Val] Loss: 4.3460 | Overall: 15.73% | Many: 38.93% | Medium: 9.98% | Few: 0.20%
+2026-04-07 03:43:07 - LT_baseline - INFO - Epoch 6: Best Acc = 16.26%
+
+2026-04-07 03:43:08 - LT_baseline - INFO - Epoch [7][50/169] Loss 1.4801 (1.5602) Acc@1 63.28 (58.53) Acc@5 84.38 (84.89)
+2026-04-07 03:43:09 - LT_baseline - INFO - Epoch [7][100/169] Loss 1.7044 (1.5804) Acc@1 54.69 (58.19) Acc@5 80.47 (83.90)
+2026-04-07 03:43:10 - LT_baseline - INFO - Epoch [7][150/169] Loss 1.5198 (1.5696) Acc@1 57.81 (58.48) Acc@5 84.38 (83.90)
+2026-04-07 03:43:11 - LT_baseline - INFO - [Val] Loss: 3.8909 | Overall: 20.28% | Many: 46.50% | Medium: 15.32% | Few: 0.67%
+2026-04-07 03:43:11 - LT_baseline - INFO - Epoch 7: Best Acc = 20.28%
+
+2026-04-07 03:43:12 - LT_baseline - INFO - Epoch [8][50/169] Loss 1.5084 (1.4751) Acc@1 57.81 (60.61) Acc@5 82.03 (85.66)
+2026-04-07 03:43:13 - LT_baseline - INFO - Epoch [8][100/169] Loss 1.3656 (1.4497) Acc@1 64.06 (61.37) Acc@5 85.94 (85.91)
+2026-04-07 03:43:14 - LT_baseline - INFO - Epoch [8][150/169] Loss 1.2913 (1.4490) Acc@1 67.19 (61.23) Acc@5 89.84 (85.94)
+2026-04-07 03:43:15 - LT_baseline - INFO - [Val] Loss: 3.9006 | Overall: 20.81% | Many: 43.00% | Medium: 19.10% | Few: 0.90%
+2026-04-07 03:43:15 - LT_baseline - INFO - Epoch 8: Best Acc = 20.81%
+
+2026-04-07 03:43:16 - LT_baseline - INFO - Epoch [9][50/169] Loss 1.2526 (1.4094) Acc@1 67.19 (62.44) Acc@5 88.28 (86.61)
+2026-04-07 03:43:17 - LT_baseline - INFO - Epoch [9][100/169] Loss 1.3976 (1.3811) Acc@1 64.84 (63.23) Acc@5 84.38 (86.95)
+2026-04-07 03:43:18 - LT_baseline - INFO - Epoch [9][150/169] Loss 1.0943 (1.3938) Acc@1 75.00 (62.81) Acc@5 88.28 (86.72)
+2026-04-07 03:43:19 - LT_baseline - INFO - [Val] Loss: 3.8012 | Overall: 22.05% | Many: 50.60% | Medium: 16.72% | Few: 0.60%
+2026-04-07 03:43:19 - LT_baseline - INFO - Epoch 9: Best Acc = 22.05%
+
+2026-04-07 03:43:20 - LT_baseline - INFO - Epoch [10][50/169] Loss 1.2401 (1.2439) Acc@1 70.31 (65.95) Acc@5 85.16 (88.86)
+2026-04-07 03:43:21 - LT_baseline - INFO - Epoch [10][100/169] Loss 1.3386 (1.2735) Acc@1 64.06 (65.62) Acc@5 85.94 (88.10)
+2026-04-07 03:43:22 - LT_baseline - INFO - Epoch [10][150/169] Loss 1.5012 (1.2934) Acc@1 62.50 (65.03) Acc@5 85.16 (88.04)
+2026-04-07 03:43:23 - LT_baseline - INFO - [Val] Loss: 3.7470 | Overall: 23.99% | Many: 52.00% | Medium: 20.37% | Few: 0.80%
+2026-04-07 03:43:23 - LT_baseline - INFO - Epoch 10: Best Acc = 23.99%
+
+2026-04-07 03:43:24 - LT_baseline - INFO - Epoch [11][50/169] Loss 1.4609 (1.2225) Acc@1 55.47 (66.25) Acc@5 83.59 (88.88)
+2026-04-07 03:43:25 - LT_baseline - INFO - Epoch [11][100/169] Loss 1.0645 (1.2337) Acc@1 74.22 (66.59) Acc@5 89.06 (88.80)
+2026-04-07 03:43:26 - LT_baseline - INFO - Epoch [11][150/169] Loss 1.0657 (1.2411) Acc@1 68.75 (66.38) Acc@5 91.41 (88.79)
+2026-04-07 03:43:27 - LT_baseline - INFO - [Val] Loss: 3.7838 | Overall: 22.71% | Many: 48.03% | Medium: 19.53% | Few: 1.63%
+2026-04-07 03:43:27 - LT_baseline - INFO - Epoch 11: Best Acc = 23.99%
+
+2026-04-07 03:43:28 - LT_baseline - INFO - Epoch [12][50/169] Loss 0.9713 (1.1529) Acc@1 68.75 (68.28) Acc@5 95.31 (90.33)
+2026-04-07 03:43:29 - LT_baseline - INFO - Epoch [12][100/169] Loss 1.1746 (1.2039) Acc@1 64.84 (66.97) Acc@5 88.28 (89.45)
+2026-04-07 03:43:30 - LT_baseline - INFO - Epoch [12][150/169] Loss 1.2251 (1.2068) Acc@1 64.06 (67.06) Acc@5 93.75 (89.51)
+2026-04-07 03:43:31 - LT_baseline - INFO - [Val] Loss: 3.5416 | Overall: 26.26% | Many: 53.47% | Medium: 24.45% | Few: 1.47%
+2026-04-07 03:43:31 - LT_baseline - INFO - Epoch 12: Best Acc = 26.26%
+
+2026-04-07 03:43:32 - LT_baseline - INFO - Epoch [13][50/169] Loss 1.2477 (1.1353) Acc@1 64.06 (68.81) Acc@5 85.94 (90.30)
+2026-04-07 03:43:33 - LT_baseline - INFO - Epoch [13][100/169] Loss 1.1308 (1.1385) Acc@1 71.88 (68.66) Acc@5 91.41 (90.25)
+2026-04-07 03:43:34 - LT_baseline - INFO - Epoch [13][150/169] Loss 1.3433 (1.1405) Acc@1 62.50 (68.60) Acc@5 85.94 (90.43)
+2026-04-07 03:43:35 - LT_baseline - INFO - [Val] Loss: 3.9361 | Overall: 24.29% | Many: 50.57% | Medium: 21.38% | Few: 1.90%
+2026-04-07 03:43:35 - LT_baseline - INFO - Epoch 13: Best Acc = 26.26%
+
+2026-04-07 03:43:36 - LT_baseline - INFO - Epoch [14][50/169] Loss 1.3595 (1.0618) Acc@1 65.62 (71.06) Acc@5 85.94 (90.77)
+2026-04-07 03:43:37 - LT_baseline - INFO - Epoch [14][100/169] Loss 1.2555 (1.0953) Acc@1 68.75 (69.94) Acc@5 88.28 (90.78)
+2026-04-07 03:43:38 - LT_baseline - INFO - Epoch [14][150/169] Loss 1.1526 (1.1132) Acc@1 65.62 (69.31) Acc@5 89.06 (90.52)
+2026-04-07 03:43:39 - LT_baseline - INFO - [Val] Loss: 3.5928 | Overall: 26.30% | Many: 50.73% | Medium: 25.45% | Few: 3.00%
+2026-04-07 03:43:39 - LT_baseline - INFO - Epoch 14: Best Acc = 26.30%
+
+2026-04-07 03:43:40 - LT_baseline - INFO - Epoch [15][50/169] Loss 0.9039 (1.0402) Acc@1 72.66 (71.52) Acc@5 92.19 (91.61)
+2026-04-07 03:43:41 - LT_baseline - INFO - Epoch [15][100/169] Loss 1.1969 (1.0495) Acc@1 67.19 (71.34) Acc@5 88.28 (91.49)
+2026-04-07 03:43:42 - LT_baseline - INFO - Epoch [15][150/169] Loss 0.9827 (1.0523) Acc@1 70.31 (71.30) Acc@5 92.97 (91.48)
+2026-04-07 03:43:43 - LT_baseline - INFO - [Val] Loss: 3.3947 | Overall: 27.78% | Many: 52.40% | Medium: 28.62% | Few: 2.03%
+2026-04-07 03:43:43 - LT_baseline - INFO - Epoch 15: Best Acc = 27.78%
+
+2026-04-07 03:43:44 - LT_baseline - INFO - Epoch [16][50/169] Loss 0.9811 (0.9925) Acc@1 73.44 (72.20) Acc@5 89.06 (92.28)
+2026-04-07 03:43:45 - LT_baseline - INFO - Epoch [16][100/169] Loss 1.0888 (0.9925) Acc@1 71.09 (72.23) Acc@5 90.62 (91.95)
+2026-04-07 03:43:46 - LT_baseline - INFO - Epoch [16][150/169] Loss 1.1537 (1.0051) Acc@1 67.97 (72.00) Acc@5 90.62 (91.85)
+2026-04-07 03:43:47 - LT_baseline - INFO - [Val] Loss: 3.5751 | Overall: 25.04% | Many: 51.17% | Medium: 22.85% | Few: 1.83%
+2026-04-07 03:43:47 - LT_baseline - INFO - Epoch 16: Best Acc = 27.78%
+
+2026-04-07 03:43:48 - LT_baseline - INFO - Epoch [17][50/169] Loss 0.7543 (0.9387) Acc@1 81.25 (73.16) Acc@5 91.41 (92.92)
+2026-04-07 03:43:49 - LT_baseline - INFO - Epoch [17][100/169] Loss 0.9954 (0.9676) Acc@1 73.44 (72.83) Acc@5 92.19 (92.40)
+2026-04-07 03:43:50 - LT_baseline - INFO - Epoch [17][150/169] Loss 0.9994 (0.9744) Acc@1 70.31 (72.78) Acc@5 94.53 (92.41)
+2026-04-07 03:43:51 - LT_baseline - INFO - [Val] Loss: 3.5319 | Overall: 25.57% | Many: 52.13% | Medium: 23.12% | Few: 2.27%
+2026-04-07 03:43:51 - LT_baseline - INFO - Epoch 17: Best Acc = 27.78%
+
+2026-04-07 03:43:52 - LT_baseline - INFO - Epoch [18][50/169] Loss 0.8499 (0.9062) Acc@1 72.66 (74.31) Acc@5 96.88 (93.00)
+2026-04-07 03:43:53 - LT_baseline - INFO - Epoch [18][100/169] Loss 1.0291 (0.9254) Acc@1 74.22 (73.70) Acc@5 92.97 (92.93)
+2026-04-07 03:43:54 - LT_baseline - INFO - Epoch [18][150/169] Loss 1.0754 (0.9425) Acc@1 67.19 (73.30) Acc@5 89.84 (92.59)
+2026-04-07 03:43:55 - LT_baseline - INFO - [Val] Loss: 3.2077 | Overall: 29.75% | Many: 56.23% | Medium: 29.20% | Few: 4.00%
+2026-04-07 03:43:55 - LT_baseline - INFO - Epoch 18: Best Acc = 29.75%
+
+2026-04-07 03:43:56 - LT_baseline - INFO - Epoch [19][50/169] Loss 0.8882 (0.8877) Acc@1 78.12 (74.94) Acc@5 92.19 (93.34)
+2026-04-07 03:43:57 - LT_baseline - INFO - Epoch [19][100/169] Loss 0.9242 (0.9141) Acc@1 75.00 (74.37) Acc@5 94.53 (93.09)
+2026-04-07 03:43:58 - LT_baseline - INFO - Epoch [19][150/169] Loss 0.8402 (0.9239) Acc@1 76.56 (74.28) Acc@5 94.53 (92.83)
+2026-04-07 03:43:59 - LT_baseline - INFO - [Val] Loss: 3.4677 | Overall: 28.45% | Many: 54.37% | Medium: 27.98% | Few: 3.17%
+2026-04-07 03:43:59 - LT_baseline - INFO - Epoch 19: Best Acc = 29.75%
+
+2026-04-07 03:44:00 - LT_baseline - INFO - Epoch [20][50/169] Loss 0.9387 (0.8920) Acc@1 75.00 (74.52) Acc@5 91.41 (93.05)
+2026-04-07 03:44:01 - LT_baseline - INFO - Epoch [20][100/169] Loss 1.1488 (0.8706) Acc@1 68.75 (75.27) Acc@5 91.41 (93.45)
+2026-04-07 03:44:02 - LT_baseline - INFO - Epoch [20][150/169] Loss 0.9770 (0.8892) Acc@1 72.66 (74.90) Acc@5 89.84 (93.14)
+2026-04-07 03:44:03 - LT_baseline - INFO - [Val] Loss: 3.1717 | Overall: 31.36% | Many: 57.00% | Medium: 32.50% | Few: 4.20%
+2026-04-07 03:44:03 - LT_baseline - INFO - Epoch 20: Best Acc = 31.36%
+
+2026-04-07 03:44:04 - LT_baseline - INFO - Epoch [21][50/169] Loss 0.9340 (0.8288) Acc@1 75.00 (76.25) Acc@5 89.84 (94.14)
+2026-04-07 03:44:05 - LT_baseline - INFO - Epoch [21][100/169] Loss 0.8635 (0.8547) Acc@1 79.69 (75.82) Acc@5 92.97 (93.87)
+2026-04-07 03:44:06 - LT_baseline - INFO - Epoch [21][150/169] Loss 0.7536 (0.8699) Acc@1 76.56 (75.55) Acc@5 95.31 (93.58)
+2026-04-07 03:44:07 - LT_baseline - INFO - [Val] Loss: 3.7607 | Overall: 26.02% | Many: 53.20% | Medium: 22.90% | Few: 3.00%
+2026-04-07 03:44:07 - LT_baseline - INFO - Epoch 21: Best Acc = 31.36%
+
+2026-04-07 03:44:08 - LT_baseline - INFO - Epoch [22][50/169] Loss 0.8615 (0.8177) Acc@1 73.44 (77.17) Acc@5 95.31 (94.22)
+2026-04-07 03:44:09 - LT_baseline - INFO - Epoch [22][100/169] Loss 0.9456 (0.8513) Acc@1 75.78 (75.78) Acc@5 92.19 (93.82)
+2026-04-07 03:44:10 - LT_baseline - INFO - Epoch [22][150/169] Loss 0.7576 (0.8613) Acc@1 78.12 (75.64) Acc@5 94.53 (93.63)
+2026-04-07 03:44:11 - LT_baseline - INFO - [Val] Loss: 3.2957 | Overall: 29.60% | Many: 55.03% | Medium: 29.20% | Few: 4.70%
+2026-04-07 03:44:11 - LT_baseline - INFO - Epoch 22: Best Acc = 31.36%
+
+2026-04-07 03:44:12 - LT_baseline - INFO - Epoch [23][50/169] Loss 0.7994 (0.8149) Acc@1 73.44 (76.81) Acc@5 96.09 (94.19)
+2026-04-07 03:44:13 - LT_baseline - INFO - Epoch [23][100/169] Loss 0.8338 (0.8194) Acc@1 76.56 (76.95) Acc@5 91.41 (94.05)
+2026-04-07 03:44:14 - LT_baseline - INFO - Epoch [23][150/169] Loss 0.7951 (0.8334) Acc@1 76.56 (76.42) Acc@5 94.53 (93.94)
+2026-04-07 03:44:15 - LT_baseline - INFO - [Val] Loss: 3.3102 | Overall: 30.44% | Many: 56.07% | Medium: 30.58% | Few: 4.63%
+2026-04-07 03:44:15 - LT_baseline - INFO - Epoch 23: Best Acc = 31.36%
+
+2026-04-07 03:44:17 - LT_baseline - INFO - Epoch [24][50/169] Loss 0.7175 (0.7478) Acc@1 80.47 (78.00) Acc@5 90.62 (95.17)
+2026-04-07 03:44:18 - LT_baseline - INFO - Epoch [24][100/169] Loss 0.8867 (0.7749) Acc@1 78.12 (77.54) Acc@5 93.75 (94.90)
+2026-04-07 03:44:18 - LT_baseline - INFO - Epoch [24][150/169] Loss 0.8159 (0.7945) Acc@1 75.78 (77.10) Acc@5 93.75 (94.51)
+2026-04-07 03:44:20 - LT_baseline - INFO - [Val] Loss: 4.0200 | Overall: 26.21% | Many: 51.10% | Medium: 25.35% | Few: 2.47%
+2026-04-07 03:44:20 - LT_baseline - INFO - Epoch 24: Best Acc = 31.36%
+
+2026-04-07 03:44:21 - LT_baseline - INFO - Epoch [25][50/169] Loss 0.7103 (0.7583) Acc@1 78.91 (77.62) Acc@5 96.09 (94.81)
+2026-04-07 03:44:22 - LT_baseline - INFO - Epoch [25][100/169] Loss 0.8117 (0.7784) Acc@1 78.91 (77.56) Acc@5 93.75 (94.65)
+2026-04-07 03:44:23 - LT_baseline - INFO - Epoch [25][150/169] Loss 0.9571 (0.7911) Acc@1 74.22 (77.34) Acc@5 93.75 (94.47)
+2026-04-07 03:44:24 - LT_baseline - INFO - [Val] Loss: 3.3665 | Overall: 29.89% | Many: 58.17% | Medium: 27.15% | Few: 5.27%
+2026-04-07 03:44:24 - LT_baseline - INFO - Epoch 25: Best Acc = 31.36%
+
+2026-04-07 03:44:25 - LT_baseline - INFO - Epoch [26][50/169] Loss 0.7131 (0.7593) Acc@1 76.56 (78.42) Acc@5 94.53 (95.05)
+2026-04-07 03:44:26 - LT_baseline - INFO - Epoch [26][100/169] Loss 0.8841 (0.7794) Acc@1 75.78 (77.78) Acc@5 94.53 (94.80)
+2026-04-07 03:44:27 - LT_baseline - INFO - Epoch [26][150/169] Loss 0.7602 (0.7849) Acc@1 80.47 (77.73) Acc@5 92.19 (94.60)
+2026-04-07 03:44:28 - LT_baseline - INFO - [Val] Loss: 3.3309 | Overall: 28.78% | Many: 55.17% | Medium: 28.10% | Few: 3.30%
+2026-04-07 03:44:28 - LT_baseline - INFO - Epoch 26: Best Acc = 31.36%
+
+2026-04-07 03:44:29 - LT_baseline - INFO - Epoch [27][50/169] Loss 0.7146 (0.7595) Acc@1 75.78 (77.67) Acc@5 94.53 (95.05)
+2026-04-07 03:44:30 - LT_baseline - INFO - Epoch [27][100/169] Loss 0.6696 (0.7551) Acc@1 80.47 (78.17) Acc@5 96.88 (95.02)
+2026-04-07 03:44:31 - LT_baseline - INFO - Epoch [27][150/169] Loss 0.9082 (0.7606) Acc@1 75.78 (78.21) Acc@5 94.53 (94.85)
+2026-04-07 03:44:32 - LT_baseline - INFO - [Val] Loss: 3.3962 | Overall: 30.93% | Many: 57.43% | Medium: 30.53% | Few: 4.97%
+2026-04-07 03:44:32 - LT_baseline - INFO - Epoch 27: Best Acc = 31.36%
+
+2026-04-07 03:44:33 - LT_baseline - INFO - Epoch [28][50/169] Loss 0.7705 (0.6909) Acc@1 73.44 (80.11) Acc@5 94.53 (95.55)
+2026-04-07 03:44:34 - LT_baseline - INFO - Epoch [28][100/169] Loss 0.8791 (0.7309) Acc@1 74.22 (79.09) Acc@5 92.97 (95.10)
+2026-04-07 03:44:35 - LT_baseline - INFO - Epoch [28][150/169] Loss 0.7139 (0.7345) Acc@1 77.34 (78.90) Acc@5 93.75 (95.03)
+2026-04-07 03:44:36 - LT_baseline - INFO - [Val] Loss: 3.2744 | Overall: 31.86% | Many: 59.63% | Medium: 29.70% | Few: 6.97%
+2026-04-07 03:44:36 - LT_baseline - INFO - Epoch 28: Best Acc = 31.86%
+
+2026-04-07 03:44:37 - LT_baseline - INFO - Epoch [29][50/169] Loss 0.8358 (0.7085) Acc@1 76.56 (79.00) Acc@5 93.75 (95.50)
+2026-04-07 03:44:38 - LT_baseline - INFO - Epoch [29][100/169] Loss 0.5998 (0.7116) Acc@1 80.47 (79.24) Acc@5 96.88 (95.56)
+2026-04-07 03:44:39 - LT_baseline - INFO - Epoch [29][150/169] Loss 0.8177 (0.7325) Acc@1 75.78 (78.75) Acc@5 95.31 (95.17)
+2026-04-07 03:44:40 - LT_baseline - INFO - [Val] Loss: 3.2721 | Overall: 32.28% | Many: 59.70% | Medium: 32.12% | Few: 5.07%
+2026-04-07 03:44:40 - LT_baseline - INFO - Epoch 29: Best Acc = 32.28%
+
+2026-04-07 03:44:41 - LT_baseline - INFO - Epoch [30][50/169] Loss 0.6955 (0.6938) Acc@1 74.22 (80.44) Acc@5 96.88 (95.41)
+2026-04-07 03:44:42 - LT_baseline - INFO - Epoch [30][100/169] Loss 0.7665 (0.6964) Acc@1 80.47 (79.91) Acc@5 95.31 (95.53)
+2026-04-07 03:44:43 - LT_baseline - INFO - Epoch [30][150/169] Loss 0.6910 (0.7109) Acc@1 78.12 (79.57) Acc@5 98.44 (95.40)
+2026-04-07 03:44:44 - LT_baseline - INFO - [Val] Loss: 3.4761 | Overall: 30.04% | Many: 60.17% | Medium: 26.05% | Few: 5.23%
+2026-04-07 03:44:44 - LT_baseline - INFO - Epoch 30: Best Acc = 32.28%
+
+2026-04-07 03:44:45 - LT_baseline - INFO - Epoch [31][50/169] Loss 0.6950 (0.6443) Acc@1 81.25 (80.78) Acc@5 95.31 (96.28)
+2026-04-07 03:44:46 - LT_baseline - INFO - Epoch [31][100/169] Loss 0.7331 (0.6977) Acc@1 76.56 (79.39) Acc@5 97.66 (95.63)
+2026-04-07 03:44:47 - LT_baseline - INFO - Epoch [31][150/169] Loss 0.6896 (0.7106) Acc@1 77.34 (79.20) Acc@5 99.22 (95.44)
+2026-04-07 03:44:48 - LT_baseline - INFO - [Val] Loss: 3.2889 | Overall: 31.95% | Many: 59.80% | Medium: 30.38% | Few: 6.20%
+2026-04-07 03:44:48 - LT_baseline - INFO - Epoch 31: Best Acc = 32.28%
+
+2026-04-07 03:44:49 - LT_baseline - INFO - Epoch [32][50/169] Loss 0.6874 (0.6566) Acc@1 79.69 (81.17) Acc@5 94.53 (95.75)
+2026-04-07 03:44:50 - LT_baseline - INFO - Epoch [32][100/169] Loss 0.7800 (0.6738) Acc@1 75.78 (80.52) Acc@5 94.53 (95.70)
+2026-04-07 03:44:51 - LT_baseline - INFO - Epoch [32][150/169] Loss 0.8945 (0.6799) Acc@1 75.00 (80.24) Acc@5 93.75 (95.73)
+2026-04-07 03:44:52 - LT_baseline - INFO - [Val] Loss: 3.4679 | Overall: 30.65% | Many: 60.03% | Medium: 28.82% | Few: 3.70%
+2026-04-07 03:44:52 - LT_baseline - INFO - Epoch 32: Best Acc = 32.28%
+
+2026-04-07 03:44:54 - LT_baseline - INFO - Epoch [33][50/169] Loss 0.5714 (0.6451) Acc@1 80.47 (80.75) Acc@5 98.44 (96.39)
+2026-04-07 03:44:54 - LT_baseline - INFO - Epoch [33][100/169] Loss 0.8806 (0.6734) Acc@1 76.56 (80.15) Acc@5 93.75 (95.95)
+2026-04-07 03:44:55 - LT_baseline - INFO - Epoch [33][150/169] Loss 0.7753 (0.6831) Acc@1 79.69 (79.90) Acc@5 92.97 (95.81)
+2026-04-07 03:44:56 - LT_baseline - INFO - [Val] Loss: 3.4735 | Overall: 32.01% | Many: 56.77% | Medium: 33.95% | Few: 4.67%
+2026-04-07 03:44:57 - LT_baseline - INFO - Epoch 33: Best Acc = 32.28%
+
+2026-04-07 03:44:58 - LT_baseline - INFO - Epoch [34][50/169] Loss 0.7541 (0.6349) Acc@1 80.47 (81.75) Acc@5 95.31 (95.86)
+2026-04-07 03:44:59 - LT_baseline - INFO - Epoch [34][100/169] Loss 0.7766 (0.6486) Acc@1 78.91 (81.12) Acc@5 95.31 (95.87)
+2026-04-07 03:45:00 - LT_baseline - INFO - Epoch [34][150/169] Loss 0.7926 (0.6629) Acc@1 76.56 (80.57) Acc@5 93.75 (95.86)
+2026-04-07 03:45:01 - LT_baseline - INFO - [Val] Loss: 3.4199 | Overall: 32.69% | Many: 61.17% | Medium: 31.80% | Few: 5.40%
+2026-04-07 03:45:01 - LT_baseline - INFO - Epoch 34: Best Acc = 32.69%
+
+2026-04-07 03:45:02 - LT_baseline - INFO - Epoch [35][50/169] Loss 0.6473 (0.5895) Acc@1 83.59 (82.58) Acc@5 95.31 (96.67)
+2026-04-07 03:45:03 - LT_baseline - INFO - Epoch [35][100/169] Loss 0.6361 (0.6173) Acc@1 78.91 (81.68) Acc@5 97.66 (96.44)
+2026-04-07 03:45:04 - LT_baseline - INFO - Epoch [35][150/169] Loss 0.8284 (0.6433) Acc@1 74.22 (81.04) Acc@5 94.53 (96.15)
+2026-04-07 03:45:05 - LT_baseline - INFO - [Val] Loss: 3.3325 | Overall: 32.33% | Many: 62.23% | Medium: 28.35% | Few: 7.73%
+2026-04-07 03:45:05 - LT_baseline - INFO - Epoch 35: Best Acc = 32.69%
+
+2026-04-07 03:45:06 - LT_baseline - INFO - Epoch [36][50/169] Loss 0.8042 (0.5959) Acc@1 78.91 (82.75) Acc@5 92.97 (96.39)
+2026-04-07 03:45:07 - LT_baseline - INFO - Epoch [36][100/169] Loss 0.6516 (0.6246) Acc@1 78.91 (81.73) Acc@5 96.88 (96.41)
+2026-04-07 03:45:08 - LT_baseline - INFO - Epoch [36][150/169] Loss 0.9612 (0.6428) Acc@1 69.53 (81.12) Acc@5 94.53 (96.21)
+2026-04-07 03:45:09 - LT_baseline - INFO - [Val] Loss: 3.8264 | Overall: 30.23% | Many: 58.00% | Medium: 28.45% | Few: 4.83%
+2026-04-07 03:45:09 - LT_baseline - INFO - Epoch 36: Best Acc = 32.69%
+
+2026-04-07 03:45:10 - LT_baseline - INFO - Epoch [37][50/169] Loss 0.5960 (0.6082) Acc@1 84.38 (82.47) Acc@5 96.09 (96.42)
+2026-04-07 03:45:11 - LT_baseline - INFO - Epoch [37][100/169] Loss 0.5659 (0.6165) Acc@1 85.94 (82.06) Acc@5 96.09 (96.34)
+2026-04-07 03:45:12 - LT_baseline - INFO - Epoch [37][150/169] Loss 0.8739 (0.6306) Acc@1 78.12 (81.52) Acc@5 96.09 (96.23)
+2026-04-07 03:45:13 - LT_baseline - INFO - [Val] Loss: 3.5547 | Overall: 30.95% | Many: 55.37% | Medium: 32.60% | Few: 4.33%
+2026-04-07 03:45:13 - LT_baseline - INFO - Epoch 37: Best Acc = 32.69%
+
+2026-04-07 03:45:14 - LT_baseline - INFO - Epoch [38][50/169] Loss 0.5252 (0.5901) Acc@1 85.94 (82.19) Acc@5 95.31 (96.69)
+2026-04-07 03:45:15 - LT_baseline - INFO - Epoch [38][100/169] Loss 0.7494 (0.6033) Acc@1 75.00 (81.90) Acc@5 95.31 (96.63)
+2026-04-07 03:45:16 - LT_baseline - INFO - Epoch [38][150/169] Loss 0.7144 (0.6156) Acc@1 80.47 (81.59) Acc@5 93.75 (96.48)
+2026-04-07 03:45:17 - LT_baseline - INFO - [Val] Loss: 3.3007 | Overall: 33.04% | Many: 58.63% | Medium: 33.42% | Few: 6.93%
+2026-04-07 03:45:17 - LT_baseline - INFO - Epoch 38: Best Acc = 33.04%
+
+2026-04-07 03:45:18 - LT_baseline - INFO - Epoch [39][50/169] Loss 0.5488 (0.5930) Acc@1 82.81 (82.62) Acc@5 98.44 (96.53)
+2026-04-07 03:45:19 - LT_baseline - INFO - Epoch [39][100/169] Loss 0.5178 (0.5968) Acc@1 81.25 (82.57) Acc@5 98.44 (96.69)
+2026-04-07 03:45:20 - LT_baseline - INFO - Epoch [39][150/169] Loss 0.6641 (0.6022) Acc@1 80.47 (82.52) Acc@5 96.88 (96.57)
+2026-04-07 03:45:21 - LT_baseline - INFO - [Val] Loss: 3.6409 | Overall: 31.33% | Many: 55.23% | Medium: 32.92% | Few: 5.30%
+2026-04-07 03:45:21 - LT_baseline - INFO - Epoch 39: Best Acc = 33.04%
+
+2026-04-07 03:45:22 - LT_baseline - INFO - Epoch [40][50/169] Loss 0.9191 (0.6107) Acc@1 75.78 (82.25) Acc@5 89.84 (96.27)
+2026-04-07 03:45:23 - LT_baseline - INFO - Epoch [40][100/169] Loss 0.6745 (0.6079) Acc@1 78.91 (81.98) Acc@5 95.31 (96.42)
+2026-04-07 03:45:24 - LT_baseline - INFO - Epoch [40][150/169] Loss 0.6303 (0.6148) Acc@1 79.69 (81.78) Acc@5 96.88 (96.52)
+2026-04-07 03:45:25 - LT_baseline - INFO - [Val] Loss: 3.4691 | Overall: 33.54% | Many: 59.23% | Medium: 33.60% | Few: 7.77%
+2026-04-07 03:45:25 - LT_baseline - INFO - Epoch 40: Best Acc = 33.54%
+
+2026-04-07 03:45:26 - LT_baseline - INFO - Epoch [41][50/169] Loss 0.4608 (0.5634) Acc@1 89.06 (82.70) Acc@5 96.88 (97.25)
+2026-04-07 03:45:27 - LT_baseline - INFO - Epoch [41][100/169] Loss 0.5176 (0.5855) Acc@1 83.59 (82.17) Acc@5 99.22 (96.84)
+2026-04-07 03:45:28 - LT_baseline - INFO - Epoch [41][150/169] Loss 0.4987 (0.5977) Acc@1 85.94 (81.98) Acc@5 97.66 (96.70)
+2026-04-07 03:45:29 - LT_baseline - INFO - [Val] Loss: 3.3477 | Overall: 32.59% | Many: 62.50% | Medium: 29.87% | Few: 6.30%
+2026-04-07 03:45:29 - LT_baseline - INFO - Epoch 41: Best Acc = 33.54%
+
+2026-04-07 03:45:31 - LT_baseline - INFO - Epoch [42][50/169] Loss 0.8265 (0.5555) Acc@1 76.56 (83.42) Acc@5 95.31 (97.00)
+2026-04-07 03:45:31 - LT_baseline - INFO - Epoch [42][100/169] Loss 0.5427 (0.5780) Acc@1 83.59 (82.70) Acc@5 96.88 (96.85)
+2026-04-07 03:45:32 - LT_baseline - INFO - Epoch [42][150/169] Loss 0.4803 (0.5886) Acc@1 84.38 (82.39) Acc@5 97.66 (96.81)
+2026-04-07 03:45:33 - LT_baseline - INFO - [Val] Loss: 3.7147 | Overall: 31.13% | Many: 57.70% | Medium: 29.60% | Few: 6.60%
+2026-04-07 03:45:33 - LT_baseline - INFO - Epoch 42: Best Acc = 33.54%
+
+2026-04-07 03:45:35 - LT_baseline - INFO - Epoch [43][50/169] Loss 0.5840 (0.5190) Acc@1 77.34 (84.50) Acc@5 97.66 (97.27)
+2026-04-07 03:45:35 - LT_baseline - INFO - Epoch [43][100/169] Loss 0.7237 (0.5399) Acc@1 79.69 (84.04) Acc@5 93.75 (96.90)
+2026-04-07 03:45:36 - LT_baseline - INFO - Epoch [43][150/169] Loss 0.6451 (0.5633) Acc@1 78.12 (83.29) Acc@5 96.09 (96.89)
+2026-04-07 03:45:37 - LT_baseline - INFO - [Val] Loss: 3.7214 | Overall: 30.43% | Many: 55.67% | Medium: 29.78% | Few: 6.07%
+2026-04-07 03:45:37 - LT_baseline - INFO - Epoch 43: Best Acc = 33.54%
+
+2026-04-07 03:45:39 - LT_baseline - INFO - Epoch [44][50/169] Loss 0.5974 (0.5521) Acc@1 81.25 (83.97) Acc@5 95.31 (97.25)
+2026-04-07 03:45:40 - LT_baseline - INFO - Epoch [44][100/169] Loss 0.7076 (0.5436) Acc@1 76.56 (83.98) Acc@5 94.53 (97.21)
+2026-04-07 03:45:40 - LT_baseline - INFO - Epoch [44][150/169] Loss 0.6201 (0.5640) Acc@1 80.47 (83.32) Acc@5 96.09 (96.95)
+2026-04-07 03:45:41 - LT_baseline - INFO - [Val] Loss: 3.4432 | Overall: 33.61% | Many: 59.47% | Medium: 33.07% | Few: 8.47%
+2026-04-07 03:45:42 - LT_baseline - INFO - Epoch 44: Best Acc = 33.61%
+
+2026-04-07 03:45:43 - LT_baseline - INFO - Epoch [45][50/169] Loss 0.5442 (0.5173) Acc@1 81.25 (84.23) Acc@5 97.66 (97.53)
+2026-04-07 03:45:44 - LT_baseline - INFO - Epoch [45][100/169] Loss 0.6357 (0.5496) Acc@1 82.81 (83.43) Acc@5 96.09 (97.17)
+2026-04-07 03:45:44 - LT_baseline - INFO - Epoch [45][150/169] Loss 0.5848 (0.5679) Acc@1 82.81 (83.07) Acc@5 98.44 (96.95)
+2026-04-07 03:45:46 - LT_baseline - INFO - [Val] Loss: 3.3670 | Overall: 33.96% | Many: 61.40% | Medium: 32.60% | Few: 8.33%
+2026-04-07 03:45:46 - LT_baseline - INFO - Epoch 45: Best Acc = 33.96%
+
+2026-04-07 03:45:47 - LT_baseline - INFO - Epoch [46][50/169] Loss 0.6337 (0.5151) Acc@1 79.69 (84.28) Acc@5 96.88 (97.50)
+2026-04-07 03:45:48 - LT_baseline - INFO - Epoch [46][100/169] Loss 0.4662 (0.5413) Acc@1 87.50 (83.48) Acc@5 98.44 (97.19)
+2026-04-07 03:45:48 - LT_baseline - INFO - Epoch [46][150/169] Loss 0.5547 (0.5519) Acc@1 85.16 (83.21) Acc@5 96.09 (97.19)
+2026-04-07 03:45:50 - LT_baseline - INFO - [Val] Loss: 3.4102 | Overall: 33.48% | Many: 61.47% | Medium: 32.12% | Few: 7.30%
+2026-04-07 03:45:50 - LT_baseline - INFO - Epoch 46: Best Acc = 33.96%
+
+2026-04-07 03:45:51 - LT_baseline - INFO - Epoch [47][50/169] Loss 0.5551 (0.5155) Acc@1 82.81 (84.20) Acc@5 96.88 (97.66)
+2026-04-07 03:45:52 - LT_baseline - INFO - Epoch [47][100/169] Loss 0.5471 (0.5274) Acc@1 85.16 (84.02) Acc@5 94.53 (97.44)
+2026-04-07 03:45:52 - LT_baseline - INFO - Epoch [47][150/169] Loss 0.4226 (0.5365) Acc@1 88.28 (83.68) Acc@5 97.66 (97.38)
+2026-04-07 03:45:54 - LT_baseline - INFO - [Val] Loss: 4.0116 | Overall: 29.34% | Many: 58.17% | Medium: 25.80% | Few: 5.23%
+2026-04-07 03:45:54 - LT_baseline - INFO - Epoch 47: Best Acc = 33.96%
+
+2026-04-07 03:45:55 - LT_baseline - INFO - Epoch [48][50/169] Loss 0.4871 (0.4877) Acc@1 85.94 (85.55) Acc@5 97.66 (97.56)
+2026-04-07 03:45:56 - LT_baseline - INFO - Epoch [48][100/169] Loss 0.4059 (0.5073) Acc@1 88.28 (84.80) Acc@5 97.66 (97.36)
+2026-04-07 03:45:57 - LT_baseline - INFO - Epoch [48][150/169] Loss 0.7831 (0.5243) Acc@1 81.25 (84.37) Acc@5 95.31 (97.23)
+2026-04-07 03:45:58 - LT_baseline - INFO - [Val] Loss: 4.2201 | Overall: 29.14% | Many: 52.07% | Medium: 30.23% | Few: 4.77%
+2026-04-07 03:45:58 - LT_baseline - INFO - Epoch 48: Best Acc = 33.96%
+
+2026-04-07 03:45:59 - LT_baseline - INFO - Epoch [49][50/169] Loss 0.5758 (0.5079) Acc@1 81.25 (84.67) Acc@5 96.88 (97.38)
+2026-04-07 03:46:00 - LT_baseline - INFO - Epoch [49][100/169] Loss 0.4611 (0.5190) Acc@1 84.38 (84.62) Acc@5 96.88 (97.23)
+2026-04-07 03:46:01 - LT_baseline - INFO - Epoch [49][150/169] Loss 0.5728 (0.5305) Acc@1 85.16 (84.31) Acc@5 96.09 (97.15)
+2026-04-07 03:46:02 - LT_baseline - INFO - [Val] Loss: 3.4253 | Overall: 33.64% | Many: 62.00% | Medium: 31.03% | Few: 8.77%
+2026-04-07 03:46:02 - LT_baseline - INFO - Epoch 49: Best Acc = 33.96%
+
+2026-04-07 03:46:03 - LT_baseline - INFO - Epoch [50][50/169] Loss 0.6022 (0.5067) Acc@1 81.25 (84.70) Acc@5 96.09 (97.61)
+2026-04-07 03:46:04 - LT_baseline - INFO - Epoch [50][100/169] Loss 0.6166 (0.5078) Acc@1 85.94 (84.87) Acc@5 97.66 (97.47)
+2026-04-07 03:46:04 - LT_baseline - INFO - Epoch [50][150/169] Loss 0.5328 (0.5242) Acc@1 80.47 (84.15) Acc@5 97.66 (97.36)
+2026-04-07 03:46:06 - LT_baseline - INFO - [Val] Loss: 3.4008 | Overall: 33.13% | Many: 57.53% | Medium: 34.00% | Few: 7.57%
+2026-04-07 03:46:06 - LT_baseline - INFO - Epoch 50: Best Acc = 33.96%
+
+2026-04-07 03:46:07 - LT_baseline - INFO - Epoch [51][50/169] Loss 0.4718 (0.5067) Acc@1 84.38 (84.89) Acc@5 98.44 (97.81)
+2026-04-07 03:46:08 - LT_baseline - INFO - Epoch [51][100/169] Loss 0.5321 (0.4965) Acc@1 85.94 (84.92) Acc@5 96.09 (97.73)
+2026-04-07 03:46:08 - LT_baseline - INFO - Epoch [51][150/169] Loss 0.5191 (0.5193) Acc@1 86.72 (84.39) Acc@5 97.66 (97.39)
+2026-04-07 03:46:09 - LT_baseline - INFO - [Val] Loss: 3.5990 | Overall: 32.66% | Many: 54.30% | Medium: 35.05% | Few: 7.83%
+2026-04-07 03:46:09 - LT_baseline - INFO - Epoch 51: Best Acc = 33.96%
+
+2026-04-07 03:46:11 - LT_baseline - INFO - Epoch [52][50/169] Loss 0.5265 (0.4747) Acc@1 84.38 (85.89) Acc@5 97.66 (97.62)
+2026-04-07 03:46:11 - LT_baseline - INFO - Epoch [52][100/169] Loss 0.5721 (0.4773) Acc@1 82.03 (85.85) Acc@5 96.09 (97.52)
+2026-04-07 03:46:12 - LT_baseline - INFO - Epoch [52][150/169] Loss 0.4786 (0.4940) Acc@1 87.50 (85.24) Acc@5 96.88 (97.50)
+2026-04-07 03:46:13 - LT_baseline - INFO - [Val] Loss: 3.4040 | Overall: 34.38% | Many: 60.80% | Medium: 34.98% | Few: 7.17%
+2026-04-07 03:46:13 - LT_baseline - INFO - Epoch 52: Best Acc = 34.38%
+
+2026-04-07 03:46:15 - LT_baseline - INFO - Epoch [53][50/169] Loss 0.3723 (0.5008) Acc@1 90.62 (84.92) Acc@5 99.22 (97.41)
+2026-04-07 03:46:15 - LT_baseline - INFO - Epoch [53][100/169] Loss 0.6542 (0.4941) Acc@1 82.03 (85.16) Acc@5 96.88 (97.46)
+2026-04-07 03:46:16 - LT_baseline - INFO - Epoch [53][150/169] Loss 0.5785 (0.4968) Acc@1 82.03 (85.12) Acc@5 96.09 (97.45)
+2026-04-07 03:46:17 - LT_baseline - INFO - [Val] Loss: 3.6653 | Overall: 32.04% | Many: 65.90% | Medium: 26.57% | Few: 5.47%
+2026-04-07 03:46:18 - LT_baseline - INFO - Epoch 53: Best Acc = 34.38%
+
+2026-04-07 03:46:19 - LT_baseline - INFO - Epoch [54][50/169] Loss 0.5732 (0.4601) Acc@1 82.81 (86.06) Acc@5 96.09 (97.88)
+2026-04-07 03:46:19 - LT_baseline - INFO - Epoch [54][100/169] Loss 0.5772 (0.4833) Acc@1 84.38 (85.29) Acc@5 96.88 (97.74)
+2026-04-07 03:46:20 - LT_baseline - INFO - Epoch [54][150/169] Loss 0.6895 (0.4982) Acc@1 82.03 (84.88) Acc@5 96.88 (97.62)
+2026-04-07 03:46:21 - LT_baseline - INFO - [Val] Loss: 3.3552 | Overall: 34.85% | Many: 63.40% | Medium: 33.88% | Few: 7.60%
+2026-04-07 03:46:21 - LT_baseline - INFO - Epoch 54: Best Acc = 34.85%
+
+2026-04-07 03:46:23 - LT_baseline - INFO - Epoch [55][50/169] Loss 0.2761 (0.4335) Acc@1 91.41 (86.94) Acc@5 98.44 (98.02)
+2026-04-07 03:46:24 - LT_baseline - INFO - Epoch [55][100/169] Loss 0.4133 (0.4392) Acc@1 86.72 (86.84) Acc@5 99.22 (97.95)
+2026-04-07 03:46:24 - LT_baseline - INFO - Epoch [55][150/169] Loss 0.4697 (0.4589) Acc@1 88.28 (86.24) Acc@5 96.09 (97.75)
+2026-04-07 03:46:25 - LT_baseline - INFO - [Val] Loss: 3.9477 | Overall: 29.75% | Many: 57.20% | Medium: 25.80% | Few: 7.57%
+2026-04-07 03:46:25 - LT_baseline - INFO - Epoch 55: Best Acc = 34.85%
+
+2026-04-07 03:46:27 - LT_baseline - INFO - Epoch [56][50/169] Loss 0.4858 (0.4520) Acc@1 82.03 (86.12) Acc@5 98.44 (98.09)
+2026-04-07 03:46:28 - LT_baseline - INFO - Epoch [56][100/169] Loss 0.3999 (0.4720) Acc@1 90.62 (85.62) Acc@5 98.44 (98.01)
+2026-04-07 03:46:29 - LT_baseline - INFO - Epoch [56][150/169] Loss 0.4214 (0.4735) Acc@1 84.38 (85.57) Acc@5 99.22 (97.86)
+2026-04-07 03:46:30 - LT_baseline - INFO - [Val] Loss: 3.3082 | Overall: 34.62% | Many: 62.17% | Medium: 35.17% | Few: 6.33%
+2026-04-07 03:46:30 - LT_baseline - INFO - Epoch 56: Best Acc = 34.85%
+
+2026-04-07 03:46:31 - LT_baseline - INFO - Epoch [57][50/169] Loss 0.3567 (0.4197) Acc@1 87.50 (87.31) Acc@5 99.22 (98.34)
+2026-04-07 03:46:32 - LT_baseline - INFO - Epoch [57][100/169] Loss 0.4375 (0.4482) Acc@1 89.84 (86.34) Acc@5 98.44 (98.05)
+2026-04-07 03:46:33 - LT_baseline - INFO - Epoch [57][150/169] Loss 0.3848 (0.4762) Acc@1 89.84 (85.41) Acc@5 99.22 (97.90)
+2026-04-07 03:46:34 - LT_baseline - INFO - [Val] Loss: 3.5771 | Overall: 32.55% | Many: 62.40% | Medium: 29.58% | Few: 6.67%
+2026-04-07 03:46:34 - LT_baseline - INFO - Epoch 57: Best Acc = 34.85%
+
+2026-04-07 03:46:35 - LT_baseline - INFO - Epoch [58][50/169] Loss 0.3831 (0.4848) Acc@1 87.50 (84.91) Acc@5 98.44 (98.03)
+2026-04-07 03:46:36 - LT_baseline - INFO - Epoch [58][100/169] Loss 0.4338 (0.4706) Acc@1 85.94 (85.52) Acc@5 98.44 (98.10)
+2026-04-07 03:46:37 - LT_baseline - INFO - Epoch [58][150/169] Loss 0.7370 (0.4885) Acc@1 80.47 (85.08) Acc@5 93.75 (97.92)
+2026-04-07 03:46:38 - LT_baseline - INFO - [Val] Loss: 3.3819 | Overall: 34.67% | Many: 63.90% | Medium: 33.60% | Few: 6.87%
+2026-04-07 03:46:38 - LT_baseline - INFO - Epoch 58: Best Acc = 34.85%
+
+2026-04-07 03:46:40 - LT_baseline - INFO - Epoch [59][50/169] Loss 0.4094 (0.4419) Acc@1 86.72 (86.64) Acc@5 97.66 (98.05)
+2026-04-07 03:46:41 - LT_baseline - INFO - Epoch [59][100/169] Loss 0.4285 (0.4444) Acc@1 85.94 (86.56) Acc@5 100.00 (98.09)
+2026-04-07 03:46:42 - LT_baseline - INFO - Epoch [59][150/169] Loss 0.4346 (0.4567) Acc@1 88.28 (86.32) Acc@5 98.44 (97.94)
+2026-04-07 03:46:43 - LT_baseline - INFO - [Val] Loss: 4.1281 | Overall: 31.21% | Many: 58.17% | Medium: 30.10% | Few: 5.73%
+2026-04-07 03:46:43 - LT_baseline - INFO - Epoch 59: Best Acc = 34.85%
+
+2026-04-07 03:46:44 - LT_baseline - INFO - Epoch [60][50/169] Loss 0.4468 (0.4140) Acc@1 85.16 (87.34) Acc@5 98.44 (98.23)
+2026-04-07 03:46:45 - LT_baseline - INFO - Epoch [60][100/169] Loss 0.4694 (0.4253) Acc@1 83.59 (86.96) Acc@5 97.66 (98.15)
+2026-04-07 03:46:46 - LT_baseline - INFO - Epoch [60][150/169] Loss 0.5031 (0.4415) Acc@1 87.50 (86.60) Acc@5 96.09 (98.09)
+2026-04-07 03:46:47 - LT_baseline - INFO - [Val] Loss: 3.5711 | Overall: 34.10% | Many: 59.03% | Medium: 35.62% | Few: 7.13%
+2026-04-07 03:46:47 - LT_baseline - INFO - Epoch 60: Best Acc = 34.85%
+
+2026-04-07 03:46:48 - LT_baseline - INFO - Epoch [61][50/169] Loss 0.3940 (0.4184) Acc@1 88.28 (87.53) Acc@5 99.22 (98.11)
+2026-04-07 03:46:49 - LT_baseline - INFO - Epoch [61][100/169] Loss 0.4394 (0.4281) Acc@1 87.50 (87.15) Acc@5 99.22 (98.27)
+2026-04-07 03:46:50 - LT_baseline - INFO - Epoch [61][150/169] Loss 0.4976 (0.4432) Acc@1 81.25 (86.71) Acc@5 99.22 (98.15)
+2026-04-07 03:46:51 - LT_baseline - INFO - [Val] Loss: 3.7446 | Overall: 32.22% | Many: 57.10% | Medium: 33.15% | Few: 6.10%
+2026-04-07 03:46:51 - LT_baseline - INFO - Epoch 61: Best Acc = 34.85%
+
+2026-04-07 03:46:52 - LT_baseline - INFO - Epoch [62][50/169] Loss 0.4675 (0.4089) Acc@1 83.59 (87.50) Acc@5 98.44 (98.31)
+2026-04-07 03:46:53 - LT_baseline - INFO - Epoch [62][100/169] Loss 0.6271 (0.4205) Acc@1 82.81 (87.07) Acc@5 95.31 (98.31)
+2026-04-07 03:46:54 - LT_baseline - INFO - Epoch [62][150/169] Loss 0.4238 (0.4333) Acc@1 85.16 (86.78) Acc@5 98.44 (98.23)
+2026-04-07 03:46:55 - LT_baseline - INFO - [Val] Loss: 3.6938 | Overall: 33.72% | Many: 62.37% | Medium: 33.12% | Few: 5.87%
+2026-04-07 03:46:55 - LT_baseline - INFO - Epoch 62: Best Acc = 34.85%
+
+2026-04-07 03:46:56 - LT_baseline - INFO - Epoch [63][50/169] Loss 0.3980 (0.4130) Acc@1 89.84 (88.03) Acc@5 98.44 (98.44)
+2026-04-07 03:46:57 - LT_baseline - INFO - Epoch [63][100/169] Loss 0.4191 (0.4175) Acc@1 87.50 (87.60) Acc@5 98.44 (98.34)
+2026-04-07 03:46:58 - LT_baseline - INFO - Epoch [63][150/169] Loss 0.2856 (0.4381) Acc@1 90.62 (86.78) Acc@5 100.00 (98.18)
+2026-04-07 03:46:59 - LT_baseline - INFO - [Val] Loss: 3.6441 | Overall: 33.75% | Many: 63.83% | Medium: 31.35% | Few: 6.87%
+2026-04-07 03:46:59 - LT_baseline - INFO - Epoch 63: Best Acc = 34.85%
+
+2026-04-07 03:47:00 - LT_baseline - INFO - Epoch [64][50/169] Loss 0.4166 (0.4013) Acc@1 88.28 (88.06) Acc@5 97.66 (98.44)
+2026-04-07 03:47:01 - LT_baseline - INFO - Epoch [64][100/169] Loss 0.4750 (0.4105) Acc@1 85.16 (87.39) Acc@5 97.66 (98.45)
+2026-04-07 03:47:02 - LT_baseline - INFO - Epoch [64][150/169] Loss 0.5719 (0.4274) Acc@1 86.72 (86.87) Acc@5 97.66 (98.31)
+2026-04-07 03:47:03 - LT_baseline - INFO - [Val] Loss: 3.6099 | Overall: 35.13% | Many: 62.83% | Medium: 34.08% | Few: 8.83%
+2026-04-07 03:47:03 - LT_baseline - INFO - Epoch 64: Best Acc = 35.13%
+
+2026-04-07 03:47:05 - LT_baseline - INFO - Epoch [65][50/169] Loss 0.3449 (0.4092) Acc@1 89.06 (87.70) Acc@5 99.22 (98.38)
+2026-04-07 03:47:06 - LT_baseline - INFO - Epoch [65][100/169] Loss 0.3392 (0.4133) Acc@1 89.06 (87.33) Acc@5 98.44 (98.27)
+2026-04-07 03:47:07 - LT_baseline - INFO - Epoch [65][150/169] Loss 0.6968 (0.4336) Acc@1 80.47 (86.68) Acc@5 94.53 (98.09)
+2026-04-07 03:47:08 - LT_baseline - INFO - [Val] Loss: 3.5289 | Overall: 33.79% | Many: 60.43% | Medium: 32.95% | Few: 8.27%
+2026-04-07 03:47:08 - LT_baseline - INFO - Epoch 65: Best Acc = 35.13%
+
+2026-04-07 03:47:09 - LT_baseline - INFO - Epoch [66][50/169] Loss 0.4915 (0.3949) Acc@1 86.72 (87.89) Acc@5 96.09 (98.56)
+2026-04-07 03:47:10 - LT_baseline - INFO - Epoch [66][100/169] Loss 0.3883 (0.3990) Acc@1 87.50 (87.84) Acc@5 98.44 (98.46)
+2026-04-07 03:47:11 - LT_baseline - INFO - Epoch [66][150/169] Loss 0.3679 (0.4039) Acc@1 87.50 (87.71) Acc@5 97.66 (98.43)
+2026-04-07 03:47:12 - LT_baseline - INFO - [Val] Loss: 3.8465 | Overall: 31.51% | Many: 56.93% | Medium: 30.75% | Few: 7.10%
+2026-04-07 03:47:12 - LT_baseline - INFO - Epoch 66: Best Acc = 35.13%
+
+2026-04-07 03:47:13 - LT_baseline - INFO - Epoch [67][50/169] Loss 0.4345 (0.3932) Acc@1 85.16 (87.89) Acc@5 98.44 (98.55)
+2026-04-07 03:47:14 - LT_baseline - INFO - Epoch [67][100/169] Loss 0.4452 (0.4175) Acc@1 88.28 (87.26) Acc@5 98.44 (98.35)
+2026-04-07 03:47:15 - LT_baseline - INFO - Epoch [67][150/169] Loss 0.4067 (0.4183) Acc@1 85.94 (87.29) Acc@5 97.66 (98.33)
+2026-04-07 03:47:17 - LT_baseline - INFO - [Val] Loss: 3.7514 | Overall: 33.71% | Many: 62.67% | Medium: 31.55% | Few: 7.63%
+2026-04-07 03:47:18 - LT_baseline - INFO - Epoch 67: Best Acc = 35.13%
+
+2026-04-07 03:47:19 - LT_baseline - INFO - Epoch [68][50/169] Loss 0.5283 (0.3778) Acc@1 85.16 (88.11) Acc@5 96.88 (98.56)
+2026-04-07 03:47:20 - LT_baseline - INFO - Epoch [68][100/169] Loss 0.3491 (0.3835) Acc@1 89.06 (88.23) Acc@5 99.22 (98.44)
+2026-04-07 03:47:20 - LT_baseline - INFO - Epoch [68][150/169] Loss 0.3693 (0.3975) Acc@1 85.94 (87.70) Acc@5 97.66 (98.43)
+2026-04-07 03:47:22 - LT_baseline - INFO - [Val] Loss: 3.5133 | Overall: 34.31% | Many: 64.10% | Medium: 33.07% | Few: 6.17%
+2026-04-07 03:47:22 - LT_baseline - INFO - Epoch 68: Best Acc = 35.13%
+
+2026-04-07 03:47:23 - LT_baseline - INFO - Epoch [69][50/169] Loss 0.3308 (0.3531) Acc@1 89.06 (89.14) Acc@5 99.22 (98.81)
+2026-04-07 03:47:24 - LT_baseline - INFO - Epoch [69][100/169] Loss 0.4348 (0.3506) Acc@1 86.72 (89.20) Acc@5 96.88 (98.80)
+2026-04-07 03:47:24 - LT_baseline - INFO - Epoch [69][150/169] Loss 0.4528 (0.3767) Acc@1 83.59 (88.47) Acc@5 98.44 (98.63)
+2026-04-07 03:47:26 - LT_baseline - INFO - [Val] Loss: 3.7732 | Overall: 33.59% | Many: 63.53% | Medium: 31.87% | Few: 5.93%
+2026-04-07 03:47:26 - LT_baseline - INFO - Epoch 69: Best Acc = 35.13%
+
+2026-04-07 03:47:27 - LT_baseline - INFO - Epoch [70][50/169] Loss 0.4665 (0.3597) Acc@1 85.94 (88.44) Acc@5 98.44 (98.89)
+2026-04-07 03:47:28 - LT_baseline - INFO - Epoch [70][100/169] Loss 0.5079 (0.3904) Acc@1 85.16 (87.81) Acc@5 96.09 (98.66)
+2026-04-07 03:47:28 - LT_baseline - INFO - Epoch [70][150/169] Loss 0.5867 (0.3980) Acc@1 80.47 (87.66) Acc@5 96.09 (98.59)
+2026-04-07 03:47:30 - LT_baseline - INFO - [Val] Loss: 3.7782 | Overall: 33.67% | Many: 62.50% | Medium: 32.70% | Few: 6.13%
+2026-04-07 03:47:30 - LT_baseline - INFO - Epoch 70: Best Acc = 35.13%
+
+2026-04-07 03:47:31 - LT_baseline - INFO - Epoch [71][50/169] Loss 0.4098 (0.3553) Acc@1 87.50 (89.19) Acc@5 98.44 (98.94)
+2026-04-07 03:47:32 - LT_baseline - INFO - Epoch [71][100/169] Loss 0.3563 (0.3648) Acc@1 86.72 (88.79) Acc@5 99.22 (98.82)
+2026-04-07 03:47:32 - LT_baseline - INFO - Epoch [71][150/169] Loss 0.4917 (0.3856) Acc@1 83.59 (88.19) Acc@5 96.09 (98.59)
+2026-04-07 03:47:34 - LT_baseline - INFO - [Val] Loss: 3.7528 | Overall: 32.72% | Many: 58.33% | Medium: 32.85% | Few: 6.93%
+2026-04-07 03:47:34 - LT_baseline - INFO - Epoch 71: Best Acc = 35.13%
+
+2026-04-07 03:47:35 - LT_baseline - INFO - Epoch [72][50/169] Loss 0.3166 (0.3526) Acc@1 91.41 (89.09) Acc@5 98.44 (98.80)
+2026-04-07 03:47:36 - LT_baseline - INFO - Epoch [72][100/169] Loss 0.6944 (0.3719) Acc@1 81.25 (88.50) Acc@5 96.88 (98.74)
+2026-04-07 03:47:37 - LT_baseline - INFO - Epoch [72][150/169] Loss 0.4583 (0.3787) Acc@1 85.16 (88.21) Acc@5 99.22 (98.67)
+2026-04-07 03:47:38 - LT_baseline - INFO - [Val] Loss: 3.5267 | Overall: 35.09% | Many: 63.30% | Medium: 35.10% | Few: 6.87%
+2026-04-07 03:47:38 - LT_baseline - INFO - Epoch 72: Best Acc = 35.13%
+
+2026-04-07 03:47:39 - LT_baseline - INFO - Epoch [73][50/169] Loss 0.2807 (0.3356) Acc@1 89.84 (89.59) Acc@5 100.00 (98.95)
+2026-04-07 03:47:40 - LT_baseline - INFO - Epoch [73][100/169] Loss 0.3411 (0.3520) Acc@1 86.72 (89.11) Acc@5 99.22 (98.74)
+2026-04-07 03:47:41 - LT_baseline - INFO - Epoch [73][150/169] Loss 0.3548 (0.3612) Acc@1 87.50 (88.86) Acc@5 98.44 (98.61)
+2026-04-07 03:47:42 - LT_baseline - INFO - [Val] Loss: 3.6449 | Overall: 35.83% | Many: 64.73% | Medium: 35.15% | Few: 7.83%
+2026-04-07 03:47:42 - LT_baseline - INFO - Epoch 73: Best Acc = 35.83%
+
+2026-04-07 03:47:43 - LT_baseline - INFO - Epoch [74][50/169] Loss 0.4355 (0.3344) Acc@1 90.62 (89.77) Acc@5 98.44 (98.92)
+2026-04-07 03:47:44 - LT_baseline - INFO - Epoch [74][100/169] Loss 0.3196 (0.3499) Acc@1 90.62 (89.01) Acc@5 100.00 (98.88)
+2026-04-07 03:47:44 - LT_baseline - INFO - Epoch [74][150/169] Loss 0.4659 (0.3654) Acc@1 85.16 (88.55) Acc@5 97.66 (98.80)
+2026-04-07 03:47:46 - LT_baseline - INFO - [Val] Loss: 3.6755 | Overall: 33.96% | Many: 62.83% | Medium: 33.55% | Few: 5.63%
+2026-04-07 03:47:46 - LT_baseline - INFO - Epoch 74: Best Acc = 35.83%
+
+2026-04-07 03:47:47 - LT_baseline - INFO - Epoch [75][50/169] Loss 0.3491 (0.3375) Acc@1 88.28 (89.12) Acc@5 99.22 (99.00)
+2026-04-07 03:47:48 - LT_baseline - INFO - Epoch [75][100/169] Loss 0.5133 (0.3465) Acc@1 84.38 (89.13) Acc@5 97.66 (98.89)
+2026-04-07 03:47:49 - LT_baseline - INFO - Epoch [75][150/169] Loss 0.3965 (0.3602) Acc@1 87.50 (88.74) Acc@5 98.44 (98.80)
+2026-04-07 03:47:50 - LT_baseline - INFO - [Val] Loss: 3.6465 | Overall: 34.91% | Many: 61.90% | Medium: 36.73% | Few: 5.50%
+2026-04-07 03:47:50 - LT_baseline - INFO - Epoch 75: Best Acc = 35.83%
+
+2026-04-07 03:47:51 - LT_baseline - INFO - Epoch [76][50/169] Loss 0.4931 (0.3197) Acc@1 83.59 (89.95) Acc@5 96.88 (99.06)
+2026-04-07 03:47:52 - LT_baseline - INFO - Epoch [76][100/169] Loss 0.5297 (0.3499) Acc@1 83.59 (89.00) Acc@5 98.44 (98.93)
+2026-04-07 03:47:52 - LT_baseline - INFO - Epoch [76][150/169] Loss 0.4480 (0.3633) Acc@1 86.72 (88.79) Acc@5 98.44 (98.77)
+2026-04-07 03:47:53 - LT_baseline - INFO - [Val] Loss: 3.7731 | Overall: 33.81% | Many: 61.23% | Medium: 32.42% | Few: 8.23%
+2026-04-07 03:47:53 - LT_baseline - INFO - Epoch 76: Best Acc = 35.83%
+
+2026-04-07 03:47:55 - LT_baseline - INFO - Epoch [77][50/169] Loss 0.2355 (0.3390) Acc@1 94.53 (89.55) Acc@5 99.22 (98.94)
+2026-04-07 03:47:56 - LT_baseline - INFO - Epoch [77][100/169] Loss 0.3281 (0.3386) Acc@1 89.84 (89.68) Acc@5 97.66 (98.90)
+2026-04-07 03:47:56 - LT_baseline - INFO - Epoch [77][150/169] Loss 0.4957 (0.3601) Acc@1 83.59 (89.01) Acc@5 96.88 (98.76)
+2026-04-07 03:47:58 - LT_baseline - INFO - [Val] Loss: 3.4208 | Overall: 36.25% | Many: 64.23% | Medium: 37.00% | Few: 7.27%
+2026-04-07 03:47:58 - LT_baseline - INFO - Epoch 77: Best Acc = 36.25%
+
+2026-04-07 03:48:00 - LT_baseline - INFO - Epoch [78][50/169] Loss 0.2989 (0.3153) Acc@1 89.06 (90.34) Acc@5 99.22 (99.16)
+2026-04-07 03:48:00 - LT_baseline - INFO - Epoch [78][100/169] Loss 0.3181 (0.3217) Acc@1 90.62 (90.34) Acc@5 98.44 (99.01)
+2026-04-07 03:48:01 - LT_baseline - INFO - Epoch [78][150/169] Loss 0.4133 (0.3326) Acc@1 86.72 (89.84) Acc@5 100.00 (99.00)
+2026-04-07 03:48:02 - LT_baseline - INFO - [Val] Loss: 3.5987 | Overall: 35.58% | Many: 64.10% | Medium: 34.20% | Few: 8.90%
+2026-04-07 03:48:02 - LT_baseline - INFO - Epoch 78: Best Acc = 36.25%
+
+2026-04-07 03:48:04 - LT_baseline - INFO - Epoch [79][50/169] Loss 0.2002 (0.3012) Acc@1 92.19 (90.64) Acc@5 100.00 (99.28)
+2026-04-07 03:48:04 - LT_baseline - INFO - Epoch [79][100/169] Loss 0.3626 (0.3120) Acc@1 89.06 (90.31) Acc@5 98.44 (99.20)
+2026-04-07 03:48:05 - LT_baseline - INFO - Epoch [79][150/169] Loss 0.3692 (0.3314) Acc@1 85.94 (89.85) Acc@5 98.44 (99.01)
+2026-04-07 03:48:06 - LT_baseline - INFO - [Val] Loss: 3.5641 | Overall: 36.60% | Many: 64.00% | Medium: 37.95% | Few: 7.40%
+2026-04-07 03:48:06 - LT_baseline - INFO - Epoch 79: Best Acc = 36.60%
+
+2026-04-07 03:48:08 - LT_baseline - INFO - Epoch [80][50/169] Loss 0.4728 (0.2969) Acc@1 84.38 (90.88) Acc@5 99.22 (99.25)
+2026-04-07 03:48:08 - LT_baseline - INFO - Epoch [80][100/169] Loss 0.2931 (0.3278) Acc@1 92.19 (89.90) Acc@5 100.00 (99.10)
+2026-04-07 03:48:09 - LT_baseline - INFO - Epoch [80][150/169] Loss 0.2991 (0.3348) Acc@1 92.19 (89.76) Acc@5 99.22 (99.02)
+2026-04-07 03:48:10 - LT_baseline - INFO - [Val] Loss: 3.4340 | Overall: 36.48% | Many: 64.77% | Medium: 35.10% | Few: 10.03%
+2026-04-07 03:48:10 - LT_baseline - INFO - Epoch 80: Best Acc = 36.60%
+
+2026-04-07 03:48:12 - LT_baseline - INFO - Epoch [81][50/169] Loss 0.1495 (0.3008) Acc@1 96.88 (90.83) Acc@5 100.00 (99.28)
+2026-04-07 03:48:12 - LT_baseline - INFO - Epoch [81][100/169] Loss 0.5007 (0.3098) Acc@1 82.81 (90.42) Acc@5 98.44 (99.14)
+2026-04-07 03:48:13 - LT_baseline - INFO - Epoch [81][150/169] Loss 0.4007 (0.3142) Acc@1 88.28 (90.36) Acc@5 99.22 (99.03)
+2026-04-07 03:48:14 - LT_baseline - INFO - [Val] Loss: 3.6140 | Overall: 35.70% | Many: 62.10% | Medium: 36.32% | Few: 8.47%
+2026-04-07 03:48:14 - LT_baseline - INFO - Epoch 81: Best Acc = 36.60%
+
+2026-04-07 03:48:16 - LT_baseline - INFO - Epoch [82][50/169] Loss 0.2915 (0.2885) Acc@1 92.97 (91.19) Acc@5 99.22 (99.25)
+2026-04-07 03:48:16 - LT_baseline - INFO - Epoch [82][100/169] Loss 0.3829 (0.2996) Acc@1 87.50 (90.84) Acc@5 98.44 (99.20)
+2026-04-07 03:48:17 - LT_baseline - INFO - Epoch [82][150/169] Loss 0.5337 (0.3149) Acc@1 84.38 (90.38) Acc@5 97.66 (99.07)
+2026-04-07 03:48:18 - LT_baseline - INFO - [Val] Loss: 3.5569 | Overall: 36.24% | Many: 62.20% | Medium: 36.23% | Few: 10.30%
+2026-04-07 03:48:18 - LT_baseline - INFO - Epoch 82: Best Acc = 36.60%
+
+2026-04-07 03:48:20 - LT_baseline - INFO - Epoch [83][50/169] Loss 0.2856 (0.3035) Acc@1 90.62 (90.70) Acc@5 99.22 (99.17)
+2026-04-07 03:48:20 - LT_baseline - INFO - Epoch [83][100/169] Loss 0.3616 (0.3027) Acc@1 89.06 (90.65) Acc@5 98.44 (99.05)
+2026-04-07 03:48:21 - LT_baseline - INFO - Epoch [83][150/169] Loss 0.2749 (0.3127) Acc@1 92.19 (90.38) Acc@5 99.22 (99.02)
+2026-04-07 03:48:22 - LT_baseline - INFO - [Val] Loss: 3.5252 | Overall: 35.75% | Many: 61.97% | Medium: 36.30% | Few: 8.80%
+2026-04-07 03:48:22 - LT_baseline - INFO - Epoch 83: Best Acc = 36.60%
+
+2026-04-07 03:48:24 - LT_baseline - INFO - Epoch [84][50/169] Loss 0.1773 (0.2874) Acc@1 95.31 (91.20) Acc@5 100.00 (99.39)
+2026-04-07 03:48:24 - LT_baseline - INFO - Epoch [84][100/169] Loss 0.3495 (0.3052) Acc@1 90.62 (90.59) Acc@5 98.44 (99.27)
+2026-04-07 03:48:25 - LT_baseline - INFO - Epoch [84][150/169] Loss 0.4817 (0.3151) Acc@1 84.38 (90.16) Acc@5 100.00 (99.20)
+2026-04-07 03:48:26 - LT_baseline - INFO - [Val] Loss: 3.5491 | Overall: 34.35% | Many: 62.17% | Medium: 33.75% | Few: 7.33%
+2026-04-07 03:48:26 - LT_baseline - INFO - Epoch 84: Best Acc = 36.60%
+
+2026-04-07 03:48:28 - LT_baseline - INFO - Epoch [85][50/169] Loss 0.3843 (0.2794) Acc@1 88.28 (91.14) Acc@5 99.22 (99.38)
+2026-04-07 03:48:28 - LT_baseline - INFO - Epoch [85][100/169] Loss 0.3399 (0.2844) Acc@1 90.62 (90.91) Acc@5 98.44 (99.34)
+2026-04-07 03:48:29 - LT_baseline - INFO - Epoch [85][150/169] Loss 0.3288 (0.2981) Acc@1 88.28 (90.63) Acc@5 99.22 (99.20)
+2026-04-07 03:48:30 - LT_baseline - INFO - [Val] Loss: 3.7207 | Overall: 35.40% | Many: 62.23% | Medium: 35.48% | Few: 8.47%
+2026-04-07 03:48:30 - LT_baseline - INFO - Epoch 85: Best Acc = 36.60%
+
+2026-04-07 03:48:31 - LT_baseline - INFO - Epoch [86][50/169] Loss 0.2038 (0.2766) Acc@1 96.09 (91.73) Acc@5 100.00 (99.42)
+2026-04-07 03:48:32 - LT_baseline - INFO - Epoch [86][100/169] Loss 0.2888 (0.2937) Acc@1 90.62 (91.02) Acc@5 99.22 (99.38)
+2026-04-07 03:48:33 - LT_baseline - INFO - Epoch [86][150/169] Loss 0.3338 (0.2973) Acc@1 89.06 (90.73) Acc@5 99.22 (99.35)
+2026-04-07 03:48:34 - LT_baseline - INFO - [Val] Loss: 3.6707 | Overall: 35.48% | Many: 61.80% | Medium: 35.27% | Few: 9.43%
+2026-04-07 03:48:34 - LT_baseline - INFO - Epoch 86: Best Acc = 36.60%
+
+2026-04-07 03:48:35 - LT_baseline - INFO - Epoch [87][50/169] Loss 0.2003 (0.2587) Acc@1 95.31 (92.31) Acc@5 100.00 (99.27)
+2026-04-07 03:48:36 - LT_baseline - INFO - Epoch [87][100/169] Loss 0.2421 (0.2712) Acc@1 94.53 (91.77) Acc@5 98.44 (99.20)
+2026-04-07 03:48:37 - LT_baseline - INFO - Epoch [87][150/169] Loss 0.2779 (0.2803) Acc@1 90.62 (91.52) Acc@5 100.00 (99.19)
+2026-04-07 03:48:38 - LT_baseline - INFO - [Val] Loss: 3.7284 | Overall: 35.63% | Many: 63.93% | Medium: 34.35% | Few: 9.03%
+2026-04-07 03:48:38 - LT_baseline - INFO - Epoch 87: Best Acc = 36.60%
+
+2026-04-07 03:48:39 - LT_baseline - INFO - Epoch [88][50/169] Loss 0.2349 (0.2750) Acc@1 92.19 (91.55) Acc@5 100.00 (99.34)
+2026-04-07 03:48:40 - LT_baseline - INFO - Epoch [88][100/169] Loss 0.2155 (0.2945) Acc@1 93.75 (90.95) Acc@5 100.00 (99.31)
+2026-04-07 03:48:41 - LT_baseline - INFO - Epoch [88][150/169] Loss 0.4684 (0.3157) Acc@1 85.16 (90.17) Acc@5 99.22 (99.19)
+2026-04-07 03:48:42 - LT_baseline - INFO - [Val] Loss: 3.6526 | Overall: 35.61% | Many: 63.57% | Medium: 34.40% | Few: 9.27%
+2026-04-07 03:48:42 - LT_baseline - INFO - Epoch 88: Best Acc = 36.60%
+
+2026-04-07 03:48:43 - LT_baseline - INFO - Epoch [89][50/169] Loss 0.2249 (0.2572) Acc@1 92.19 (92.09) Acc@5 100.00 (99.36)
+2026-04-07 03:48:44 - LT_baseline - INFO - Epoch [89][100/169] Loss 0.3116 (0.2691) Acc@1 89.06 (91.62) Acc@5 100.00 (99.38)
+2026-04-07 03:48:45 - LT_baseline - INFO - Epoch [89][150/169] Loss 0.5817 (0.2886) Acc@1 79.69 (90.88) Acc@5 98.44 (99.27)
+2026-04-07 03:48:46 - LT_baseline - INFO - [Val] Loss: 3.8185 | Overall: 33.82% | Many: 61.50% | Medium: 31.35% | Few: 9.43%
+2026-04-07 03:48:46 - LT_baseline - INFO - Epoch 89: Best Acc = 36.60%
+
+2026-04-07 03:48:47 - LT_baseline - INFO - Epoch [90][50/169] Loss 0.3793 (0.2765) Acc@1 85.16 (91.48) Acc@5 100.00 (99.25)
+2026-04-07 03:48:48 - LT_baseline - INFO - Epoch [90][100/169] Loss 0.3598 (0.2684) Acc@1 85.94 (91.70) Acc@5 100.00 (99.27)
+2026-04-07 03:48:49 - LT_baseline - INFO - Epoch [90][150/169] Loss 0.4097 (0.2752) Acc@1 90.62 (91.45) Acc@5 96.09 (99.23)
+2026-04-07 03:48:50 - LT_baseline - INFO - [Val] Loss: 3.5621 | Overall: 38.14% | Many: 63.13% | Medium: 40.90% | Few: 9.47%
+2026-04-07 03:48:50 - LT_baseline - INFO - Epoch 90: Best Acc = 38.14%
+
+2026-04-07 03:48:52 - LT_baseline - INFO - Epoch [91][50/169] Loss 0.2949 (0.2333) Acc@1 92.19 (92.95) Acc@5 99.22 (99.50)
+2026-04-07 03:48:52 - LT_baseline - INFO - Epoch [91][100/169] Loss 0.3211 (0.2360) Acc@1 89.84 (92.84) Acc@5 99.22 (99.46)
+2026-04-07 03:48:53 - LT_baseline - INFO - Epoch [91][150/169] Loss 0.3095 (0.2452) Acc@1 90.62 (92.44) Acc@5 99.22 (99.49)
+2026-04-07 03:48:54 - LT_baseline - INFO - [Val] Loss: 3.9179 | Overall: 35.05% | Many: 62.93% | Medium: 33.17% | Few: 9.67%
+2026-04-07 03:48:54 - LT_baseline - INFO - Epoch 91: Best Acc = 38.14%
+
+2026-04-07 03:48:56 - LT_baseline - INFO - Epoch [92][50/169] Loss 0.3123 (0.2648) Acc@1 91.41 (91.83) Acc@5 98.44 (99.47)
+2026-04-07 03:48:56 - LT_baseline - INFO - Epoch [92][100/169] Loss 0.2470 (0.2718) Acc@1 93.75 (91.52) Acc@5 100.00 (99.33)
+2026-04-07 03:48:57 - LT_baseline - INFO - Epoch [92][150/169] Loss 0.2625 (0.2759) Acc@1 91.41 (91.34) Acc@5 99.22 (99.28)
+2026-04-07 03:48:58 - LT_baseline - INFO - [Val] Loss: 3.5378 | Overall: 37.24% | Many: 62.03% | Medium: 39.15% | Few: 9.90%
+2026-04-07 03:48:58 - LT_baseline - INFO - Epoch 92: Best Acc = 38.14%
+
+2026-04-07 03:48:59 - LT_baseline - INFO - Epoch [93][50/169] Loss 0.2405 (0.2341) Acc@1 92.19 (92.83) Acc@5 99.22 (99.56)
+2026-04-07 03:49:00 - LT_baseline - INFO - Epoch [93][100/169] Loss 0.3432 (0.2503) Acc@1 87.50 (92.12) Acc@5 99.22 (99.45)
+2026-04-07 03:49:01 - LT_baseline - INFO - Epoch [93][150/169] Loss 0.2405 (0.2626) Acc@1 92.97 (91.70) Acc@5 99.22 (99.34)
+2026-04-07 03:49:02 - LT_baseline - INFO - [Val] Loss: 3.6427 | Overall: 36.65% | Many: 63.70% | Medium: 36.70% | Few: 9.53%
+2026-04-07 03:49:02 - LT_baseline - INFO - Epoch 93: Best Acc = 38.14%
+
+2026-04-07 03:49:05 - LT_baseline - INFO - Epoch [94][50/169] Loss 0.2125 (0.2316) Acc@1 95.31 (93.00) Acc@5 97.66 (99.45)
+2026-04-07 03:49:06 - LT_baseline - INFO - Epoch [94][100/169] Loss 0.3265 (0.2374) Acc@1 89.84 (92.63) Acc@5 100.00 (99.50)
+2026-04-07 03:49:07 - LT_baseline - INFO - Epoch [94][150/169] Loss 0.3565 (0.2519) Acc@1 89.06 (92.22) Acc@5 99.22 (99.42)
+2026-04-07 03:49:08 - LT_baseline - INFO - [Val] Loss: 3.7010 | Overall: 36.19% | Many: 63.13% | Medium: 36.55% | Few: 8.77%
+2026-04-07 03:49:08 - LT_baseline - INFO - Epoch 94: Best Acc = 38.14%
+
+2026-04-07 03:49:09 - LT_baseline - INFO - Epoch [95][50/169] Loss 0.2276 (0.2293) Acc@1 93.75 (92.69) Acc@5 98.44 (99.58)
+2026-04-07 03:49:10 - LT_baseline - INFO - Epoch [95][100/169] Loss 0.2375 (0.2344) Acc@1 92.19 (92.55) Acc@5 100.00 (99.50)
+2026-04-07 03:49:11 - LT_baseline - INFO - Epoch [95][150/169] Loss 0.2888 (0.2422) Acc@1 90.62 (92.27) Acc@5 99.22 (99.48)
+2026-04-07 03:49:12 - LT_baseline - INFO - [Val] Loss: 3.6448 | Overall: 36.40% | Many: 63.93% | Medium: 36.52% | Few: 8.70%
+2026-04-07 03:49:12 - LT_baseline - INFO - Epoch 95: Best Acc = 38.14%
+
+2026-04-07 03:49:13 - LT_baseline - INFO - Epoch [96][50/169] Loss 0.1786 (0.2017) Acc@1 95.31 (94.00) Acc@5 100.00 (99.64)
+2026-04-07 03:49:14 - LT_baseline - INFO - Epoch [96][100/169] Loss 0.3212 (0.2219) Acc@1 89.84 (93.34) Acc@5 100.00 (99.52)
+2026-04-07 03:49:15 - LT_baseline - INFO - Epoch [96][150/169] Loss 0.2622 (0.2306) Acc@1 89.84 (93.04) Acc@5 100.00 (99.48)
+2026-04-07 03:49:16 - LT_baseline - INFO - [Val] Loss: 3.6845 | Overall: 37.28% | Many: 62.67% | Medium: 39.30% | Few: 9.20%
+2026-04-07 03:49:16 - LT_baseline - INFO - Epoch 96: Best Acc = 38.14%
+
+2026-04-07 03:49:17 - LT_baseline - INFO - Epoch [97][50/169] Loss 0.2150 (0.2264) Acc@1 94.53 (93.02) Acc@5 99.22 (99.64)
+2026-04-07 03:49:18 - LT_baseline - INFO - Epoch [97][100/169] Loss 0.1926 (0.2146) Acc@1 95.31 (93.55) Acc@5 100.00 (99.65)
+2026-04-07 03:49:19 - LT_baseline - INFO - Epoch [97][150/169] Loss 0.2458 (0.2266) Acc@1 91.41 (93.04) Acc@5 99.22 (99.59)
+2026-04-07 03:49:20 - LT_baseline - INFO - [Val] Loss: 3.8762 | Overall: 36.83% | Many: 62.20% | Medium: 37.58% | Few: 10.47%
+2026-04-07 03:49:20 - LT_baseline - INFO - Epoch 97: Best Acc = 38.14%
+
+2026-04-07 03:49:21 - LT_baseline - INFO - Epoch [98][50/169] Loss 0.1549 (0.2123) Acc@1 94.53 (93.36) Acc@5 100.00 (99.67)
+2026-04-07 03:49:22 - LT_baseline - INFO - Epoch [98][100/169] Loss 0.2298 (0.2182) Acc@1 93.75 (93.27) Acc@5 99.22 (99.58)
+2026-04-07 03:49:23 - LT_baseline - INFO - Epoch [98][150/169] Loss 0.2817 (0.2302) Acc@1 89.84 (92.76) Acc@5 99.22 (99.52)
+2026-04-07 03:49:24 - LT_baseline - INFO - [Val] Loss: 3.7061 | Overall: 37.02% | Many: 64.03% | Medium: 38.77% | Few: 7.67%
+2026-04-07 03:49:24 - LT_baseline - INFO - Epoch 98: Best Acc = 38.14%
+
+2026-04-07 03:49:25 - LT_baseline - INFO - Epoch [99][50/169] Loss 0.2811 (0.2311) Acc@1 92.19 (92.84) Acc@5 97.66 (99.55)
+2026-04-07 03:49:26 - LT_baseline - INFO - Epoch [99][100/169] Loss 0.2606 (0.2422) Acc@1 92.19 (92.53) Acc@5 98.44 (99.48)
+2026-04-07 03:49:27 - LT_baseline - INFO - Epoch [99][150/169] Loss 0.2753 (0.2466) Acc@1 88.28 (92.38) Acc@5 99.22 (99.44)
+2026-04-07 03:49:28 - LT_baseline - INFO - [Val] Loss: 3.5553 | Overall: 37.51% | Many: 63.73% | Medium: 38.32% | Few: 10.20%
+2026-04-07 03:49:28 - LT_baseline - INFO - Epoch 99: Best Acc = 38.14%
+
+2026-04-07 03:49:29 - LT_baseline - INFO - Epoch [100][50/169] Loss 0.2416 (0.2132) Acc@1 90.62 (93.16) Acc@5 99.22 (99.58)
+2026-04-07 03:49:30 - LT_baseline - INFO - Epoch [100][100/169] Loss 0.2016 (0.2144) Acc@1 95.31 (93.18) Acc@5 99.22 (99.61)
+2026-04-07 03:49:31 - LT_baseline - INFO - Epoch [100][150/169] Loss 0.3165 (0.2318) Acc@1 92.19 (92.67) Acc@5 96.88 (99.53)
+2026-04-07 03:49:32 - LT_baseline - INFO - [Val] Loss: 3.6807 | Overall: 37.29% | Many: 63.70% | Medium: 39.85% | Few: 7.47%
+2026-04-07 03:49:32 - LT_baseline - INFO - Epoch 100: Best Acc = 38.14%
+
+2026-04-07 03:49:33 - LT_baseline - INFO - Epoch [101][50/169] Loss 0.2486 (0.2105) Acc@1 93.75 (93.75) Acc@5 100.00 (99.69)
+2026-04-07 03:49:34 - LT_baseline - INFO - Epoch [101][100/169] Loss 0.2538 (0.2105) Acc@1 92.19 (93.65) Acc@5 99.22 (99.63)
+2026-04-07 03:49:35 - LT_baseline - INFO - Epoch [101][150/169] Loss 0.2438 (0.2122) Acc@1 93.75 (93.56) Acc@5 100.00 (99.60)
+2026-04-07 03:49:36 - LT_baseline - INFO - [Val] Loss: 3.8114 | Overall: 35.62% | Many: 64.13% | Medium: 33.00% | Few: 10.60%
+2026-04-07 03:49:36 - LT_baseline - INFO - Epoch 101: Best Acc = 38.14%
+
+2026-04-07 03:49:38 - LT_baseline - INFO - Epoch [102][50/169] Loss 0.1896 (0.1979) Acc@1 92.97 (94.00) Acc@5 100.00 (99.61)
+2026-04-07 03:49:38 - LT_baseline - INFO - Epoch [102][100/169] Loss 0.2464 (0.2047) Acc@1 91.41 (93.62) Acc@5 99.22 (99.64)
+2026-04-07 03:49:39 - LT_baseline - INFO - Epoch [102][150/169] Loss 0.1642 (0.2088) Acc@1 93.75 (93.44) Acc@5 99.22 (99.59)
+2026-04-07 03:49:40 - LT_baseline - INFO - [Val] Loss: 3.7667 | Overall: 36.06% | Many: 61.70% | Medium: 37.23% | Few: 8.87%
+2026-04-07 03:49:40 - LT_baseline - INFO - Epoch 102: Best Acc = 38.14%
+
+2026-04-07 03:49:42 - LT_baseline - INFO - Epoch [103][50/169] Loss 0.2043 (0.1985) Acc@1 94.53 (93.77) Acc@5 100.00 (99.69)
+2026-04-07 03:49:42 - LT_baseline - INFO - Epoch [103][100/169] Loss 0.1906 (0.1953) Acc@1 94.53 (93.98) Acc@5 100.00 (99.66)
+2026-04-07 03:49:43 - LT_baseline - INFO - Epoch [103][150/169] Loss 0.2289 (0.2040) Acc@1 90.62 (93.64) Acc@5 99.22 (99.66)
+2026-04-07 03:49:47 - LT_baseline - INFO - [Val] Loss: 3.6394 | Overall: 37.35% | Many: 65.00% | Medium: 37.72% | Few: 9.20%
+2026-04-07 03:49:47 - LT_baseline - INFO - Epoch 103: Best Acc = 38.14%
+
+2026-04-07 03:49:49 - LT_baseline - INFO - Epoch [104][50/169] Loss 0.1929 (0.1782) Acc@1 93.75 (94.72) Acc@5 100.00 (99.70)
+2026-04-07 03:49:50 - LT_baseline - INFO - Epoch [104][100/169] Loss 0.2599 (0.1890) Acc@1 91.41 (94.21) Acc@5 100.00 (99.73)
+2026-04-07 03:49:51 - LT_baseline - INFO - Epoch [104][150/169] Loss 0.1807 (0.1995) Acc@1 93.75 (93.75) Acc@5 100.00 (99.68)
+2026-04-07 03:49:53 - LT_baseline - INFO - [Val] Loss: 3.9027 | Overall: 37.49% | Many: 68.20% | Medium: 35.85% | Few: 8.97%
+2026-04-07 03:49:53 - LT_baseline - INFO - Epoch 104: Best Acc = 38.14%
+
+2026-04-07 03:49:54 - LT_baseline - INFO - Epoch [105][50/169] Loss 0.1598 (0.1821) Acc@1 95.31 (94.34) Acc@5 100.00 (99.75)
+2026-04-07 03:49:55 - LT_baseline - INFO - Epoch [105][100/169] Loss 0.1495 (0.1875) Acc@1 96.09 (94.23) Acc@5 100.00 (99.76)
+2026-04-07 03:49:55 - LT_baseline - INFO - Epoch [105][150/169] Loss 0.2717 (0.1875) Acc@1 90.62 (94.12) Acc@5 99.22 (99.72)
+2026-04-07 03:49:57 - LT_baseline - INFO - [Val] Loss: 3.6811 | Overall: 38.29% | Many: 62.83% | Medium: 40.60% | Few: 10.67%
+2026-04-07 03:49:57 - LT_baseline - INFO - Epoch 105: Best Acc = 38.29%
+
+2026-04-07 03:49:58 - LT_baseline - INFO - Epoch [106][50/169] Loss 0.2726 (0.1703) Acc@1 90.62 (94.84) Acc@5 99.22 (99.75)
+2026-04-07 03:49:59 - LT_baseline - INFO - Epoch [106][100/169] Loss 0.2144 (0.1785) Acc@1 95.31 (94.58) Acc@5 100.00 (99.73)
+2026-04-07 03:50:00 - LT_baseline - INFO - Epoch [106][150/169] Loss 0.1973 (0.1920) Acc@1 96.09 (94.09) Acc@5 99.22 (99.67)
+2026-04-07 03:50:01 - LT_baseline - INFO - [Val] Loss: 3.7058 | Overall: 37.15% | Many: 64.83% | Medium: 36.22% | Few: 10.70%
+2026-04-07 03:50:01 - LT_baseline - INFO - Epoch 106: Best Acc = 38.29%
+
+2026-04-07 03:50:02 - LT_baseline - INFO - Epoch [107][50/169] Loss 0.2439 (0.1848) Acc@1 89.84 (94.09) Acc@5 100.00 (99.77)
+2026-04-07 03:50:03 - LT_baseline - INFO - Epoch [107][100/169] Loss 0.1871 (0.1917) Acc@1 92.19 (93.98) Acc@5 100.00 (99.72)
+2026-04-07 03:50:04 - LT_baseline - INFO - Epoch [107][150/169] Loss 0.2557 (0.1933) Acc@1 92.19 (93.98) Acc@5 99.22 (99.72)
+2026-04-07 03:50:05 - LT_baseline - INFO - [Val] Loss: 4.0093 | Overall: 35.93% | Many: 61.90% | Medium: 35.48% | Few: 10.57%
+2026-04-07 03:50:05 - LT_baseline - INFO - Epoch 107: Best Acc = 38.29%
+
+2026-04-07 03:50:06 - LT_baseline - INFO - Epoch [108][50/169] Loss 0.3236 (0.1765) Acc@1 91.41 (94.47) Acc@5 99.22 (99.72)
+2026-04-07 03:50:07 - LT_baseline - INFO - Epoch [108][100/169] Loss 0.0911 (0.1710) Acc@1 98.44 (94.70) Acc@5 100.00 (99.80)
+2026-04-07 03:50:08 - LT_baseline - INFO - Epoch [108][150/169] Loss 0.1255 (0.1735) Acc@1 94.53 (94.53) Acc@5 100.00 (99.79)
+2026-04-07 03:50:09 - LT_baseline - INFO - [Val] Loss: 3.9227 | Overall: 37.08% | Many: 63.93% | Medium: 38.25% | Few: 8.67%
+2026-04-07 03:50:09 - LT_baseline - INFO - Epoch 108: Best Acc = 38.29%
+
+2026-04-07 03:50:10 - LT_baseline - INFO - Epoch [109][50/169] Loss 0.1517 (0.1571) Acc@1 95.31 (95.23) Acc@5 100.00 (99.81)
+2026-04-07 03:50:11 - LT_baseline - INFO - Epoch [109][100/169] Loss 0.1823 (0.1648) Acc@1 92.19 (94.91) Acc@5 100.00 (99.77)
+2026-04-07 03:50:12 - LT_baseline - INFO - Epoch [109][150/169] Loss 0.2175 (0.1730) Acc@1 93.75 (94.61) Acc@5 99.22 (99.74)
+2026-04-07 03:50:13 - LT_baseline - INFO - [Val] Loss: 3.6687 | Overall: 37.04% | Many: 65.23% | Medium: 36.50% | Few: 9.57%
+2026-04-07 03:50:13 - LT_baseline - INFO - Epoch 109: Best Acc = 38.29%
+
+2026-04-07 03:50:15 - LT_baseline - INFO - Epoch [110][50/169] Loss 0.1184 (0.1591) Acc@1 94.53 (95.47) Acc@5 100.00 (99.77)
+2026-04-07 03:50:15 - LT_baseline - INFO - Epoch [110][100/169] Loss 0.1722 (0.1595) Acc@1 93.75 (95.29) Acc@5 100.00 (99.80)
+2026-04-07 03:50:16 - LT_baseline - INFO - Epoch [110][150/169] Loss 0.1991 (0.1637) Acc@1 95.31 (94.97) Acc@5 100.00 (99.82)
+2026-04-07 03:50:17 - LT_baseline - INFO - [Val] Loss: 3.7617 | Overall: 37.55% | Many: 62.97% | Medium: 38.32% | Few: 11.10%
+2026-04-07 03:50:17 - LT_baseline - INFO - Epoch 110: Best Acc = 38.29%
+
+2026-04-07 03:50:18 - LT_baseline - INFO - Epoch [111][50/169] Loss 0.1054 (0.1577) Acc@1 96.88 (95.20) Acc@5 100.00 (99.89)
+2026-04-07 03:50:19 - LT_baseline - INFO - Epoch [111][100/169] Loss 0.1817 (0.1623) Acc@1 94.53 (94.95) Acc@5 100.00 (99.88)
+2026-04-07 03:50:20 - LT_baseline - INFO - Epoch [111][150/169] Loss 0.2073 (0.1672) Acc@1 93.75 (94.85) Acc@5 100.00 (99.83)
+2026-04-07 03:50:21 - LT_baseline - INFO - [Val] Loss: 3.4829 | Overall: 39.53% | Many: 66.17% | Medium: 40.33% | Few: 11.83%
+2026-04-07 03:50:21 - LT_baseline - INFO - Epoch 111: Best Acc = 39.53%
+
+2026-04-07 03:50:22 - LT_baseline - INFO - Epoch [112][50/169] Loss 0.1407 (0.1448) Acc@1 96.09 (95.59) Acc@5 100.00 (99.80)
+2026-04-07 03:50:23 - LT_baseline - INFO - Epoch [112][100/169] Loss 0.0823 (0.1420) Acc@1 99.22 (95.71) Acc@5 100.00 (99.85)
+2026-04-07 03:50:24 - LT_baseline - INFO - Epoch [112][150/169] Loss 0.2311 (0.1506) Acc@1 93.75 (95.46) Acc@5 100.00 (99.80)
+2026-04-07 03:50:25 - LT_baseline - INFO - [Val] Loss: 3.5741 | Overall: 39.24% | Many: 66.93% | Medium: 39.55% | Few: 11.13%
+2026-04-07 03:50:25 - LT_baseline - INFO - Epoch 112: Best Acc = 39.53%
+
+2026-04-07 03:50:26 - LT_baseline - INFO - Epoch [113][50/169] Loss 0.0908 (0.1618) Acc@1 99.22 (95.02) Acc@5 100.00 (99.81)
+2026-04-07 03:50:27 - LT_baseline - INFO - Epoch [113][100/169] Loss 0.0942 (0.1500) Acc@1 98.44 (95.45) Acc@5 100.00 (99.83)
+2026-04-07 03:50:28 - LT_baseline - INFO - Epoch [113][150/169] Loss 0.2881 (0.1563) Acc@1 91.41 (95.15) Acc@5 100.00 (99.81)
+2026-04-07 03:50:29 - LT_baseline - INFO - [Val] Loss: 3.8218 | Overall: 37.59% | Many: 64.60% | Medium: 37.55% | Few: 10.63%
+2026-04-07 03:50:29 - LT_baseline - INFO - Epoch 113: Best Acc = 39.53%
+
+2026-04-07 03:50:31 - LT_baseline - INFO - Epoch [114][50/169] Loss 0.1196 (0.1448) Acc@1 96.88 (95.59) Acc@5 100.00 (99.80)
+2026-04-07 03:50:32 - LT_baseline - INFO - Epoch [114][100/169] Loss 0.2582 (0.1517) Acc@1 89.84 (95.38) Acc@5 99.22 (99.81)
+2026-04-07 03:50:33 - LT_baseline - INFO - Epoch [114][150/169] Loss 0.2141 (0.1529) Acc@1 94.53 (95.36) Acc@5 98.44 (99.79)
+2026-04-07 03:50:34 - LT_baseline - INFO - [Val] Loss: 3.8227 | Overall: 37.82% | Many: 62.77% | Medium: 38.15% | Few: 12.43%
+2026-04-07 03:50:34 - LT_baseline - INFO - Epoch 114: Best Acc = 39.53%
+
+2026-04-07 03:50:35 - LT_baseline - INFO - Epoch [115][50/169] Loss 0.1558 (0.1202) Acc@1 95.31 (96.36) Acc@5 100.00 (99.89)
+2026-04-07 03:50:36 - LT_baseline - INFO - Epoch [115][100/169] Loss 0.1418 (0.1234) Acc@1 97.66 (96.45) Acc@5 100.00 (99.87)
+2026-04-07 03:50:37 - LT_baseline - INFO - Epoch [115][150/169] Loss 0.1934 (0.1271) Acc@1 92.97 (96.26) Acc@5 100.00 (99.90)
+2026-04-07 03:50:38 - LT_baseline - INFO - [Val] Loss: 3.5353 | Overall: 39.32% | Many: 65.37% | Medium: 41.80% | Few: 9.97%
+2026-04-07 03:50:38 - LT_baseline - INFO - Epoch 115: Best Acc = 39.53%
+
+2026-04-07 03:50:39 - LT_baseline - INFO - Epoch [116][50/169] Loss 0.0960 (0.1142) Acc@1 96.88 (96.81) Acc@5 100.00 (99.94)
+2026-04-07 03:50:40 - LT_baseline - INFO - Epoch [116][100/169] Loss 0.1588 (0.1172) Acc@1 92.19 (96.52) Acc@5 100.00 (99.92)
+2026-04-07 03:50:41 - LT_baseline - INFO - Epoch [116][150/169] Loss 0.1245 (0.1192) Acc@1 96.09 (96.54) Acc@5 100.00 (99.91)
+2026-04-07 03:50:43 - LT_baseline - INFO - [Val] Loss: 3.7304 | Overall: 39.14% | Many: 65.47% | Medium: 40.20% | Few: 11.40%
+2026-04-07 03:50:43 - LT_baseline - INFO - Epoch 116: Best Acc = 39.53%
+
+2026-04-07 03:50:45 - LT_baseline - INFO - Epoch [117][50/169] Loss 0.1236 (0.1082) Acc@1 95.31 (96.98) Acc@5 100.00 (99.95)
+2026-04-07 03:50:46 - LT_baseline - INFO - Epoch [117][100/169] Loss 0.0844 (0.1167) Acc@1 97.66 (96.68) Acc@5 100.00 (99.88)
+2026-04-07 03:50:46 - LT_baseline - INFO - Epoch [117][150/169] Loss 0.1901 (0.1242) Acc@1 92.97 (96.32) Acc@5 100.00 (99.86)
+2026-04-07 03:50:48 - LT_baseline - INFO - [Val] Loss: 3.9417 | Overall: 37.51% | Many: 63.73% | Medium: 38.62% | Few: 9.80%
+2026-04-07 03:50:48 - LT_baseline - INFO - Epoch 117: Best Acc = 39.53%
+
+2026-04-07 03:50:49 - LT_baseline - INFO - Epoch [118][50/169] Loss 0.1325 (0.1140) Acc@1 95.31 (96.73) Acc@5 100.00 (99.94)
+2026-04-07 03:50:50 - LT_baseline - INFO - Epoch [118][100/169] Loss 0.1727 (0.1245) Acc@1 94.53 (96.43) Acc@5 98.44 (99.91)
+2026-04-07 03:50:50 - LT_baseline - INFO - Epoch [118][150/169] Loss 0.1042 (0.1277) Acc@1 96.09 (96.27) Acc@5 100.00 (99.91)
+2026-04-07 03:50:51 - LT_baseline - INFO - [Val] Loss: 3.7896 | Overall: 37.75% | Many: 64.40% | Medium: 39.02% | Few: 9.40%
+2026-04-07 03:50:51 - LT_baseline - INFO - Epoch 118: Best Acc = 39.53%
+
+2026-04-07 03:50:53 - LT_baseline - INFO - Epoch [119][50/169] Loss 0.1357 (0.1093) Acc@1 96.09 (96.81) Acc@5 100.00 (99.95)
+2026-04-07 03:50:53 - LT_baseline - INFO - Epoch [119][100/169] Loss 0.1008 (0.1129) Acc@1 96.88 (96.69) Acc@5 100.00 (99.95)
+2026-04-07 03:50:54 - LT_baseline - INFO - Epoch [119][150/169] Loss 0.1419 (0.1125) Acc@1 95.31 (96.83) Acc@5 100.00 (99.95)
+2026-04-07 03:50:56 - LT_baseline - INFO - [Val] Loss: 3.8800 | Overall: 38.59% | Many: 66.23% | Medium: 38.98% | Few: 10.43%
+2026-04-07 03:50:57 - LT_baseline - INFO - Epoch 119: Best Acc = 39.53%
+
+2026-04-07 03:50:58 - LT_baseline - INFO - Epoch [120][50/169] Loss 0.0587 (0.0956) Acc@1 97.66 (97.31) Acc@5 100.00 (99.95)
+2026-04-07 03:50:58 - LT_baseline - INFO - Epoch [120][100/169] Loss 0.0977 (0.1019) Acc@1 96.88 (97.04) Acc@5 100.00 (99.91)
+2026-04-07 03:50:59 - LT_baseline - INFO - Epoch [120][150/169] Loss 0.0450 (0.1064) Acc@1 100.00 (96.90) Acc@5 100.00 (99.91)
+2026-04-07 03:51:00 - LT_baseline - INFO - [Val] Loss: 3.7942 | Overall: 39.61% | Many: 65.63% | Medium: 41.32% | Few: 11.30%
+2026-04-07 03:51:00 - LT_baseline - INFO - Epoch 120: Best Acc = 39.61%
+
+2026-04-07 03:51:02 - LT_baseline - INFO - Epoch [121][50/169] Loss 0.0651 (0.0899) Acc@1 97.66 (97.56) Acc@5 100.00 (99.95)
+2026-04-07 03:51:02 - LT_baseline - INFO - Epoch [121][100/169] Loss 0.1145 (0.0920) Acc@1 96.09 (97.50) Acc@5 100.00 (99.96)
+2026-04-07 03:51:03 - LT_baseline - INFO - Epoch [121][150/169] Loss 0.1019 (0.0987) Acc@1 95.31 (97.26) Acc@5 100.00 (99.96)
+2026-04-07 03:51:04 - LT_baseline - INFO - [Val] Loss: 3.7689 | Overall: 37.64% | Many: 67.57% | Medium: 36.10% | Few: 9.77%
+2026-04-07 03:51:04 - LT_baseline - INFO - Epoch 121: Best Acc = 39.61%
+
+2026-04-07 03:51:06 - LT_baseline - INFO - Epoch [122][50/169] Loss 0.0668 (0.1069) Acc@1 99.22 (96.89) Acc@5 100.00 (99.91)
+2026-04-07 03:51:07 - LT_baseline - INFO - Epoch [122][100/169] Loss 0.0993 (0.1046) Acc@1 94.53 (96.98) Acc@5 100.00 (99.93)
+2026-04-07 03:51:07 - LT_baseline - INFO - Epoch [122][150/169] Loss 0.0488 (0.1046) Acc@1 99.22 (97.03) Acc@5 100.00 (99.92)
+2026-04-07 03:51:08 - LT_baseline - INFO - [Val] Loss: 3.7065 | Overall: 40.11% | Many: 66.97% | Medium: 41.20% | Few: 11.80%
+2026-04-07 03:51:09 - LT_baseline - INFO - Epoch 122: Best Acc = 40.11%
+
+2026-04-07 03:51:10 - LT_baseline - INFO - Epoch [123][50/169] Loss 0.0608 (0.1016) Acc@1 100.00 (96.86) Acc@5 100.00 (99.92)
+2026-04-07 03:51:11 - LT_baseline - INFO - Epoch [123][100/169] Loss 0.1519 (0.1040) Acc@1 95.31 (96.89) Acc@5 99.22 (99.93)
+2026-04-07 03:51:11 - LT_baseline - INFO - Epoch [123][150/169] Loss 0.0647 (0.1108) Acc@1 97.66 (96.64) Acc@5 100.00 (99.91)
+2026-04-07 03:51:12 - LT_baseline - INFO - [Val] Loss: 3.7502 | Overall: 38.78% | Many: 65.50% | Medium: 39.55% | Few: 11.03%
+2026-04-07 03:51:13 - LT_baseline - INFO - Epoch 123: Best Acc = 40.11%
+
+2026-04-07 03:51:14 - LT_baseline - INFO - Epoch [124][50/169] Loss 0.0776 (0.0981) Acc@1 97.66 (97.20) Acc@5 100.00 (99.95)
+2026-04-07 03:51:14 - LT_baseline - INFO - Epoch [124][100/169] Loss 0.1553 (0.0977) Acc@1 93.75 (97.24) Acc@5 100.00 (99.93)
+2026-04-07 03:51:15 - LT_baseline - INFO - Epoch [124][150/169] Loss 0.0779 (0.1039) Acc@1 96.88 (97.08) Acc@5 100.00 (99.91)
+2026-04-07 03:51:17 - LT_baseline - INFO - [Val] Loss: 3.7544 | Overall: 39.61% | Many: 68.03% | Medium: 38.73% | Few: 12.37%
+2026-04-07 03:51:17 - LT_baseline - INFO - Epoch 124: Best Acc = 40.11%
+
+2026-04-07 03:51:18 - LT_baseline - INFO - Epoch [125][50/169] Loss 0.1081 (0.0882) Acc@1 95.31 (97.48) Acc@5 100.00 (99.94)
+2026-04-07 03:51:19 - LT_baseline - INFO - Epoch [125][100/169] Loss 0.0771 (0.0893) Acc@1 98.44 (97.57) Acc@5 100.00 (99.94)
+2026-04-07 03:51:20 - LT_baseline - INFO - Epoch [125][150/169] Loss 0.0879 (0.0892) Acc@1 96.09 (97.59) Acc@5 100.00 (99.93)
+2026-04-07 03:51:21 - LT_baseline - INFO - [Val] Loss: 3.8543 | Overall: 39.24% | Many: 66.70% | Medium: 40.50% | Few: 10.10%
+2026-04-07 03:51:21 - LT_baseline - INFO - Epoch 125: Best Acc = 40.11%
+
+2026-04-07 03:51:22 - LT_baseline - INFO - Epoch [126][50/169] Loss 0.0768 (0.0801) Acc@1 98.44 (97.94) Acc@5 100.00 (99.95)
+2026-04-07 03:51:23 - LT_baseline - INFO - Epoch [126][100/169] Loss 0.0397 (0.0781) Acc@1 98.44 (97.98) Acc@5 100.00 (99.96)
+2026-04-07 03:51:24 - LT_baseline - INFO - Epoch [126][150/169] Loss 0.0721 (0.0791) Acc@1 98.44 (97.90) Acc@5 100.00 (99.95)
+2026-04-07 03:51:25 - LT_baseline - INFO - [Val] Loss: 3.7188 | Overall: 39.88% | Many: 67.60% | Medium: 40.45% | Few: 11.40%
+2026-04-07 03:51:25 - LT_baseline - INFO - Epoch 126: Best Acc = 40.11%
+
+2026-04-07 03:51:26 - LT_baseline - INFO - Epoch [127][50/169] Loss 0.0597 (0.0734) Acc@1 98.44 (97.91) Acc@5 100.00 (99.97)
+2026-04-07 03:51:27 - LT_baseline - INFO - Epoch [127][100/169] Loss 0.0720 (0.0749) Acc@1 98.44 (97.91) Acc@5 100.00 (99.98)
+2026-04-07 03:51:27 - LT_baseline - INFO - Epoch [127][150/169] Loss 0.1037 (0.0789) Acc@1 96.88 (97.81) Acc@5 100.00 (99.97)
+2026-04-07 03:51:29 - LT_baseline - INFO - [Val] Loss: 3.7842 | Overall: 39.67% | Many: 68.13% | Medium: 38.73% | Few: 12.47%
+2026-04-07 03:51:29 - LT_baseline - INFO - Epoch 127: Best Acc = 40.11%
+
+2026-04-07 03:51:30 - LT_baseline - INFO - Epoch [128][50/169] Loss 0.0772 (0.0743) Acc@1 97.66 (97.94) Acc@5 100.00 (100.00)
+2026-04-07 03:51:31 - LT_baseline - INFO - Epoch [128][100/169] Loss 0.0672 (0.0729) Acc@1 98.44 (98.05) Acc@5 100.00 (99.99)
+2026-04-07 03:51:32 - LT_baseline - INFO - Epoch [128][150/169] Loss 0.0322 (0.0723) Acc@1 100.00 (98.14) Acc@5 100.00 (99.98)
+2026-04-07 03:51:33 - LT_baseline - INFO - [Val] Loss: 3.8352 | Overall: 39.56% | Many: 68.30% | Medium: 39.20% | Few: 11.30%
+2026-04-07 03:51:33 - LT_baseline - INFO - Epoch 128: Best Acc = 40.11%
+
+2026-04-07 03:51:34 - LT_baseline - INFO - Epoch [129][50/169] Loss 0.0518 (0.0694) Acc@1 99.22 (98.20) Acc@5 100.00 (100.00)
+2026-04-07 03:51:35 - LT_baseline - INFO - Epoch [129][100/169] Loss 0.0722 (0.0694) Acc@1 97.66 (98.20) Acc@5 100.00 (99.98)
+2026-04-07 03:51:35 - LT_baseline - INFO - Epoch [129][150/169] Loss 0.0959 (0.0726) Acc@1 96.09 (98.08) Acc@5 100.00 (99.97)
+2026-04-07 03:51:37 - LT_baseline - INFO - [Val] Loss: 3.7993 | Overall: 39.37% | Many: 66.30% | Medium: 39.55% | Few: 12.20%
+2026-04-07 03:51:37 - LT_baseline - INFO - Epoch 129: Best Acc = 40.11%
+
+2026-04-07 03:51:38 - LT_baseline - INFO - Epoch [130][50/169] Loss 0.0334 (0.0620) Acc@1 100.00 (98.52) Acc@5 100.00 (99.98)
+2026-04-07 03:51:39 - LT_baseline - INFO - Epoch [130][100/169] Loss 0.0517 (0.0621) Acc@1 99.22 (98.52) Acc@5 100.00 (99.99)
+2026-04-07 03:51:39 - LT_baseline - INFO - Epoch [130][150/169] Loss 0.0476 (0.0615) Acc@1 99.22 (98.52) Acc@5 100.00 (99.98)
+2026-04-07 03:51:40 - LT_baseline - INFO - [Val] Loss: 3.6967 | Overall: 40.99% | Many: 68.30% | Medium: 42.30% | Few: 11.93%
+2026-04-07 03:51:41 - LT_baseline - INFO - Epoch 130: Best Acc = 40.99%
+
+2026-04-07 03:51:42 - LT_baseline - INFO - Epoch [131][50/169] Loss 0.0255 (0.0583) Acc@1 100.00 (98.58) Acc@5 100.00 (100.00)
+2026-04-07 03:51:43 - LT_baseline - INFO - Epoch [131][100/169] Loss 0.0485 (0.0557) Acc@1 98.44 (98.74) Acc@5 100.00 (100.00)
+2026-04-07 03:51:43 - LT_baseline - INFO - Epoch [131][150/169] Loss 0.0536 (0.0563) Acc@1 99.22 (98.74) Acc@5 100.00 (99.99)
+2026-04-07 03:51:45 - LT_baseline - INFO - [Val] Loss: 3.9000 | Overall: 39.08% | Many: 67.20% | Medium: 38.92% | Few: 11.17%
+2026-04-07 03:51:45 - LT_baseline - INFO - Epoch 131: Best Acc = 40.99%
+
+2026-04-07 03:51:46 - LT_baseline - INFO - Epoch [132][50/169] Loss 0.0791 (0.0598) Acc@1 99.22 (98.52) Acc@5 99.22 (99.98)
+2026-04-07 03:51:46 - LT_baseline - INFO - Epoch [132][100/169] Loss 0.0732 (0.0621) Acc@1 96.88 (98.51) Acc@5 100.00 (99.99)
+2026-04-07 03:51:47 - LT_baseline - INFO - Epoch [132][150/169] Loss 0.0540 (0.0624) Acc@1 99.22 (98.47) Acc@5 100.00 (99.99)
+2026-04-07 03:51:48 - LT_baseline - INFO - [Val] Loss: 3.6790 | Overall: 41.00% | Many: 68.37% | Medium: 40.67% | Few: 14.07%
+2026-04-07 03:51:48 - LT_baseline - INFO - Epoch 132: Best Acc = 41.00%
+
+2026-04-07 03:51:50 - LT_baseline - INFO - Epoch [133][50/169] Loss 0.0635 (0.0562) Acc@1 97.66 (98.75) Acc@5 100.00 (100.00)
+2026-04-07 03:51:51 - LT_baseline - INFO - Epoch [133][100/169] Loss 0.0515 (0.0545) Acc@1 98.44 (98.75) Acc@5 100.00 (100.00)
+2026-04-07 03:51:51 - LT_baseline - INFO - Epoch [133][150/169] Loss 0.0418 (0.0544) Acc@1 99.22 (98.73) Acc@5 100.00 (99.99)
+2026-04-07 03:51:53 - LT_baseline - INFO - [Val] Loss: 3.6739 | Overall: 41.04% | Many: 67.97% | Medium: 42.00% | Few: 12.83%
+2026-04-07 03:51:53 - LT_baseline - INFO - Epoch 133: Best Acc = 41.04%
+
+2026-04-07 03:51:54 - LT_baseline - INFO - Epoch [134][50/169] Loss 0.0271 (0.0473) Acc@1 100.00 (99.09) Acc@5 100.00 (99.98)
+2026-04-07 03:51:55 - LT_baseline - INFO - Epoch [134][100/169] Loss 0.0329 (0.0466) Acc@1 100.00 (99.13) Acc@5 100.00 (99.99)
+2026-04-07 03:51:55 - LT_baseline - INFO - Epoch [134][150/169] Loss 0.0910 (0.0468) Acc@1 97.66 (99.09) Acc@5 100.00 (99.99)
+2026-04-07 03:51:57 - LT_baseline - INFO - [Val] Loss: 3.6709 | Overall: 41.53% | Many: 69.67% | Medium: 42.17% | Few: 12.53%
+2026-04-07 03:51:57 - LT_baseline - INFO - Epoch 134: Best Acc = 41.53%
+
+2026-04-07 03:51:58 - LT_baseline - INFO - Epoch [135][50/169] Loss 0.0297 (0.0499) Acc@1 99.22 (98.77) Acc@5 100.00 (99.95)
+2026-04-07 03:51:59 - LT_baseline - INFO - Epoch [135][100/169] Loss 0.0540 (0.0483) Acc@1 98.44 (98.89) Acc@5 100.00 (99.97)
+2026-04-07 03:52:00 - LT_baseline - INFO - Epoch [135][150/169] Loss 0.0556 (0.0488) Acc@1 98.44 (98.86) Acc@5 100.00 (99.97)
+2026-04-07 03:52:01 - LT_baseline - INFO - [Val] Loss: 3.7249 | Overall: 40.33% | Many: 68.53% | Medium: 40.40% | Few: 12.03%
+2026-04-07 03:52:01 - LT_baseline - INFO - Epoch 135: Best Acc = 41.53%
+
+2026-04-07 03:52:02 - LT_baseline - INFO - Epoch [136][50/169] Loss 0.0296 (0.0394) Acc@1 99.22 (99.16) Acc@5 100.00 (100.00)
+2026-04-07 03:52:03 - LT_baseline - INFO - Epoch [136][100/169] Loss 0.0245 (0.0396) Acc@1 99.22 (99.27) Acc@5 100.00 (100.00)
+2026-04-07 03:52:04 - LT_baseline - INFO - Epoch [136][150/169] Loss 0.0486 (0.0395) Acc@1 99.22 (99.26) Acc@5 99.22 (99.98)
+2026-04-07 03:52:05 - LT_baseline - INFO - [Val] Loss: 3.6492 | Overall: 41.14% | Many: 68.30% | Medium: 42.62% | Few: 12.00%
+2026-04-07 03:52:05 - LT_baseline - INFO - Epoch 136: Best Acc = 41.53%
+
+2026-04-07 03:52:06 - LT_baseline - INFO - Epoch [137][50/169] Loss 0.0283 (0.0397) Acc@1 99.22 (99.25) Acc@5 100.00 (100.00)
+2026-04-07 03:52:07 - LT_baseline - INFO - Epoch [137][100/169] Loss 0.0367 (0.0404) Acc@1 99.22 (99.17) Acc@5 100.00 (100.00)
+2026-04-07 03:52:08 - LT_baseline - INFO - Epoch [137][150/169] Loss 0.0310 (0.0420) Acc@1 100.00 (99.09) Acc@5 100.00 (100.00)
+2026-04-07 03:52:09 - LT_baseline - INFO - [Val] Loss: 3.7952 | Overall: 40.80% | Many: 68.40% | Medium: 42.20% | Few: 11.33%
+2026-04-07 03:52:09 - LT_baseline - INFO - Epoch 137: Best Acc = 41.53%
+
+2026-04-07 03:52:10 - LT_baseline - INFO - Epoch [138][50/169] Loss 0.0561 (0.0392) Acc@1 97.66 (99.12) Acc@5 100.00 (100.00)
+2026-04-07 03:52:11 - LT_baseline - INFO - Epoch [138][100/169] Loss 0.0517 (0.0410) Acc@1 98.44 (99.09) Acc@5 100.00 (99.98)
+2026-04-07 03:52:12 - LT_baseline - INFO - Epoch [138][150/169] Loss 0.0264 (0.0400) Acc@1 99.22 (99.13) Acc@5 100.00 (99.98)
+2026-04-07 03:52:13 - LT_baseline - INFO - [Val] Loss: 3.6792 | Overall: 41.28% | Many: 69.37% | Medium: 41.30% | Few: 13.17%
+2026-04-07 03:52:13 - LT_baseline - INFO - Epoch 138: Best Acc = 41.53%
+
+2026-04-07 03:52:14 - LT_baseline - INFO - Epoch [139][50/169] Loss 0.0208 (0.0310) Acc@1 100.00 (99.50) Acc@5 100.00 (100.00)
+2026-04-07 03:52:15 - LT_baseline - INFO - Epoch [139][100/169] Loss 0.0184 (0.0329) Acc@1 100.00 (99.42) Acc@5 100.00 (100.00)
+2026-04-07 03:52:16 - LT_baseline - INFO - Epoch [139][150/169] Loss 0.0183 (0.0332) Acc@1 100.00 (99.43) Acc@5 100.00 (100.00)
+2026-04-07 03:52:17 - LT_baseline - INFO - [Val] Loss: 3.7245 | Overall: 42.23% | Many: 70.70% | Medium: 43.10% | Few: 12.60%
+2026-04-07 03:52:17 - LT_baseline - INFO - Epoch 139: Best Acc = 42.23%
+
+2026-04-07 03:52:18 - LT_baseline - INFO - Epoch [140][50/169] Loss 0.0254 (0.0295) Acc@1 100.00 (99.48) Acc@5 100.00 (100.00)
+2026-04-07 03:52:19 - LT_baseline - INFO - Epoch [140][100/169] Loss 0.0197 (0.0307) Acc@1 100.00 (99.43) Acc@5 100.00 (100.00)
+2026-04-07 03:52:20 - LT_baseline - INFO - Epoch [140][150/169] Loss 0.0361 (0.0331) Acc@1 99.22 (99.38) Acc@5 100.00 (99.99)
+2026-04-07 03:52:21 - LT_baseline - INFO - [Val] Loss: 3.7665 | Overall: 41.19% | Many: 69.63% | Medium: 42.45% | Few: 11.07%
+2026-04-07 03:52:21 - LT_baseline - INFO - Epoch 140: Best Acc = 42.23%
+
+2026-04-07 03:52:22 - LT_baseline - INFO - Epoch [141][50/169] Loss 0.0364 (0.0281) Acc@1 99.22 (99.61) Acc@5 100.00 (100.00)
+2026-04-07 03:52:23 - LT_baseline - INFO - Epoch [141][100/169] Loss 0.0401 (0.0305) Acc@1 99.22 (99.47) Acc@5 100.00 (100.00)
+2026-04-07 03:52:24 - LT_baseline - INFO - Epoch [141][150/169] Loss 0.0322 (0.0308) Acc@1 99.22 (99.49) Acc@5 100.00 (100.00)
+2026-04-07 03:52:25 - LT_baseline - INFO - [Val] Loss: 3.7168 | Overall: 41.28% | Many: 68.67% | Medium: 42.77% | Few: 11.90%
+2026-04-07 03:52:26 - LT_baseline - INFO - Epoch 141: Best Acc = 42.23%
+
+2026-04-07 03:52:27 - LT_baseline - INFO - Epoch [142][50/169] Loss 0.0229 (0.0281) Acc@1 100.00 (99.53) Acc@5 100.00 (100.00)
+2026-04-07 03:52:28 - LT_baseline - INFO - Epoch [142][100/169] Loss 0.0220 (0.0278) Acc@1 99.22 (99.52) Acc@5 100.00 (100.00)
+2026-04-07 03:52:28 - LT_baseline - INFO - Epoch [142][150/169] Loss 0.0372 (0.0282) Acc@1 99.22 (99.53) Acc@5 100.00 (100.00)
+2026-04-07 03:52:29 - LT_baseline - INFO - [Val] Loss: 3.6217 | Overall: 42.01% | Many: 70.63% | Medium: 42.70% | Few: 12.47%
+2026-04-07 03:52:29 - LT_baseline - INFO - Epoch 142: Best Acc = 42.23%
+
+2026-04-07 03:52:31 - LT_baseline - INFO - Epoch [143][50/169] Loss 0.0355 (0.0251) Acc@1 99.22 (99.61) Acc@5 100.00 (100.00)
+2026-04-07 03:52:31 - LT_baseline - INFO - Epoch [143][100/169] Loss 0.0258 (0.0246) Acc@1 100.00 (99.67) Acc@5 100.00 (100.00)
+2026-04-07 03:52:32 - LT_baseline - INFO - Epoch [143][150/169] Loss 0.0616 (0.0243) Acc@1 98.44 (99.68) Acc@5 100.00 (100.00)
+2026-04-07 03:52:33 - LT_baseline - INFO - [Val] Loss: 3.6724 | Overall: 41.81% | Many: 69.67% | Medium: 42.85% | Few: 12.57%
+2026-04-07 03:52:33 - LT_baseline - INFO - Epoch 143: Best Acc = 42.23%
+
+2026-04-07 03:52:35 - LT_baseline - INFO - Epoch [144][50/169] Loss 0.0171 (0.0220) Acc@1 100.00 (99.72) Acc@5 100.00 (100.00)
+2026-04-07 03:52:35 - LT_baseline - INFO - Epoch [144][100/169] Loss 0.0211 (0.0241) Acc@1 99.22 (99.65) Acc@5 100.00 (100.00)
+2026-04-07 03:52:36 - LT_baseline - INFO - Epoch [144][150/169] Loss 0.0170 (0.0252) Acc@1 100.00 (99.61) Acc@5 100.00 (100.00)
+2026-04-07 03:52:37 - LT_baseline - INFO - [Val] Loss: 3.6767 | Overall: 41.27% | Many: 69.80% | Medium: 41.93% | Few: 11.87%
+2026-04-07 03:52:37 - LT_baseline - INFO - Epoch 144: Best Acc = 42.23%
+
+2026-04-07 03:52:39 - LT_baseline - INFO - Epoch [145][50/169] Loss 0.0180 (0.0245) Acc@1 99.22 (99.58) Acc@5 100.00 (100.00)
+2026-04-07 03:52:39 - LT_baseline - INFO - Epoch [145][100/169] Loss 0.0134 (0.0246) Acc@1 100.00 (99.65) Acc@5 100.00 (100.00)
+2026-04-07 03:52:40 - LT_baseline - INFO - Epoch [145][150/169] Loss 0.0126 (0.0241) Acc@1 100.00 (99.65) Acc@5 100.00 (100.00)
+2026-04-07 03:52:41 - LT_baseline - INFO - [Val] Loss: 3.7367 | Overall: 41.62% | Many: 69.37% | Medium: 42.62% | Few: 12.53%
+2026-04-07 03:52:41 - LT_baseline - INFO - Epoch 145: Best Acc = 42.23%
+
+2026-04-07 03:52:43 - LT_baseline - INFO - Epoch [146][50/169] Loss 0.0443 (0.0236) Acc@1 99.22 (99.72) Acc@5 100.00 (100.00)
+2026-04-07 03:52:43 - LT_baseline - INFO - Epoch [146][100/169] Loss 0.0243 (0.0236) Acc@1 100.00 (99.68) Acc@5 100.00 (100.00)
+2026-04-07 03:52:44 - LT_baseline - INFO - Epoch [146][150/169] Loss 0.0149 (0.0232) Acc@1 100.00 (99.70) Acc@5 100.00 (100.00)
+2026-04-07 03:52:45 - LT_baseline - INFO - [Val] Loss: 3.6903 | Overall: 41.68% | Many: 69.73% | Medium: 43.05% | Few: 11.80%
+2026-04-07 03:52:45 - LT_baseline - INFO - Epoch 146: Best Acc = 42.23%
+
+2026-04-07 03:52:47 - LT_baseline - INFO - Epoch [147][50/169] Loss 0.0275 (0.0203) Acc@1 99.22 (99.80) Acc@5 100.00 (100.00)
+2026-04-07 03:52:47 - LT_baseline - INFO - Epoch [147][100/169] Loss 0.0211 (0.0195) Acc@1 100.00 (99.81) Acc@5 100.00 (100.00)
+2026-04-07 03:52:48 - LT_baseline - INFO - Epoch [147][150/169] Loss 0.0139 (0.0197) Acc@1 100.00 (99.79) Acc@5 100.00 (100.00)
+2026-04-07 03:52:49 - LT_baseline - INFO - [Val] Loss: 3.6522 | Overall: 41.71% | Many: 71.30% | Medium: 41.88% | Few: 11.90%
+2026-04-07 03:52:49 - LT_baseline - INFO - Epoch 147: Best Acc = 42.23%
+
+2026-04-07 03:52:51 - LT_baseline - INFO - Epoch [148][50/169] Loss 0.0112 (0.0191) Acc@1 100.00 (99.86) Acc@5 100.00 (100.00)
+2026-04-07 03:52:51 - LT_baseline - INFO - Epoch [148][100/169] Loss 0.0131 (0.0186) Acc@1 100.00 (99.85) Acc@5 100.00 (100.00)
+2026-04-07 03:52:52 - LT_baseline - INFO - Epoch [148][150/169] Loss 0.0142 (0.0190) Acc@1 100.00 (99.84) Acc@5 100.00 (100.00)
+2026-04-07 03:52:53 - LT_baseline - INFO - [Val] Loss: 3.6059 | Overall: 42.57% | Many: 70.07% | Medium: 44.12% | Few: 13.00%
+2026-04-07 03:52:54 - LT_baseline - INFO - Epoch 148: Best Acc = 42.57%
+
+2026-04-07 03:52:55 - LT_baseline - INFO - Epoch [149][50/169] Loss 0.0181 (0.0179) Acc@1 100.00 (99.88) Acc@5 100.00 (100.00)
+2026-04-07 03:52:56 - LT_baseline - INFO - Epoch [149][100/169] Loss 0.0253 (0.0181) Acc@1 100.00 (99.85) Acc@5 100.00 (100.00)
+2026-04-07 03:52:56 - LT_baseline - INFO - Epoch [149][150/169] Loss 0.0275 (0.0188) Acc@1 99.22 (99.82) Acc@5 100.00 (100.00)
+2026-04-07 03:52:58 - LT_baseline - INFO - [Val] Loss: 3.6648 | Overall: 42.37% | Many: 70.70% | Medium: 42.80% | Few: 13.47%
+2026-04-07 03:52:58 - LT_baseline - INFO - Epoch 149: Best Acc = 42.57%
+
+2026-04-07 03:52:59 - LT_baseline - INFO - Epoch [150][50/169] Loss 0.0192 (0.0186) Acc@1 100.00 (99.78) Acc@5 100.00 (100.00)
+2026-04-07 03:53:00 - LT_baseline - INFO - Epoch [150][100/169] Loss 0.0154 (0.0199) Acc@1 100.00 (99.75) Acc@5 100.00 (100.00)
+2026-04-07 03:53:00 - LT_baseline - INFO - Epoch [150][150/169] Loss 0.0086 (0.0197) Acc@1 100.00 (99.77) Acc@5 100.00 (100.00)
+2026-04-07 03:53:01 - LT_baseline - INFO - [Val] Loss: 3.6237 | Overall: 42.47% | Many: 71.30% | Medium: 42.62% | Few: 13.43%
+2026-04-07 03:53:02 - LT_baseline - INFO - Epoch 150: Best Acc = 42.57%
+
+2026-04-07 03:53:03 - LT_baseline - INFO - Epoch [151][50/169] Loss 0.0131 (0.0164) Acc@1 100.00 (99.83) Acc@5 100.00 (100.00)
+2026-04-07 03:53:03 - LT_baseline - INFO - Epoch [151][100/169] Loss 0.0085 (0.0172) Acc@1 100.00 (99.79) Acc@5 100.00 (99.99)
+2026-04-07 03:53:04 - LT_baseline - INFO - Epoch [151][150/169] Loss 0.0094 (0.0168) Acc@1 100.00 (99.79) Acc@5 100.00 (99.99)
+2026-04-07 03:53:05 - LT_baseline - INFO - [Val] Loss: 3.5779 | Overall: 42.46% | Many: 70.77% | Medium: 42.70% | Few: 13.83%
+2026-04-07 03:53:06 - LT_baseline - INFO - Epoch 151: Best Acc = 42.57%
+
+2026-04-07 03:53:07 - LT_baseline - INFO - Epoch [152][50/169] Loss 0.0204 (0.0171) Acc@1 100.00 (99.81) Acc@5 100.00 (100.00)
+2026-04-07 03:53:08 - LT_baseline - INFO - Epoch [152][100/169] Loss 0.0079 (0.0162) Acc@1 100.00 (99.82) Acc@5 100.00 (100.00)
+2026-04-07 03:53:09 - LT_baseline - INFO - Epoch [152][150/169] Loss 0.0177 (0.0167) Acc@1 100.00 (99.82) Acc@5 100.00 (100.00)
+2026-04-07 03:53:10 - LT_baseline - INFO - [Val] Loss: 3.5718 | Overall: 42.73% | Many: 70.47% | Medium: 43.70% | Few: 13.70%
+2026-04-07 03:53:10 - LT_baseline - INFO - Epoch 152: Best Acc = 42.73%
+
+2026-04-07 03:53:11 - LT_baseline - INFO - Epoch [153][50/169] Loss 0.0063 (0.0175) Acc@1 100.00 (99.73) Acc@5 100.00 (100.00)
+2026-04-07 03:53:12 - LT_baseline - INFO - Epoch [153][100/169] Loss 0.0204 (0.0169) Acc@1 100.00 (99.82) Acc@5 100.00 (100.00)
+2026-04-07 03:53:13 - LT_baseline - INFO - Epoch [153][150/169] Loss 0.0253 (0.0165) Acc@1 99.22 (99.82) Acc@5 100.00 (100.00)
+2026-04-07 03:53:14 - LT_baseline - INFO - [Val] Loss: 3.5724 | Overall: 42.64% | Many: 70.67% | Medium: 43.42% | Few: 13.57%
+2026-04-07 03:53:14 - LT_baseline - INFO - Epoch 153: Best Acc = 42.73%
+
+2026-04-07 03:53:15 - LT_baseline - INFO - Epoch [154][50/169] Loss 0.0166 (0.0152) Acc@1 100.00 (99.88) Acc@5 100.00 (100.00)
+2026-04-07 03:53:16 - LT_baseline - INFO - Epoch [154][100/169] Loss 0.0106 (0.0156) Acc@1 100.00 (99.88) Acc@5 100.00 (100.00)
+2026-04-07 03:53:17 - LT_baseline - INFO - Epoch [154][150/169] Loss 0.0134 (0.0154) Acc@1 100.00 (99.88) Acc@5 100.00 (100.00)
+2026-04-07 03:53:18 - LT_baseline - INFO - [Val] Loss: 3.5721 | Overall: 42.53% | Many: 70.83% | Medium: 43.02% | Few: 13.57%
+2026-04-07 03:53:18 - LT_baseline - INFO - Epoch 154: Best Acc = 42.73%
+
+2026-04-07 03:53:19 - LT_baseline - INFO - Epoch [155][50/169] Loss 0.0231 (0.0143) Acc@1 100.00 (99.95) Acc@5 100.00 (100.00)
+2026-04-07 03:53:20 - LT_baseline - INFO - Epoch [155][100/169] Loss 0.0138 (0.0138) Acc@1 100.00 (99.95) Acc@5 100.00 (100.00)
+2026-04-07 03:53:21 - LT_baseline - INFO - Epoch [155][150/169] Loss 0.0106 (0.0138) Acc@1 100.00 (99.94) Acc@5 100.00 (100.00)
+2026-04-07 03:53:22 - LT_baseline - INFO - [Val] Loss: 3.5672 | Overall: 42.43% | Many: 70.23% | Medium: 43.80% | Few: 12.80%
+2026-04-07 03:53:22 - LT_baseline - INFO - Epoch 155: Best Acc = 42.73%
+
+2026-04-07 03:53:23 - LT_baseline - INFO - Epoch [156][50/169] Loss 0.0068 (0.0131) Acc@1 100.00 (99.89) Acc@5 100.00 (100.00)
+2026-04-07 03:53:24 - LT_baseline - INFO - Epoch [156][100/169] Loss 0.0154 (0.0139) Acc@1 100.00 (99.89) Acc@5 100.00 (100.00)
+2026-04-07 03:53:25 - LT_baseline - INFO - Epoch [156][150/169] Loss 0.0160 (0.0145) Acc@1 100.00 (99.90) Acc@5 100.00 (100.00)
+2026-04-07 03:53:26 - LT_baseline - INFO - [Val] Loss: 3.6262 | Overall: 42.08% | Many: 70.90% | Medium: 42.77% | Few: 12.33%
+2026-04-07 03:53:26 - LT_baseline - INFO - Epoch 156: Best Acc = 42.73%
+
+2026-04-07 03:53:27 - LT_baseline - INFO - Epoch [157][50/169] Loss 0.0169 (0.0143) Acc@1 100.00 (99.92) Acc@5 100.00 (99.98)
+2026-04-07 03:53:28 - LT_baseline - INFO - Epoch [157][100/169] Loss 0.0241 (0.0141) Acc@1 99.22 (99.92) Acc@5 100.00 (99.99)
+2026-04-07 03:53:29 - LT_baseline - INFO - Epoch [157][150/169] Loss 0.0054 (0.0142) Acc@1 100.00 (99.90) Acc@5 100.00 (99.99)
+2026-04-07 03:53:30 - LT_baseline - INFO - [Val] Loss: 3.5854 | Overall: 42.43% | Many: 70.33% | Medium: 43.83% | Few: 12.67%
+2026-04-07 03:53:30 - LT_baseline - INFO - Epoch 157: Best Acc = 42.73%
+
+2026-04-07 03:53:31 - LT_baseline - INFO - Epoch [158][50/169] Loss 0.0140 (0.0134) Acc@1 100.00 (99.92) Acc@5 100.00 (100.00)
+2026-04-07 03:53:32 - LT_baseline - INFO - Epoch [158][100/169] Loss 0.0086 (0.0136) Acc@1 100.00 (99.93) Acc@5 100.00 (100.00)
+2026-04-07 03:53:32 - LT_baseline - INFO - Epoch [158][150/169] Loss 0.0093 (0.0135) Acc@1 100.00 (99.92) Acc@5 100.00 (100.00)
+2026-04-07 03:53:34 - LT_baseline - INFO - [Val] Loss: 3.5859 | Overall: 42.36% | Many: 70.63% | Medium: 43.05% | Few: 13.17%
+2026-04-07 03:53:34 - LT_baseline - INFO - Epoch 158: Best Acc = 42.73%
+
+2026-04-07 03:53:35 - LT_baseline - INFO - Epoch [159][50/169] Loss 0.0081 (0.0115) Acc@1 100.00 (99.91) Acc@5 100.00 (100.00)
+2026-04-07 03:53:36 - LT_baseline - INFO - Epoch [159][100/169] Loss 0.0085 (0.0123) Acc@1 100.00 (99.91) Acc@5 100.00 (100.00)
+2026-04-07 03:53:36 - LT_baseline - INFO - Epoch [159][150/169] Loss 0.0081 (0.0125) Acc@1 100.00 (99.93) Acc@5 100.00 (100.00)
+2026-04-07 03:53:38 - LT_baseline - INFO - [Val] Loss: 3.6028 | Overall: 42.45% | Many: 71.10% | Medium: 43.25% | Few: 12.73%
+2026-04-07 03:53:38 - LT_baseline - INFO - Epoch 159: Best Acc = 42.73%
+
+2026-04-07 03:53:39 - LT_baseline - INFO - Epoch [160][50/169] Loss 0.0352 (0.0145) Acc@1 99.22 (99.81) Acc@5 100.00 (100.00)
+2026-04-07 03:53:40 - LT_baseline - INFO - Epoch [160][100/169] Loss 0.0167 (0.0144) Acc@1 100.00 (99.85) Acc@5 100.00 (100.00)
+2026-04-07 03:53:41 - LT_baseline - INFO - Epoch [160][150/169] Loss 0.0104 (0.0139) Acc@1 100.00 (99.89) Acc@5 100.00 (100.00)
+2026-04-07 03:53:42 - LT_baseline - INFO - [Val] Loss: 3.5691 | Overall: 42.54% | Many: 70.77% | Medium: 43.65% | Few: 12.83%
+2026-04-07 03:53:42 - LT_baseline - INFO - Epoch 160: Best Acc = 42.73%
+
+2026-04-07 03:53:43 - LT_baseline - INFO - Epoch [161][50/169] Loss 0.0195 (0.0125) Acc@1 100.00 (99.91) Acc@5 100.00 (100.00)
+2026-04-07 03:53:44 - LT_baseline - INFO - Epoch [161][100/169] Loss 0.0227 (0.0126) Acc@1 100.00 (99.91) Acc@5 100.00 (100.00)
+2026-04-07 03:53:44 - LT_baseline - INFO - Epoch [161][150/169] Loss 0.0095 (0.0124) Acc@1 100.00 (99.91) Acc@5 100.00 (100.00)
+2026-04-07 03:53:46 - LT_baseline - INFO - [Val] Loss: 3.5613 | Overall: 42.45% | Many: 70.67% | Medium: 43.33% | Few: 13.07%
+2026-04-07 03:53:46 - LT_baseline - INFO - Epoch 161: Best Acc = 42.73%
+
+2026-04-07 03:53:47 - LT_baseline - INFO - Epoch [162][50/169] Loss 0.0118 (0.0106) Acc@1 100.00 (99.98) Acc@5 100.00 (100.00)
+2026-04-07 03:53:48 - LT_baseline - INFO - Epoch [162][100/169] Loss 0.0178 (0.0110) Acc@1 100.00 (99.95) Acc@5 100.00 (100.00)
+2026-04-07 03:53:49 - LT_baseline - INFO - Epoch [162][150/169] Loss 0.0155 (0.0110) Acc@1 100.00 (99.96) Acc@5 100.00 (100.00)
+2026-04-07 03:53:50 - LT_baseline - INFO - [Val] Loss: 3.5887 | Overall: 42.50% | Many: 70.57% | Medium: 43.90% | Few: 12.57%
+2026-04-07 03:53:50 - LT_baseline - INFO - Epoch 162: Best Acc = 42.73%
+
+2026-04-07 03:53:52 - LT_baseline - INFO - Epoch [163][50/169] Loss 0.0057 (0.0104) Acc@1 100.00 (100.00) Acc@5 100.00 (100.00)
+2026-04-07 03:53:53 - LT_baseline - INFO - Epoch [163][100/169] Loss 0.0078 (0.0105) Acc@1 100.00 (99.99) Acc@5 100.00 (100.00)
+2026-04-07 03:53:54 - LT_baseline - INFO - Epoch [163][150/169] Loss 0.0084 (0.0108) Acc@1 100.00 (99.97) Acc@5 100.00 (100.00)
+2026-04-07 03:53:55 - LT_baseline - INFO - [Val] Loss: 3.6186 | Overall: 42.10% | Many: 70.83% | Medium: 42.58% | Few: 12.73%
+2026-04-07 03:53:55 - LT_baseline - INFO - Epoch 163: Best Acc = 42.73%
+
+2026-04-07 03:53:56 - LT_baseline - INFO - Epoch [164][50/169] Loss 0.0091 (0.0104) Acc@1 100.00 (99.95) Acc@5 100.00 (100.00)
+2026-04-07 03:53:57 - LT_baseline - INFO - Epoch [164][100/169] Loss 0.0081 (0.0105) Acc@1 100.00 (99.97) Acc@5 100.00 (100.00)
+2026-04-07 03:53:58 - LT_baseline - INFO - Epoch [164][150/169] Loss 0.0044 (0.0106) Acc@1 100.00 (99.97) Acc@5 100.00 (100.00)
+2026-04-07 03:53:59 - LT_baseline - INFO - [Val] Loss: 3.5739 | Overall: 42.33% | Many: 70.70% | Medium: 43.32% | Few: 12.63%
+2026-04-07 03:53:59 - LT_baseline - INFO - Epoch 164: Best Acc = 42.73%
+
+2026-04-07 03:54:00 - LT_baseline - INFO - Epoch [165][50/169] Loss 0.0101 (0.0111) Acc@1 100.00 (99.92) Acc@5 100.00 (100.00)
+2026-04-07 03:54:01 - LT_baseline - INFO - Epoch [165][100/169] Loss 0.0137 (0.0113) Acc@1 100.00 (99.95) Acc@5 100.00 (100.00)
+2026-04-07 03:54:01 - LT_baseline - INFO - Epoch [165][150/169] Loss 0.0116 (0.0111) Acc@1 100.00 (99.96) Acc@5 100.00 (100.00)
+2026-04-07 03:54:03 - LT_baseline - INFO - [Val] Loss: 3.5747 | Overall: 42.36% | Many: 70.93% | Medium: 42.97% | Few: 12.97%
+2026-04-07 03:54:03 - LT_baseline - INFO - Epoch 165: Best Acc = 42.73%
+
+2026-04-07 03:54:04 - LT_baseline - INFO - Epoch [166][50/169] Loss 0.0113 (0.0103) Acc@1 100.00 (99.98) Acc@5 100.00 (100.00)
+2026-04-07 03:54:05 - LT_baseline - INFO - Epoch [166][100/169] Loss 0.0148 (0.0101) Acc@1 100.00 (99.97) Acc@5 100.00 (100.00)
+2026-04-07 03:54:06 - LT_baseline - INFO - Epoch [166][150/169] Loss 0.0098 (0.0103) Acc@1 100.00 (99.96) Acc@5 100.00 (100.00)
+2026-04-07 03:54:07 - LT_baseline - INFO - [Val] Loss: 3.5608 | Overall: 42.64% | Many: 71.30% | Medium: 43.60% | Few: 12.70%
+2026-04-07 03:54:07 - LT_baseline - INFO - Epoch 166: Best Acc = 42.73%
+
+2026-04-07 03:54:08 - LT_baseline - INFO - Epoch [167][50/169] Loss 0.0140 (0.0111) Acc@1 100.00 (99.92) Acc@5 100.00 (100.00)
+2026-04-07 03:54:09 - LT_baseline - INFO - Epoch [167][100/169] Loss 0.0066 (0.0113) Acc@1 100.00 (99.94) Acc@5 100.00 (100.00)
+2026-04-07 03:54:10 - LT_baseline - INFO - Epoch [167][150/169] Loss 0.0212 (0.0113) Acc@1 100.00 (99.93) Acc@5 100.00 (100.00)
+2026-04-07 03:54:11 - LT_baseline - INFO - [Val] Loss: 3.5567 | Overall: 42.59% | Many: 71.10% | Medium: 42.88% | Few: 13.70%
+2026-04-07 03:54:11 - LT_baseline - INFO - Epoch 167: Best Acc = 42.73%
+
+2026-04-07 03:54:12 - LT_baseline - INFO - Epoch [168][50/169] Loss 0.0098 (0.0109) Acc@1 100.00 (99.92) Acc@5 100.00 (100.00)
+2026-04-07 03:54:13 - LT_baseline - INFO - Epoch [168][100/169] Loss 0.0073 (0.0110) Acc@1 100.00 (99.95) Acc@5 100.00 (100.00)
+2026-04-07 03:54:14 - LT_baseline - INFO - Epoch [168][150/169] Loss 0.0074 (0.0112) Acc@1 100.00 (99.95) Acc@5 100.00 (100.00)
+2026-04-07 03:54:15 - LT_baseline - INFO - [Val] Loss: 3.5344 | Overall: 42.78% | Many: 70.67% | Medium: 43.75% | Few: 13.60%
+2026-04-07 03:54:15 - LT_baseline - INFO - Epoch 168: Best Acc = 42.78%
+
+2026-04-07 03:54:18 - LT_baseline - INFO - Epoch [169][50/169] Loss 0.0107 (0.0112) Acc@1 100.00 (99.92) Acc@5 100.00 (100.00)
+2026-04-07 03:54:19 - LT_baseline - INFO - Epoch [169][100/169] Loss 0.0129 (0.0113) Acc@1 100.00 (99.95) Acc@5 100.00 (100.00)
+2026-04-07 03:54:20 - LT_baseline - INFO - Epoch [169][150/169] Loss 0.0046 (0.0111) Acc@1 100.00 (99.95) Acc@5 100.00 (100.00)
+2026-04-07 03:54:21 - LT_baseline - INFO - [Val] Loss: 3.5542 | Overall: 42.71% | Many: 70.67% | Medium: 43.93% | Few: 13.13%
+2026-04-07 03:54:21 - LT_baseline - INFO - Epoch 169: Best Acc = 42.78%
+
+2026-04-07 03:54:22 - LT_baseline - INFO - Epoch [170][50/169] Loss 0.0118 (0.0095) Acc@1 100.00 (99.97) Acc@5 100.00 (100.00)
+2026-04-07 03:54:23 - LT_baseline - INFO - Epoch [170][100/169] Loss 0.0188 (0.0098) Acc@1 100.00 (99.98) Acc@5 100.00 (100.00)
+2026-04-07 03:54:24 - LT_baseline - INFO - Epoch [170][150/169] Loss 0.0108 (0.0100) Acc@1 100.00 (99.97) Acc@5 100.00 (100.00)
+2026-04-07 03:54:25 - LT_baseline - INFO - [Val] Loss: 3.5873 | Overall: 42.38% | Many: 71.10% | Medium: 43.15% | Few: 12.63%
+2026-04-07 03:54:25 - LT_baseline - INFO - Epoch 170: Best Acc = 42.78%
+
+2026-04-07 03:54:26 - LT_baseline - INFO - Epoch [171][50/169] Loss 0.0049 (0.0093) Acc@1 100.00 (99.98) Acc@5 100.00 (100.00)
+2026-04-07 03:54:27 - LT_baseline - INFO - Epoch [171][100/169] Loss 0.0059 (0.0097) Acc@1 100.00 (99.98) Acc@5 100.00 (100.00)
+2026-04-07 03:54:28 - LT_baseline - INFO - Epoch [171][150/169] Loss 0.0084 (0.0097) Acc@1 100.00 (99.98) Acc@5 100.00 (100.00)
+2026-04-07 03:54:29 - LT_baseline - INFO - [Val] Loss: 3.5860 | Overall: 42.20% | Many: 70.77% | Medium: 43.20% | Few: 12.30%
+2026-04-07 03:54:29 - LT_baseline - INFO - Epoch 171: Best Acc = 42.78%
+
+2026-04-07 03:54:30 - LT_baseline - INFO - Epoch [172][50/169] Loss 0.0108 (0.0103) Acc@1 100.00 (100.00) Acc@5 100.00 (100.00)
+2026-04-07 03:54:31 - LT_baseline - INFO - Epoch [172][100/169] Loss 0.0066 (0.0106) Acc@1 100.00 (99.96) Acc@5 100.00 (100.00)
+2026-04-07 03:54:32 - LT_baseline - INFO - Epoch [172][150/169] Loss 0.0057 (0.0104) Acc@1 100.00 (99.96) Acc@5 100.00 (100.00)
+2026-04-07 03:54:33 - LT_baseline - INFO - [Val] Loss: 3.5593 | Overall: 42.43% | Many: 71.00% | Medium: 43.30% | Few: 12.70%
+2026-04-07 03:54:33 - LT_baseline - INFO - Epoch 172: Best Acc = 42.78%
+
+2026-04-07 03:54:34 - LT_baseline - INFO - Epoch [173][50/169] Loss 0.0053 (0.0103) Acc@1 100.00 (99.95) Acc@5 100.00 (100.00)
+2026-04-07 03:54:35 - LT_baseline - INFO - Epoch [173][100/169] Loss 0.0076 (0.0101) Acc@1 100.00 (99.96) Acc@5 100.00 (100.00)
+2026-04-07 03:54:36 - LT_baseline - INFO - Epoch [173][150/169] Loss 0.0104 (0.0101) Acc@1 100.00 (99.96) Acc@5 100.00 (100.00)
+2026-04-07 03:54:37 - LT_baseline - INFO - [Val] Loss: 3.5543 | Overall: 42.58% | Many: 70.73% | Medium: 43.83% | Few: 12.77%
+2026-04-07 03:54:37 - LT_baseline - INFO - Epoch 173: Best Acc = 42.78%
+
+2026-04-07 03:54:38 - LT_baseline - INFO - Epoch [174][50/169] Loss 0.0073 (0.0097) Acc@1 100.00 (99.95) Acc@5 100.00 (100.00)
+2026-04-07 03:54:39 - LT_baseline - INFO - Epoch [174][100/169] Loss 0.0187 (0.0104) Acc@1 100.00 (99.95) Acc@5 100.00 (100.00)
+2026-04-07 03:54:39 - LT_baseline - INFO - Epoch [174][150/169] Loss 0.0115 (0.0103) Acc@1 100.00 (99.96) Acc@5 100.00 (100.00)
+2026-04-07 03:54:41 - LT_baseline - INFO - [Val] Loss: 3.5692 | Overall: 42.31% | Many: 70.67% | Medium: 42.95% | Few: 13.10%
+2026-04-07 03:54:41 - LT_baseline - INFO - Epoch 174: Best Acc = 42.78%
+
+2026-04-07 03:54:42 - LT_baseline - INFO - Epoch [175][50/169] Loss 0.0127 (0.0090) Acc@1 100.00 (99.98) Acc@5 100.00 (100.00)
+2026-04-07 03:54:43 - LT_baseline - INFO - Epoch [175][100/169] Loss 0.0073 (0.0095) Acc@1 100.00 (99.99) Acc@5 100.00 (100.00)
+2026-04-07 03:54:43 - LT_baseline - INFO - Epoch [175][150/169] Loss 0.0046 (0.0094) Acc@1 100.00 (99.99) Acc@5 100.00 (100.00)
+2026-04-07 03:54:44 - LT_baseline - INFO - [Val] Loss: 3.5539 | Overall: 42.59% | Many: 70.83% | Medium: 43.48% | Few: 13.17%
+2026-04-07 03:54:45 - LT_baseline - INFO - Epoch 175: Best Acc = 42.78%
+
+2026-04-07 03:54:46 - LT_baseline - INFO - Epoch [176][50/169] Loss 0.0098 (0.0089) Acc@1 100.00 (100.00) Acc@5 100.00 (100.00)
+2026-04-07 03:54:47 - LT_baseline - INFO - Epoch [176][100/169] Loss 0.0124 (0.0093) Acc@1 100.00 (99.98) Acc@5 100.00 (100.00)
+2026-04-07 03:54:47 - LT_baseline - INFO - Epoch [176][150/169] Loss 0.0111 (0.0095) Acc@1 100.00 (99.98) Acc@5 100.00 (100.00)
+2026-04-07 03:54:49 - LT_baseline - INFO - [Val] Loss: 3.5666 | Overall: 42.49% | Many: 70.90% | Medium: 43.18% | Few: 13.17%
+2026-04-07 03:54:49 - LT_baseline - INFO - Epoch 176: Best Acc = 42.78%
+
+2026-04-07 03:54:50 - LT_baseline - INFO - Epoch [177][50/169] Loss 0.0107 (0.0108) Acc@1 100.00 (99.97) Acc@5 100.00 (100.00)
+2026-04-07 03:54:51 - LT_baseline - INFO - Epoch [177][100/169] Loss 0.0068 (0.0104) Acc@1 100.00 (99.98) Acc@5 100.00 (100.00)
+2026-04-07 03:54:51 - LT_baseline - INFO - Epoch [177][150/169] Loss 0.0151 (0.0102) Acc@1 100.00 (99.97) Acc@5 100.00 (100.00)
+2026-04-07 03:54:53 - LT_baseline - INFO - [Val] Loss: 3.5729 | Overall: 42.31% | Many: 71.03% | Medium: 42.70% | Few: 13.07%
+2026-04-07 03:54:53 - LT_baseline - INFO - Epoch 177: Best Acc = 42.78%
+
+2026-04-07 03:54:54 - LT_baseline - INFO - Epoch [178][50/169] Loss 0.0055 (0.0099) Acc@1 100.00 (99.98) Acc@5 100.00 (100.00)
+2026-04-07 03:54:55 - LT_baseline - INFO - Epoch [178][100/169] Loss 0.0136 (0.0104) Acc@1 100.00 (99.96) Acc@5 100.00 (100.00)
+2026-04-07 03:54:56 - LT_baseline - INFO - Epoch [178][150/169] Loss 0.0105 (0.0104) Acc@1 100.00 (99.95) Acc@5 100.00 (100.00)
+2026-04-07 03:54:57 - LT_baseline - INFO - [Val] Loss: 3.5611 | Overall: 42.69% | Many: 71.13% | Medium: 43.53% | Few: 13.13%
+2026-04-07 03:54:57 - LT_baseline - INFO - Epoch 178: Best Acc = 42.78%
+
+2026-04-07 03:54:58 - LT_baseline - INFO - Epoch [179][50/169] Loss 0.0140 (0.0094) Acc@1 100.00 (99.97) Acc@5 100.00 (100.00)
+2026-04-07 03:54:59 - LT_baseline - INFO - Epoch [179][100/169] Loss 0.0078 (0.0099) Acc@1 100.00 (99.95) Acc@5 100.00 (100.00)
+2026-04-07 03:55:00 - LT_baseline - INFO - Epoch [179][150/169] Loss 0.0119 (0.0099) Acc@1 100.00 (99.95) Acc@5 100.00 (100.00)
+2026-04-07 03:55:01 - LT_baseline - INFO - [Val] Loss: 3.5643 | Overall: 42.31% | Many: 71.00% | Medium: 42.83% | Few: 12.93%
+2026-04-07 03:55:01 - LT_baseline - INFO - Epoch 179: Best Acc = 42.78%
+
+2026-04-07 03:55:02 - LT_baseline - INFO - Epoch [180][50/169] Loss 0.0092 (0.0089) Acc@1 100.00 (99.97) Acc@5 100.00 (100.00)
+2026-04-07 03:55:03 - LT_baseline - INFO - Epoch [180][100/169] Loss 0.0130 (0.0094) Acc@1 100.00 (99.97) Acc@5 100.00 (100.00)
+2026-04-07 03:55:04 - LT_baseline - INFO - Epoch [180][150/169] Loss 0.0140 (0.0096) Acc@1 100.00 (99.96) Acc@5 100.00 (100.00)
+2026-04-07 03:55:05 - LT_baseline - INFO - [Val] Loss: 3.5604 | Overall: 42.34% | Many: 70.97% | Medium: 43.08% | Few: 12.73%
+2026-04-07 03:55:05 - LT_baseline - INFO - Epoch 180: Best Acc = 42.78%
+
+2026-04-07 03:55:06 - LT_baseline - INFO - Epoch [181][50/169] Loss 0.0106 (0.0104) Acc@1 100.00 (99.94) Acc@5 100.00 (100.00)
+2026-04-07 03:55:07 - LT_baseline - INFO - Epoch [181][100/169] Loss 0.0069 (0.0101) Acc@1 100.00 (99.93) Acc@5 100.00 (100.00)
+2026-04-07 03:55:08 - LT_baseline - INFO - Epoch [181][150/169] Loss 0.0160 (0.0099) Acc@1 100.00 (99.94) Acc@5 100.00 (100.00)
+2026-04-07 03:55:09 - LT_baseline - INFO - [Val] Loss: 3.5294 | Overall: 42.37% | Many: 71.07% | Medium: 43.00% | Few: 12.83%
+2026-04-07 03:55:09 - LT_baseline - INFO - Epoch 181: Best Acc = 42.78%
+
+2026-04-07 03:55:10 - LT_baseline - INFO - Epoch [182][50/169] Loss 0.0052 (0.0091) Acc@1 100.00 (99.98) Acc@5 100.00 (100.00)
+2026-04-07 03:55:11 - LT_baseline - INFO - Epoch [182][100/169] Loss 0.0137 (0.0096) Acc@1 100.00 (99.98) Acc@5 100.00 (100.00)
+2026-04-07 03:55:12 - LT_baseline - INFO - Epoch [182][150/169] Loss 0.0055 (0.0093) Acc@1 100.00 (99.98) Acc@5 100.00 (100.00)
+2026-04-07 03:55:13 - LT_baseline - INFO - [Val] Loss: 3.5345 | Overall: 42.49% | Many: 70.83% | Medium: 43.32% | Few: 13.03%
+2026-04-07 03:55:13 - LT_baseline - INFO - Epoch 182: Best Acc = 42.78%
+
+2026-04-07 03:55:14 - LT_baseline - INFO - Epoch [183][50/169] Loss 0.0089 (0.0095) Acc@1 100.00 (99.98) Acc@5 100.00 (100.00)
+2026-04-07 03:55:15 - LT_baseline - INFO - Epoch [183][100/169] Loss 0.0071 (0.0092) Acc@1 100.00 (99.98) Acc@5 100.00 (100.00)
+2026-04-07 03:55:16 - LT_baseline - INFO - Epoch [183][150/169] Loss 0.0112 (0.0095) Acc@1 100.00 (99.98) Acc@5 100.00 (100.00)
+2026-04-07 03:55:20 - LT_baseline - INFO - [Val] Loss: 3.5306 | Overall: 42.75% | Many: 70.90% | Medium: 43.75% | Few: 13.27%
+2026-04-07 03:55:20 - LT_baseline - INFO - Epoch 183: Best Acc = 42.78%
+
+2026-04-07 03:55:21 - LT_baseline - INFO - Epoch [184][50/169] Loss 0.0143 (0.0097) Acc@1 100.00 (99.95) Acc@5 100.00 (100.00)
+2026-04-07 03:55:21 - LT_baseline - INFO - Epoch [184][100/169] Loss 0.0053 (0.0097) Acc@1 100.00 (99.96) Acc@5 100.00 (100.00)
+2026-04-07 03:55:22 - LT_baseline - INFO - Epoch [184][150/169] Loss 0.0068 (0.0097) Acc@1 100.00 (99.97) Acc@5 100.00 (100.00)
+2026-04-07 03:55:23 - LT_baseline - INFO - [Val] Loss: 3.5381 | Overall: 42.70% | Many: 71.07% | Medium: 43.45% | Few: 13.33%
+2026-04-07 03:55:23 - LT_baseline - INFO - Epoch 184: Best Acc = 42.78%
+
+2026-04-07 03:55:25 - LT_baseline - INFO - Epoch [185][50/169] Loss 0.0087 (0.0086) Acc@1 100.00 (99.98) Acc@5 100.00 (100.00)
+2026-04-07 03:55:25 - LT_baseline - INFO - Epoch [185][100/169] Loss 0.0129 (0.0090) Acc@1 100.00 (99.98) Acc@5 100.00 (100.00)
+2026-04-07 03:55:26 - LT_baseline - INFO - Epoch [185][150/169] Loss 0.0059 (0.0093) Acc@1 100.00 (99.98) Acc@5 100.00 (100.00)
+2026-04-07 03:55:27 - LT_baseline - INFO - [Val] Loss: 3.5370 | Overall: 42.62% | Many: 70.97% | Medium: 43.42% | Few: 13.20%
+2026-04-07 03:55:27 - LT_baseline - INFO - Epoch 185: Best Acc = 42.78%
+
+2026-04-07 03:55:29 - LT_baseline - INFO - Epoch [186][50/169] Loss 0.0099 (0.0104) Acc@1 100.00 (99.95) Acc@5 100.00 (100.00)
+2026-04-07 03:55:29 - LT_baseline - INFO - Epoch [186][100/169] Loss 0.0076 (0.0094) Acc@1 100.00 (99.98) Acc@5 100.00 (100.00)
+2026-04-07 03:55:30 - LT_baseline - INFO - Epoch [186][150/169] Loss 0.0087 (0.0094) Acc@1 100.00 (99.98) Acc@5 100.00 (100.00)
+2026-04-07 03:55:31 - LT_baseline - INFO - [Val] Loss: 3.5491 | Overall: 42.81% | Many: 71.27% | Medium: 43.65% | Few: 13.23%
+2026-04-07 03:55:31 - LT_baseline - INFO - Epoch 186: Best Acc = 42.81%
+
+2026-04-07 03:55:33 - LT_baseline - INFO - Epoch [187][50/169] Loss 0.0067 (0.0091) Acc@1 100.00 (99.97) Acc@5 100.00 (100.00)
+2026-04-07 03:55:34 - LT_baseline - INFO - Epoch [187][100/169] Loss 0.0095 (0.0094) Acc@1 100.00 (99.96) Acc@5 100.00 (100.00)
+2026-04-07 03:55:34 - LT_baseline - INFO - Epoch [187][150/169] Loss 0.0085 (0.0097) Acc@1 100.00 (99.96) Acc@5 100.00 (100.00)
+2026-04-07 03:55:35 - LT_baseline - INFO - [Val] Loss: 3.5342 | Overall: 42.70% | Many: 71.13% | Medium: 43.55% | Few: 13.13%
+2026-04-07 03:55:35 - LT_baseline - INFO - Epoch 187: Best Acc = 42.81%
+
+2026-04-07 03:55:37 - LT_baseline - INFO - Epoch [188][50/169] Loss 0.0151 (0.0098) Acc@1 100.00 (99.97) Acc@5 100.00 (100.00)
+2026-04-07 03:55:37 - LT_baseline - INFO - Epoch [188][100/169] Loss 0.0079 (0.0095) Acc@1 100.00 (99.98) Acc@5 100.00 (100.00)
+2026-04-07 03:55:38 - LT_baseline - INFO - Epoch [188][150/169] Loss 0.0078 (0.0094) Acc@1 100.00 (99.98) Acc@5 100.00 (100.00)
+2026-04-07 03:55:39 - LT_baseline - INFO - [Val] Loss: 3.5355 | Overall: 42.55% | Many: 71.17% | Medium: 43.12% | Few: 13.17%
+2026-04-07 03:55:39 - LT_baseline - INFO - Epoch 188: Best Acc = 42.81%
+
+2026-04-07 03:55:40 - LT_baseline - INFO - Epoch [189][50/169] Loss 0.0135 (0.0094) Acc@1 100.00 (100.00) Acc@5 100.00 (100.00)
+2026-04-07 03:55:41 - LT_baseline - INFO - Epoch [189][100/169] Loss 0.0068 (0.0090) Acc@1 100.00 (99.99) Acc@5 100.00 (100.00)
+2026-04-07 03:55:42 - LT_baseline - INFO - Epoch [189][150/169] Loss 0.0067 (0.0091) Acc@1 100.00 (99.99) Acc@5 100.00 (100.00)
+2026-04-07 03:55:43 - LT_baseline - INFO - [Val] Loss: 3.5539 | Overall: 42.88% | Many: 71.33% | Medium: 43.73% | Few: 13.30%
+2026-04-07 03:55:43 - LT_baseline - INFO - Epoch 189: Best Acc = 42.88%
+
+2026-04-07 03:55:44 - LT_baseline - INFO - Epoch [190][50/169] Loss 0.0121 (0.0095) Acc@1 99.22 (99.94) Acc@5 100.00 (100.00)
+2026-04-07 03:55:45 - LT_baseline - INFO - Epoch [190][100/169] Loss 0.0065 (0.0095) Acc@1 100.00 (99.96) Acc@5 100.00 (100.00)
+2026-04-07 03:55:46 - LT_baseline - INFO - Epoch [190][150/169] Loss 0.0057 (0.0094) Acc@1 100.00 (99.97) Acc@5 100.00 (100.00)
+2026-04-07 03:55:47 - LT_baseline - INFO - [Val] Loss: 3.5405 | Overall: 42.39% | Many: 71.37% | Medium: 42.73% | Few: 12.97%
+2026-04-07 03:55:47 - LT_baseline - INFO - Epoch 190: Best Acc = 42.88%
+
+2026-04-07 03:55:48 - LT_baseline - INFO - Epoch [191][50/169] Loss 0.0114 (0.0087) Acc@1 100.00 (99.98) Acc@5 100.00 (100.00)
+2026-04-07 03:55:49 - LT_baseline - INFO - Epoch [191][100/169] Loss 0.0096 (0.0093) Acc@1 100.00 (99.96) Acc@5 100.00 (100.00)
+2026-04-07 03:55:50 - LT_baseline - INFO - Epoch [191][150/169] Loss 0.0092 (0.0090) Acc@1 100.00 (99.97) Acc@5 100.00 (100.00)
+2026-04-07 03:55:51 - LT_baseline - INFO - [Val] Loss: 3.5278 | Overall: 42.62% | Many: 71.07% | Medium: 43.40% | Few: 13.13%
+2026-04-07 03:55:51 - LT_baseline - INFO - Epoch 191: Best Acc = 42.88%
+
+2026-04-07 03:55:52 - LT_baseline - INFO - Epoch [192][50/169] Loss 0.0132 (0.0091) Acc@1 100.00 (99.97) Acc@5 100.00 (100.00)
+2026-04-07 03:55:53 - LT_baseline - INFO - Epoch [192][100/169] Loss 0.0061 (0.0087) Acc@1 100.00 (99.98) Acc@5 100.00 (100.00)
+2026-04-07 03:55:54 - LT_baseline - INFO - Epoch [192][150/169] Loss 0.0065 (0.0086) Acc@1 100.00 (99.98) Acc@5 100.00 (100.00)
+2026-04-07 03:55:55 - LT_baseline - INFO - [Val] Loss: 3.5457 | Overall: 42.58% | Many: 71.27% | Medium: 43.12% | Few: 13.17%
+2026-04-07 03:55:55 - LT_baseline - INFO - Epoch 192: Best Acc = 42.88%
+
+2026-04-07 03:55:56 - LT_baseline - INFO - Epoch [193][50/169] Loss 0.0068 (0.0089) Acc@1 100.00 (99.95) Acc@5 100.00 (100.00)
+2026-04-07 03:55:57 - LT_baseline - INFO - Epoch [193][100/169] Loss 0.0091 (0.0089) Acc@1 100.00 (99.97) Acc@5 100.00 (100.00)
+2026-04-07 03:55:58 - LT_baseline - INFO - Epoch [193][150/169] Loss 0.0095 (0.0088) Acc@1 100.00 (99.97) Acc@5 100.00 (100.00)
+2026-04-07 03:55:59 - LT_baseline - INFO - [Val] Loss: 3.5571 | Overall: 42.62% | Many: 71.47% | Medium: 43.25% | Few: 12.93%
+2026-04-07 03:55:59 - LT_baseline - INFO - Epoch 193: Best Acc = 42.88%
+
+2026-04-07 03:56:00 - LT_baseline - INFO - Epoch [194][50/169] Loss 0.0105 (0.0087) Acc@1 100.00 (99.98) Acc@5 100.00 (100.00)
+2026-04-07 03:56:01 - LT_baseline - INFO - Epoch [194][100/169] Loss 0.0155 (0.0090) Acc@1 100.00 (99.97) Acc@5 100.00 (100.00)
+2026-04-07 03:56:02 - LT_baseline - INFO - Epoch [194][150/169] Loss 0.0106 (0.0092) Acc@1 100.00 (99.97) Acc@5 100.00 (100.00)
+2026-04-07 03:56:03 - LT_baseline - INFO - [Val] Loss: 3.5412 | Overall: 42.54% | Many: 70.83% | Medium: 43.30% | Few: 13.23%
+2026-04-07 03:56:03 - LT_baseline - INFO - Epoch 194: Best Acc = 42.88%
+
+2026-04-07 03:56:04 - LT_baseline - INFO - Epoch [195][50/169] Loss 0.0069 (0.0092) Acc@1 100.00 (99.97) Acc@5 100.00 (100.00)
+2026-04-07 03:56:05 - LT_baseline - INFO - Epoch [195][100/169] Loss 0.0077 (0.0087) Acc@1 100.00 (99.98) Acc@5 100.00 (100.00)
+2026-04-07 03:56:06 - LT_baseline - INFO - Epoch [195][150/169] Loss 0.0064 (0.0088) Acc@1 100.00 (99.97) Acc@5 100.00 (100.00)
+2026-04-07 03:56:07 - LT_baseline - INFO - [Val] Loss: 3.5372 | Overall: 42.74% | Many: 71.23% | Medium: 43.75% | Few: 12.90%
+2026-04-07 03:56:07 - LT_baseline - INFO - Epoch 195: Best Acc = 42.88%
+
+2026-04-07 03:56:08 - LT_baseline - INFO - Epoch [196][50/169] Loss 0.0068 (0.0092) Acc@1 100.00 (99.97) Acc@5 100.00 (100.00)
+2026-04-07 03:56:09 - LT_baseline - INFO - Epoch [196][100/169] Loss 0.0130 (0.0092) Acc@1 99.22 (99.95) Acc@5 100.00 (100.00)
+2026-04-07 03:56:10 - LT_baseline - INFO - Epoch [196][150/169] Loss 0.0074 (0.0095) Acc@1 100.00 (99.95) Acc@5 100.00 (100.00)
+2026-04-07 03:56:11 - LT_baseline - INFO - [Val] Loss: 3.5394 | Overall: 42.68% | Many: 71.20% | Medium: 43.38% | Few: 13.23%
+2026-04-07 03:56:11 - LT_baseline - INFO - Epoch 196: Best Acc = 42.88%
+
+2026-04-07 03:56:12 - LT_baseline - INFO - Epoch [197][50/169] Loss 0.0092 (0.0087) Acc@1 100.00 (99.98) Acc@5 100.00 (100.00)
+2026-04-07 03:56:13 - LT_baseline - INFO - Epoch [197][100/169] Loss 0.0145 (0.0093) Acc@1 100.00 (99.97) Acc@5 100.00 (100.00)
+2026-04-07 03:56:14 - LT_baseline - INFO - Epoch [197][150/169] Loss 0.0119 (0.0092) Acc@1 100.00 (99.97) Acc@5 100.00 (100.00)
+2026-04-07 03:56:15 - LT_baseline - INFO - [Val] Loss: 3.5296 | Overall: 42.69% | Many: 71.20% | Medium: 43.45% | Few: 13.17%
+2026-04-07 03:56:15 - LT_baseline - INFO - Epoch 197: Best Acc = 42.88%
+
+2026-04-07 03:56:16 - LT_baseline - INFO - Epoch [198][50/169] Loss 0.0101 (0.0095) Acc@1 100.00 (99.97) Acc@5 100.00 (100.00)
+2026-04-07 03:56:17 - LT_baseline - INFO - Epoch [198][100/169] Loss 0.0110 (0.0092) Acc@1 100.00 (99.98) Acc@5 100.00 (100.00)
+2026-04-07 03:56:18 - LT_baseline - INFO - Epoch [198][150/169] Loss 0.0169 (0.0091) Acc@1 100.00 (99.98) Acc@5 100.00 (100.00)
+2026-04-07 03:56:19 - LT_baseline - INFO - [Val] Loss: 3.5428 | Overall: 42.49% | Many: 71.40% | Medium: 43.05% | Few: 12.83%
+2026-04-07 03:56:19 - LT_baseline - INFO - Epoch 198: Best Acc = 42.88%
+
+2026-04-07 03:56:20 - LT_baseline - INFO - Epoch [199][50/169] Loss 0.0117 (0.0085) Acc@1 100.00 (99.97) Acc@5 100.00 (100.00)
+2026-04-07 03:56:21 - LT_baseline - INFO - Epoch [199][100/169] Loss 0.0074 (0.0089) Acc@1 100.00 (99.98) Acc@5 100.00 (100.00)
+2026-04-07 03:56:22 - LT_baseline - INFO - Epoch [199][150/169] Loss 0.0086 (0.0089) Acc@1 100.00 (99.98) Acc@5 100.00 (100.00)
+2026-04-07 03:56:23 - LT_baseline - INFO - [Val] Loss: 3.5358 | Overall: 42.53% | Many: 71.03% | Medium: 43.38% | Few: 12.90%
+2026-04-07 03:56:23 - LT_baseline - INFO - Epoch 199: Best Acc = 42.88%
+
+2026-04-07 03:56:23 - LT_baseline - INFO - 
+Training finished. Best accuracy: 42.88%

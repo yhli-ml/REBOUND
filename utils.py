@@ -10,7 +10,42 @@ import torch.nn as nn
 
 # ========== Evaluation Metrics ==========
 
-def shot_acc(preds, labels, cls_num_list, many_shot_thr=100, low_shot_thr=20):
+def get_class_split_lists(cls_num_list, dataset_name=None,
+                          many_thr=100, few_thr=20,
+                          head_ratio=0.3, tail_ratio=0.3):
+    """Return head/medium/tail class ids.
+
+    CIFAR-LT uses a rank-based split:
+      - Head: top 30% classes by training count
+      - Medium: middle 40%
+      - Tail: bottom 30%
+
+    Other datasets keep the standard count-threshold split.
+    """
+    num_classes = len(cls_num_list)
+
+    if dataset_name in ('cifar10_lt', 'cifar100_lt'):
+        sorted_classes = sorted(
+            range(num_classes),
+            key=lambda class_idx: (-cls_num_list[class_idx], class_idx)
+        )
+        n_head = int(num_classes * head_ratio)
+        n_tail = int(num_classes * tail_ratio)
+        n_medium = num_classes - n_head - n_tail
+
+        head_classes = sorted_classes[:n_head]
+        medium_classes = sorted_classes[n_head:n_head + n_medium]
+        tail_classes = sorted_classes[n_head + n_medium:]
+        return head_classes, medium_classes, tail_classes
+
+    head_classes = [c for c in range(num_classes) if cls_num_list[c] > many_thr]
+    medium_classes = [c for c in range(num_classes)
+                      if few_thr < cls_num_list[c] <= many_thr]
+    tail_classes = [c for c in range(num_classes) if cls_num_list[c] <= few_thr]
+    return head_classes, medium_classes, tail_classes
+
+def shot_acc(preds, labels, cls_num_list, many_shot_thr=100, low_shot_thr=20,
+             dataset_name=None):
     """Compute accuracy for Many-shot, Medium-shot, and Few-shot classes.
 
     Following the standard protocol:
@@ -44,17 +79,27 @@ def shot_acc(preds, labels, cls_num_list, many_shot_thr=100, low_shot_thr=20):
         if pred == label:
             class_correct[label] += 1
 
+    head_classes, medium_classes, tail_classes = get_class_split_lists(
+        cls_num_list,
+        dataset_name=dataset_name,
+        many_thr=many_shot_thr,
+        few_thr=low_shot_thr,
+    )
+    head_set = set(head_classes)
+    medium_set = set(medium_classes)
+    tail_set = set(tail_classes)
+
     # Split into shots
     many_acc, medium_acc, few_acc = [], [], []
     for i in range(num_classes):
         if class_total[i] == 0:
             continue
         acc = class_correct[i] / class_total[i]
-        if cls_num_list[i] > many_shot_thr:
+        if i in head_set:
             many_acc.append(acc)
-        elif cls_num_list[i] > low_shot_thr:
+        elif i in medium_set:
             medium_acc.append(acc)
-        else:
+        elif i in tail_set:
             few_acc.append(acc)
 
     overall = (preds == labels).sum() / len(labels) * 100
@@ -283,11 +328,18 @@ def accuracy(output, target, topk=(1,)):
         return res
 
 
-def get_class_split_info(cls_num_list, many_thr=100, few_thr=20):
+def get_class_split_info(cls_num_list, many_thr=100, few_thr=20,
+                         dataset_name=None):
     """Get class split information for reporting."""
-    many = sum(1 for n in cls_num_list if n > many_thr)
-    medium = sum(1 for n in cls_num_list if few_thr < n <= many_thr)
-    few = sum(1 for n in cls_num_list if n <= few_thr)
+    many_classes, medium_classes, few_classes = get_class_split_lists(
+        cls_num_list,
+        dataset_name=dataset_name,
+        many_thr=many_thr,
+        few_thr=few_thr,
+    )
+    many = len(many_classes)
+    medium = len(medium_classes)
+    few = len(few_classes)
     return {
         'many': many, 'medium': medium, 'few': few,
         'total': len(cls_num_list),

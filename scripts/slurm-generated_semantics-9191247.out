@@ -1,0 +1,115 @@
+Dataset: cifar100_lt
+Data root: ./data
+Image root: 
+Generated dirs: ./data/h2t_cifar100_lt_IF0.01_clip_image_nearest_random_k3_ht100_tt20_s0.6_g7.5_st50_img2img_per_image_all_m1_p5_seed42_lora ./data/bare_cifar100_lt_IF0.01_txt2img_all_m1_g7.5_st50_seed42 ./data/diffusemix_cifar100_lt_IF100
+Method names: h2t bare diffusemix
+Output dir: ./eval_generated_semantics/cifar100_compare
+Running:
+ python evaluate_generated_semantics.py --dataset cifar100_lt --data_root ./data --imb_factor 0.01 --generated_dirs ./data/h2t_cifar100_lt_IF0.01_clip_image_nearest_random_k3_ht100_tt20_s0.6_g7.5_st50_img2img_per_image_all_m1_p5_seed42_lora ./data/bare_cifar100_lt_IF0.01_txt2img_all_m1_g7.5_st50_seed42 ./data/diffusemix_cifar100_lt_IF100 --method_names h2t bare diffusemix --output_dir ./eval_generated_semantics/cifar100_compare --device cuda --clip_model ViT-B/32 --batch_size 128 --max_gen_per_method 8000 --max_real_per_class 80 --max_grid_images 48 --seed 42
+======================================================================
+Generated Image Semantic Evaluation
+======================================================================
+Dataset: cifar100_lt
+Methods: ['h2t', 'bare', 'diffusemix']
+Output: eval_generated_semantics/cifar100_compare
+Computing real-image CLIP prototypes...
+
+[h2t] ./data/h2t_cifar100_lt_IF0.01_clip_image_nearest_random_k3_ht100_tt20_s0.6_g7.5_st50_img2img_per_image_all_m1_p5_seed42_lora
+  Scoring 8000/10847 generated images
+{
+  "n": 8000,
+  "n_classes": 100,
+  "text_top1_target_rate": 0.687625,
+  "text_top1_source_rate": 0.636375,
+  "proto_top1_target_rate": 0.63525,
+  "proto_top1_source_rate": 0.621625,
+  "source_leak_text_rate": 0.08,
+  "source_leak_proto_rate": 0.12175,
+  "mean_text_target_score": 0.2641567794270813,
+  "mean_text_target_minus_source": 0.002910418964922428,
+  "mean_proto_target_score": 0.9071862420141696,
+  "mean_proto_target_minus_source": -0.0004959179386496544
+}
+
+[bare] ./data/bare_cifar100_lt_IF0.01_txt2img_all_m1_g7.5_st50_seed42
+  Scoring 8000/10847 generated images
+{
+  "n": 8000,
+  "n_classes": 100,
+  "text_top1_target_rate": 0.9015,
+  "text_top1_source_rate": 0.0,
+  "proto_top1_target_rate": 0.78075,
+  "proto_top1_source_rate": 0.0,
+  "source_leak_text_rate": 0.0,
+  "source_leak_proto_rate": 0.0,
+  "mean_text_target_score": 0.27894924135506155,
+  "mean_text_target_minus_source": null,
+  "mean_proto_target_score": 0.9021016924679279,
+  "mean_proto_target_minus_source": null
+}
+
+[diffusemix] ./data/diffusemix_cifar100_lt_IF100
+  Scoring 8000/10847 generated images
+{
+  "n": 8000,
+  "n_classes": 100,
+  "text_top1_target_rate": 0.25475,
+  "text_top1_source_rate": 0.0,
+  "proto_top1_target_rate": 0.210375,
+  "proto_top1_source_rate": 0.0,
+  "source_leak_text_rate": 0.0,
+  "source_leak_proto_rate": 0.0,
+  "mean_text_target_score": 0.2262661972064525,
+  "mean_text_target_minus_source": null,
+  "mean_proto_target_score": 0.8770581973418593,
+  "mean_proto_target_minus_source": null
+}
+
+Saved diagnostics:
+  eval_generated_semantics/cifar100_compare/summary.json
+  eval_generated_semantics/cifar100_compare/all_sample_scores.csv
+  eval_generated_semantics/cifar100_compare/per_class_summary.csv
+  eval_generated_semantics/cifar100_compare/method_comparison.png
+  eval_generated_semantics/cifar100_compare/*_worst_source_leakage.jpg
+Generated semantic evaluation complete.
+
+======== GPU REPORT ========
+
+==============NVSMI LOG==============
+
+Timestamp                                 : Tue Apr  7 22:05:54 2026
+Driver Version                            : 580.95.05
+CUDA Version                              : 13.0
+
+Attached GPUs                             : 1
+GPU 00000000:01:00.0
+    Accounting Mode                       : Enabled
+    Accounting Mode Buffer Size           : 4000
+    Accounted Processes
+        Process ID                        : 554088
+            GPU Utilization               : 4 %
+            Memory Utilization            : 1 %
+            Max memory usage              : 1328 MiB
+            Time                          : 103338 ms
+            Is Running                    : 0
+
+Tue Apr  7 22:05:54 2026       
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 580.95.05              Driver Version: 580.95.05      CUDA Version: 13.0     |
++-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA A100-SXM4-80GB          On  |   00000000:01:00.0 Off |                    0 |
+| N/A   30C    P0             97W /  500W |       0MiB /  81920MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|  No running processes found                                                             |
++-----------------------------------------------------------------------------------------+

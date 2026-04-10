@@ -35,6 +35,7 @@ Usage:
 """
 
 import argparse
+import json
 import os
 import random
 import time
@@ -43,7 +44,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.backends.cudnn as cudnn
-from torch.utils.data import DataLoader
+from torch.utils.data import DataLoader, Dataset
 from torch.utils.tensorboard import SummaryWriter
 
 from datasets import get_dataset
@@ -61,6 +62,40 @@ from utils import (
     adjust_learning_rate, save_checkpoint, load_checkpoint,
     tau_normalize, setup_logger, get_class_split_info,
 )
+
+
+def infer_augmentation_method(aug_dir):
+    """Infer the augmentation method name from generation artifacts."""
+    if not aug_dir:
+        return 'DiffuseMix baseline'
+
+    config_path = os.path.join(aug_dir, 'generation_config.json')
+    if os.path.isfile(config_path):
+        try:
+            with open(config_path, 'r') as f:
+                config = json.load(f)
+            method = config.get('method', '').lower()
+            if method in ('head2tail', 'head2tail_controlled'):
+                return 'Head2Tail'
+            if method == 'diffusemix':
+                return 'DiffuseMix baseline'
+            if method == 'bare_prompt_diffusion':
+                return 'BarePrompt diffusion baseline'
+        except (OSError, json.JSONDecodeError):
+            pass
+
+    if os.path.isfile(os.path.join(aug_dir, 'head2tail_mapping.json')):
+        return 'Head2Tail'
+    return 'DiffuseMix baseline'
+
+
+def infer_augmentation_tag(aug_dir):
+    method = infer_augmentation_method(aug_dir)
+    if method == 'Head2Tail':
+        return 'head2tail'
+    if method == 'BarePrompt diffusion baseline':
+        return 'bareprompt'
+    return 'diffusemix'
 
 
 def parse_args():
@@ -144,13 +179,17 @@ def parse_args():
 
     # ===== Two-Stage Methods =====
     parser.add_argument('--stage2', type=str, default='none',
-                        choices=['none', 'crt', 'tau_norm', 'la_posthoc'],
+                        choices=['none', 'crt', 'real_ft', 'tau_norm', 'la_posthoc'],
                         help='Second stage method: '
                              'crt = classifier retraining, '
+                             'real_ft = fine-tune classifier on balanced original data, '
                              'tau_norm = tau-normalization, '
                              'la_posthoc = post-hoc logit adjustment')
     parser.add_argument('--stage2_epochs', type=int, default=10,
-                        help='Number of epochs for cRT stage 2')
+                        help='Number of epochs for cRT/real_ft stage 2')
+    parser.add_argument('--stage2_samples_per_class', type=int, default=0,
+                        help='For real_ft, use at most K original samples per class. '
+                             '0 = use all original samples with balanced sampling.')
     parser.add_argument('--tau', type=float, default=1.0,
                         help='Tau for tau-normalization or post-hoc LA')
     parser.add_argument('--stage1_ckpt', type=str, default='',
@@ -223,7 +262,7 @@ def parse_args():
         if args.sampler != 'none':
             parts.append(args.sampler)
         if args.diffusemix_dir:
-            parts.append('diffusemix')
+            parts.append(infer_augmentation_tag(args.diffusemix_dir))
         if args.stage2 != 'none':
             parts.append(args.stage2)
         args.exp_name = '_'.join(parts)
@@ -304,6 +343,55 @@ def build_dataloaders(train_dataset, val_dataset, args):
         shuffle=False, num_workers=args.workers, pin_memory=True)
 
     return train_loader, val_loader
+
+
+class BalancedOriginalSubset(Dataset):
+    """Small wrapper that exposes targets/counts for a subset of the real data."""
+
+    def __init__(self, base_dataset, indices):
+        self.base_dataset = base_dataset
+        self.indices = list(indices)
+        self.targets = [int(base_dataset.targets[i]) for i in self.indices]
+        num_classes = len(base_dataset.cls_num_list)
+        counts = [0] * num_classes
+        for target in self.targets:
+            counts[target] += 1
+        self.cls_num_list = counts
+
+    @property
+    def transform(self):
+        return getattr(self.base_dataset, 'transform', None)
+
+    @transform.setter
+    def transform(self, value):
+        if hasattr(self.base_dataset, 'transform'):
+            self.base_dataset.transform = value
+
+    def __len__(self):
+        return len(self.indices)
+
+    def __getitem__(self, idx):
+        return self.base_dataset[self.indices[idx]]
+
+
+def build_balanced_original_subset(dataset, samples_per_class, seed):
+    """Optionally subsample at most K original samples per class for real-only stage 2."""
+    if samples_per_class <= 0:
+        return dataset
+
+    rng = random.Random(seed)
+    class_to_indices = {}
+    for idx, target in enumerate(dataset.targets):
+        class_to_indices.setdefault(int(target), []).append(idx)
+
+    selected = []
+    for cls_idx in sorted(class_to_indices):
+        indices = list(class_to_indices[cls_idx])
+        rng.shuffle(indices)
+        selected.extend(indices[:min(samples_per_class, len(indices))])
+
+    selected.sort()
+    return BalancedOriginalSubset(dataset, selected)
 
 
 def train_one_epoch(model, train_loader, criterion, optimizer, epoch, args, logger):
@@ -425,7 +513,10 @@ def validate(model, val_loader, criterion, args, cls_num_list, logger,
 
     # Compute Many/Medium/Few shot accuracy
     if cls_num_list is not None:
-        shot_results = shot_acc(all_preds, all_targets, cls_num_list)
+        shot_results = shot_acc(
+            all_preds, all_targets, cls_num_list,
+            dataset_name=args.dataset,
+        )
         logger.info(
             f'[Val] Loss: {losses.avg:.4f} | '
             f'Overall: {shot_results["overall"]:.2f}% | '
@@ -440,7 +531,8 @@ def validate(model, val_loader, criterion, args, cls_num_list, logger,
     return shot_results
 
 
-def run_stage2(model, train_dataset, val_loader, args, cls_num_list, logger, writer):
+def run_stage2(model, train_dataset, val_loader, args, cls_num_list, logger, writer,
+               real_train_dataset=None):
     """Run second-stage methods (cRT, tau-norm, post-hoc LA)."""
     logger.info(f'\n{"="*60}')
     logger.info(f'Stage 2: {args.stage2}')
@@ -534,6 +626,82 @@ def run_stage2(model, train_dataset, val_loader, args, cls_num_list, logger, wri
 
         return best_result
 
+    elif args.stage2 == 'real_ft':
+        # SYNAuG-style final classifier tuning: keep learned backbone/features and
+        # tune the existing classifier on balanced original data only.
+        logger.info('Freezing backbone, fine-tuning existing classifier on balanced original data')
+
+        stage2_dataset = real_train_dataset if real_train_dataset is not None else train_dataset
+
+        is_cifar = args.dataset in ('cifar10_lt', 'cifar100_lt')
+        if is_cifar:
+            transform = get_cifar_train_transform(args.augment)
+        else:
+            transform = get_imagenet_train_transform(args.augment)
+        stage2_dataset.transform = transform
+
+        stage2_dataset = build_balanced_original_subset(
+            stage2_dataset,
+            samples_per_class=args.stage2_samples_per_class,
+            seed=args.seed,
+        )
+        logger.info(f'real_ft dataset: {len(stage2_dataset)} original samples '
+                    f'(samples_per_class={args.stage2_samples_per_class})')
+
+        for name, param in model.named_parameters():
+            if 'fc' not in name:
+                param.requires_grad = False
+
+        real_ft_sampler = ClassAwareSampler(stage2_dataset)
+        real_ft_loader = DataLoader(
+            stage2_dataset, batch_size=args.batch_size,
+            sampler=real_ft_sampler, num_workers=args.workers,
+            pin_memory=True, drop_last=True)
+
+        criterion = nn.CrossEntropyLoss().cuda(args.gpu)
+        optimizer = torch.optim.SGD(
+            filter(lambda p: p.requires_grad, model.parameters()),
+            lr=args.lr * 0.1, momentum=args.momentum,
+            weight_decay=args.weight_decay)
+
+        best_result = None
+        for epoch in range(args.stage2_epochs):
+            model.train()
+            losses = AverageMeter()
+            for batch in real_ft_loader:
+                if len(batch) == 3:
+                    images, targets, _ = batch
+                else:
+                    images, targets = batch
+                images = images.cuda(args.gpu, non_blocking=True)
+                targets = targets.cuda(args.gpu, non_blocking=True)
+                logits = model(images)
+                loss = criterion(logits, targets)
+                optimizer.zero_grad()
+                loss.backward()
+                optimizer.step()
+                losses.update(loss.item(), images.size(0))
+
+            logger.info(f'[real_ft Epoch {epoch+1}/{args.stage2_epochs}] Loss: {losses.avg:.4f}')
+            result = validate(model, val_loader, criterion, args, cls_num_list, logger)
+
+            if best_result is None or result['overall'] > best_result['overall']:
+                best_result = result
+                save_checkpoint({
+                    'epoch': epoch,
+                    'state_dict': model.state_dict(),
+                    'best_acc': result['overall'],
+                }, True, args.save_dir, 'checkpoint_real_ft.pth')
+
+            if writer:
+                writer.add_scalar('real_ft/loss', losses.avg, epoch)
+                writer.add_scalar('real_ft/acc_overall', result['overall'], epoch)
+
+        for param in model.parameters():
+            param.requires_grad = True
+
+        return best_result
+
 
 def main():
     args = parse_args()
@@ -556,12 +724,14 @@ def main():
 
     # ===== Data =====
     train_dataset, val_dataset = build_datasets(args)
+    orig_train_dataset = train_dataset
 
     # Wrap with DiffuseMix augmented data if specified
     orig_cls_num_list = list(train_dataset.cls_num_list)  # Save original counts
     if args.diffusemix_dir and os.path.isdir(args.diffusemix_dir):
         is_cifar = args.dataset in ('cifar10_lt', 'cifar100_lt')
         aug_img_size = 32 if is_cifar else None
+        aug_method = infer_augmentation_method(args.diffusemix_dir)
         train_dataset = DiffuseMixDataset(
             original_dataset=train_dataset,
             diffusemix_dir=args.diffusemix_dir,
@@ -570,11 +740,11 @@ def main():
             aug_img_size=aug_img_size,
             sample_ratio=args.diffusemix_ratio,
         )
-        logger.info(f'DiffuseMix: loaded augmented data from {args.diffusemix_dir}')
-        logger.info(f'DiffuseMix: ratio={args.diffusemix_ratio}, '
+        logger.info(f'{aug_method}: loaded augmented data from {args.diffusemix_dir}')
+        logger.info(f'{aug_method}: ratio={args.diffusemix_ratio}, '
                     f'weight={args.diffusemix_weight}')
     elif args.diffusemix_dir:
-        logger.warning(f'DiffuseMix dir not found: {args.diffusemix_dir}, skipping.')
+        logger.warning(f'Augmentation dir not found: {args.diffusemix_dir}, skipping.')
 
     # Use original class counts for loss/eval if requested
     if args.use_orig_cls_num:
@@ -585,7 +755,7 @@ def main():
         cls_num_list = train_dataset.cls_num_list
     num_classes = get_num_classes(args.dataset)
 
-    split_info = get_class_split_info(cls_num_list)
+    split_info = get_class_split_info(cls_num_list, dataset_name=args.dataset)
     logger.info(f'Dataset: {args.dataset}')
     logger.info(f'  Classes: {num_classes} (Many: {split_info["many"]}, '
                 f'Medium: {split_info["medium"]}, Few: {split_info["few"]})')
@@ -642,7 +812,8 @@ def main():
         validate(model, val_loader, criterion, args, cls_num_list, logger)
         if args.stage2 != 'none':
             run_stage2(model, train_dataset, val_loader, args,
-                       cls_num_list, logger, writer)
+                       cls_num_list, logger, writer,
+                       real_train_dataset=orig_train_dataset)
         return
 
     # ===== Training Loop =====
@@ -701,7 +872,8 @@ def main():
         # Load best model from stage 1
         load_checkpoint(model, os.path.join(args.save_dir, 'best_model.pth'))
         result = run_stage2(model, train_dataset, val_loader, args,
-                            cls_num_list, logger, writer)
+                            cls_num_list, logger, writer,
+                            real_train_dataset=orig_train_dataset)
         if result:
             logger.info(f'Stage 2 best accuracy: {result["overall"]:.2f}%')
 
